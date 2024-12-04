@@ -400,3 +400,4 @@ FodyWeavers.xsd
 bin-int/
 **.vcxproj
 **.vcxproj.filters
+**.sln
