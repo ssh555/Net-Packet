@@ -65,5 +65,6 @@ int main(int argc, char* argv[]) {
 	// TODO: 生成结构体文件的逻辑
 	// 在这里执行处理目录中数据文件的逻辑，并将结果写入 outputDir 目录
 
+	system("pause");
 	return 0;
 }
