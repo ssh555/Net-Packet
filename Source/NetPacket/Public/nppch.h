@@ -5,8 +5,9 @@
 #include <vector>
 #include <thread>
 
-
-#ifdef NP_BUILD_DLL
+#if NP_UE_SUPPORT
+#define NP_API
+#elif NP_BUILD_DLL
 #define NP_API __declspec(dllexport)
 #else
 #define NP_API __declspec(dllimport)
