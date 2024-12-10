@@ -4,7 +4,7 @@
 #include "INetSerializable.h"
 
 // 放置于include最后
-#if WITH_EDITOR
+#if WITH_ENGINE
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include NP_GENERATE(NetDataReader)
@@ -16,9 +16,9 @@ namespace NetPacket
 	INTERFACE INetSerializable;
 
 	// 继承 UObject 以便支持 Unreal 的反射和序列化系统
-	NP_UCLASS(Blueprintable)
-	class NP_API NP_UE_API UNetDataReader
-#if WITH_EDITOR
+	NP_UCLASS(NotBlueprintable, BlueprintType)
+	class NP_API UNetDataReader
+#if WITH_ENGINE
 		: public UObject
 #endif
 	{

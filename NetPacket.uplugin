@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "NetPacket",
+	"Description": "简易数据包协议插件",
+	"Category": "Net Packet Protocol",
+	"CreatedBy": "ssh",
+	"CreatedByURL": "",
+	"Modules": [
+		{
+			"Name": "NetPacket",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen",
+			"PlatformAllowList": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
+		}
+	],
+	"EnabledByDefault": true
+}

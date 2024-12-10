@@ -5,7 +5,9 @@
 #include <vector>
 #include <thread>
 
-#ifdef NP_BUILD_DLL
+#if WITH_ENGINE
+#define NP_API NPUE_API
+#elif NP_BUILD_DLL
 #define NP_API __declspec(dllexport)
 #else
 #define NP_API __declspec(dllimport)
@@ -24,11 +26,9 @@ class DummyClass
 };
 
 // UE
-#if WITH_EDITOR
+#if WITH_ENGINE
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-
-#define NP_UE_API ERROR: 没有补充对应的UE_API
 
 #define NP_UFUNCTION(...) UFUNCTION(__VA_ARGS__)
 #define NP_UFPROPERTY(...) UFPROPERTY(__VA_ARGS__)
@@ -53,6 +53,5 @@ class DummyClass
 
 #define  NP_GENERATED_BODY()
 #define NP_GENERATE(CLASS) include STR(CLASS##.generated.h)
-#define NP_UE_API
 #endif
 

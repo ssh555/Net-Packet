@@ -4,7 +4,7 @@
 
 
 // 放置于include最后
-#if WITH_EDITOR
+#if WITH_ENGINE
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include NP_GENERATE(NetDataWriter)
@@ -13,9 +13,9 @@
 namespace NetPacket {
 
 	// 定义 UNetDataWriter 类
-	NP_UCLASS(Blueprintable)
-	class NP_API NP_UE_API UNetDataWriter
-#if WITH_EDITOR
+	NP_UCLASS(NotBlueprintable, BlueprintType)
+	class NP_API UNetDataWriter
+#if WITH_ENGINE
 		: public UObject
 #endif
 	{

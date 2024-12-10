@@ -19,7 +19,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 
 project "NetPacket"
-	location "NetPacket"
+	location "Source"
 	kind "SharedLib"
 	language "C++"
 
@@ -27,17 +27,17 @@ project "NetPacket"
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	pchheader "nppch.h"
-	pchsource "NetPacket/src/nppch.cpp"
+	pchsource "Source/%{prj.name}/Private/nppch.cpp"
 
 	files
 	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"Source/**.h",
+		"Source/**.cpp"
 	}
 
 	includedirs
 	{
-		"%{prj.name}/src",
+		"Source/%{prj.name}/Public",
 	}
 
 	links 
@@ -93,7 +93,7 @@ project "StructFileGenerator"
 
 	includedirs
 	{
-		"NetPacket/src"
+		"Source/NetPacket/Public"
 	}
 
 	links
