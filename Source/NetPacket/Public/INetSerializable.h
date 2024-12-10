@@ -21,15 +21,7 @@ namespace NetPacket
 		virtual void Deserialize(NetDataReader& reader) = 0;
 
 		// 2×Ö½Ú
-		virtual uint16_t GetTypeHash() = 0;
-
-		// 2×Ö½Ú
-		virtual void Deserialize2() = 0;
-	};
-
-	class TEST : INetSerializable
-	{
-
+		virtual uint16_t GetTypeHash();
 	};
 };
 
