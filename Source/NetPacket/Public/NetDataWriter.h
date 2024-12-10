@@ -26,6 +26,7 @@ namespace NetPacket {
 	public:
 		// 构造函数
 		NetDataWriter(bool autoResize = true, int32_t initialSize = InitialSize);
+		~NetDataWriter();
 
 
 		// 获取容量
@@ -79,7 +80,7 @@ namespace NetPacket {
 		// 重置位置
 		int32_t SetPosition(int32_t position);
 
-
+		void Clear(bool isDelete = true);
 	};
 
 	template <typename T>

@@ -62,7 +62,7 @@ namespace NetPacket
 		std::string* GetStringArray();
 
 		// Çå¿ÕÊý¾Ý
-		void Clear();
+		void Clear(bool isDelete = true);
 
 		const uint8_t* GetRawData();
 		int32_t GetRawDataSize();

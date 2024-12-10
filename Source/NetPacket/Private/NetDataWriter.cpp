@@ -8,6 +8,11 @@ NetPacket::NetDataWriter::NetDataWriter(bool autoResize /*= true*/, int32_t init
 
 }
 
+NetPacket::NetDataWriter::~NetDataWriter()
+{
+	delete[] _data;
+}
+
 int32_t NetPacket::NetDataWriter::Capacity() const
 {
 	return _dataSize;
@@ -55,6 +60,15 @@ int32_t NetPacket::NetDataWriter::SetPosition(int32_t position)
 	int32_t prevPosition = _position;
 	_position = position;
 	return prevPosition;
+}
+
+void NetPacket::NetDataWriter::Clear(bool isDelete)
+{
+	_position = 0;
+	_dataSize = 0;
+	if(isDelete)
+		delete[] _data;
+	_data = nullptr;
 }
 
 void NetPacket::NetDataWriter::Put(float value)
@@ -174,10 +188,16 @@ void NetPacket::NetDataWriter::Put(bool value)
 
 void NetPacket::NetDataWriter::resize(int32_t size)
 {
-	delete[] _data;
-	_data = new uint8_t[size];
-	_dataSize = size;
+	if (size > _dataSize)
+	{
+		uint8_t* newData = new uint8_t[size];
+		std::memcpy(newData, _data, _dataSize);
+		delete[] _data;
+		_data = newData;
+		_dataSize = size;
+	}
 }
+
 
 NetPacket::NetDataWriter NetPacket::NetDataWriter::FromBytes(uint8_t* bytes, int32_t size, bool copy)
 {

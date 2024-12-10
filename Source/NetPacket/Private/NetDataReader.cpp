@@ -26,15 +26,18 @@ NetPacket::NetDataReader::NetDataReader(uint8_t* source, int32_t offset, int32_t
 NetPacket::NetDataReader::~NetDataReader()
 {
 	delete _data;
+	_data = nullptr;
 }
 
 
 
-void NetPacket::NetDataReader::Clear()
+void NetPacket::NetDataReader::Clear(bool isDelete)
 {
 	_position = 0;
 	_dataSize = 0;
-	delete[] _data;
+	if(isDelete)
+		delete[] _data;
+	_data = nullptr;
 }
 
 int32_t NetPacket::NetDataReader::AvailableBytes() const
