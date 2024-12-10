@@ -2,8 +2,8 @@
 #include "nppch.h"
 namespace NetPacket
 {
-	class UNetDataWriter;
-	class UNetDataReader;
+	class NetDataWriter;
+	class NetDataReader;
 
 	// INetSerializable ½Ó¿Ú
 	INTERFACE NP_API INetSerializable
@@ -11,9 +11,9 @@ namespace NetPacket
 	public:
 		virtual ~INetSerializable() = default;
 
-		virtual void Serialize(UNetDataWriter& writer) const = 0;
+		virtual void Serialize(NetDataWriter& writer) const = 0;
 
-		virtual void Deserialize(UNetDataReader& reader) = 0;
+		virtual void Deserialize(NetDataReader& reader) = 0;
 	};
 };
 

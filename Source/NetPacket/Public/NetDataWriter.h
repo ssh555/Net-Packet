@@ -5,8 +5,8 @@
 
 namespace NetPacket {
 
-	// 定义 UNetDataWriter 类
-	class NP_API UNetDataWriter
+	// 定义 NetDataWriter 类
+	class NP_API NetDataWriter
 	{
 	private:
 		uint8_t* _data;  // 存储序列化的数据
@@ -18,14 +18,14 @@ namespace NetPacket {
 
 	public:
 		static constexpr size_t InitialSize = 64;  // 初始容量
-		static UNetDataWriter FromBytes(uint8_t* bytes, int32_t size, bool copy);
-		static UNetDataWriter FromBytes(uint8_t* bytes, int32_t offset, int32_t length);
-		static UNetDataWriter FromString(std::string value);
-		static UNetDataWriter FromString(const std::string& value);
+		static NetDataWriter FromBytes(uint8_t* bytes, int32_t size, bool copy);
+		static NetDataWriter FromBytes(uint8_t* bytes, int32_t offset, int32_t length);
+		static NetDataWriter FromString(std::string value);
+		static NetDataWriter FromString(const std::string& value);
 
 	public:
 		// 构造函数
-		UNetDataWriter(bool autoResize = true, int32_t initialSize = InitialSize);
+		NetDataWriter(bool autoResize = true, int32_t initialSize = InitialSize);
 
 
 		// 获取容量
@@ -84,7 +84,7 @@ namespace NetPacket {
 
 	template <typename T>
 	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::UNetDataWriter::PutArray(T* value, unsigned short length)
+		NetPacket::NetDataWriter::PutArray(T* value, unsigned short length)
 	{
 		Put(length);
 		for (int i = 0; i < length; i++)
@@ -92,7 +92,7 @@ namespace NetPacket {
 	}
 
 	template <typename T>
-	void NetPacket::UNetDataWriter::PutArray(T* value, unsigned short length)
+	void NetPacket::NetDataWriter::PutArray(T* value, unsigned short length)
 	{
 		int32_t size = sizeof(T) * length;
 		if (_autoResize)
@@ -109,7 +109,7 @@ namespace NetPacket {
 
 	template <typename T>
 	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::UNetDataWriter::Put(T value)
+		NetPacket::NetDataWriter::Put(T value)
 	{
 		value.Serialize(this);
 	}

@@ -5,18 +5,18 @@
 
 namespace NetPacket
 {
-	class UNetDataWriter;
+	class NetDataWriter;
 	INTERFACE INetSerializable;
 
-	class NP_API UNetDataReader
+	class NP_API NetDataReader
 	{
 	public:
 		// 构造函数和析构函数
-		UNetDataReader();
-		UNetDataReader(UNetDataWriter writer);
-		UNetDataReader(uint8_t* source, int32_t size);
-		UNetDataReader(uint8_t* source, int32_t offset, int32_t maxSize);
-		~UNetDataReader();
+		NetDataReader();
+		NetDataReader(NetDataWriter writer);
+		NetDataReader(uint8_t* source, int32_t size);
+		NetDataReader(uint8_t* source, int32_t offset, int32_t maxSize);
+		~NetDataReader();
 
 
 
@@ -72,7 +72,7 @@ namespace NetPacket
 		int32_t AvailableBytes() const;
 		void SkipBytes(int32_t count);
 		void SetPosition(int32_t position);
-		void SetSource(UNetDataWriter& dataWriter);
+		void SetSource(NetDataWriter& dataWriter);
 		void SetSource(uint8_t* source, int32_t size);
 		void SetSource(uint8_t* source, int32_t offset, int32_t maxSize);
 
@@ -85,7 +85,7 @@ namespace NetPacket
 	};
 
 	template<typename T>
-	T* NetPacket::UNetDataReader::GetArray()
+	T* NetPacket::NetDataReader::GetArray()
 	{
 		int32_t size = sizeof(T);
 		int32_t length = static_cast<int32_t>(PeekUShort());
@@ -100,7 +100,7 @@ namespace NetPacket
 
 	template <typename T>
 	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::UNetDataReader::GetArray()
+		NetPacket::NetDataReader::GetArray()
 	{
 		int32_t size = sizeof(T);
 		int32_t length = static_cast<int32_t>(PeekUShort());
@@ -116,7 +116,7 @@ namespace NetPacket
 
 	template <typename T>
 	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::UNetDataReader::GetStruct()
+		NetPacket::NetDataReader::GetStruct()
 	{
 		T result;
 		result.Deserialize(this);
