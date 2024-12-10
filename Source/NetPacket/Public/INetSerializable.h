@@ -16,12 +16,15 @@ namespace NetPacket
 	public:
 		virtual ~INetSerializable() = default;
 
+		// writer.Put(GetTypeHash());
+		// 先在开头进行这个序列化
 		virtual void Serialize(NetDataWriter& writer) const = 0;
 
+		// 反序列时没有类型hash，在接收到包之后通过数据包协议处理就已经处理完类型hash，然后自动反序列化为对应的数据
 		virtual void Deserialize(NetDataReader& reader) = 0;
 
-		// 2字节
-		virtual uint16_t GetTypeHash();
+		// 2字节 type hash -> 在Serialize最前面应该序列化2字节的类型hash，在自动生成代码时自动加入
+		virtual uint16_t GetTypeHash() const;
 	};
 };
 
