@@ -48,7 +48,7 @@ NetPacket::NetPackage* NetPacket::NetPacketPool::GetPacket(int32_t size)
 
 NetPacket::NetPackage* NetPacket::NetPacketPool::InternalGetPacket(int32_t size)
 {
-	if (size > NetPackage::MaxPacketSize)
+	if (size + NetPackage::HeaderSize > NetPackage::MaxPacketSize)
 	{
 		return new NetPackage(size);
 	}
@@ -80,7 +80,7 @@ NetPacket::NetPackage* NetPacket::NetPacketPool::InternalGetPacket(int32_t size)
 
 void NetPacket::NetPacketPool::Recycle(NetPackage* packet)
 {
-	if (packet->m_size > NetPackage::MaxPacketSize || _poolCount >= PacketPoolSize)
+	if (packet->m_size + NetPackage::HeaderSize > NetPackage::MaxPacketSize || _poolCount >= PacketPoolSize)
 	{
 		delete packet;
 		return;

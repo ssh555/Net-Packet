@@ -12,8 +12,9 @@ NetPacket项目为导出供其他项目使用的DLL项目
 ### Packet协议
 	暂定使用TCP进行网络传输，自定义的PacketHeader只需要: PacketSize(不包括PacketSize的字节数)、TypeHashID(数据类型对应的HashID)
 	Packet = PacketSize(4字节) + ClientID(2字节) + TypeHashID(2字节) + 序列化字节流数据
-	PacketSize =  ClientID(2字节) +  TypeHashID(2字节) + 序列化字节流数据
-	总的Packet字节数 = 4字节 + PacketSize
+	PacketSize =  TypeHashID(2字节) + 序列化字节流数据
+	总的Packet字节数 = 6字节 + PacketSize
+	PacketSize和ClientID为NetPacket前部预留的6字节数据，自动填装，TypeHashID由INetSerializable序列化时在生成代码中自动加入
 #### 字符串|带长度的数组型数据
 	ushort两字节字符串长度(数组数量)+实际byte数据
 

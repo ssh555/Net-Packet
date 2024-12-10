@@ -27,6 +27,7 @@ namespace NetPacket
 		friend class NetPacketPool;
 	public:
 		static const int32_t MaxPacketSize;
+		static const int32_t HeaderSize;
 
 	private:
 		// 设置数据包大小
@@ -43,6 +44,7 @@ namespace NetPacket
 		// 数据包大小
 		int32_t getSize() const;
 		int32_t getMaxSize() const;
+
 		// 将数据拷贝到数据包的内存
 		void setRawData(const uint8_t* data, const int32_t size);
 		// 将数据拷贝到数据包的内存
@@ -55,7 +57,8 @@ namespace NetPacket
 	private:
 		// 总数据，包含冗余未使用的空间
 		uint8_t* RawData;
-		// 当前占用的大小
+		// 当前占用的大小: 最大也比MaxSize小HeaderSize
+		// 实际数据的大小，不包括Header
 		int32_t m_size;
 		// 最多容量
 		int32_t MaxSize;

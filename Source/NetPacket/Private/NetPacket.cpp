@@ -27,8 +27,13 @@ IMPLEMENT_MODULE(FNetPacketModule, NetPacket)
 #include "NetDataWriter.h"
 #include "NetDataReader.h"
 #include "NetPacketPool.h"
+#include "FastBitConverter.h"
 
 const int32_t NetPacket::NetPackage::MaxPacketSize = 2048;
+
+// 预留6字节数据: PacketSize(4字节) + ClientID(2字节)
+const int32_t NetPacket::NetPackage::HeaderSize = 6;
+
 NetPacket::NetPackage::NetPackage(uint32_t maxSize) : MaxSize(maxSize), RawData(new uint8_t[maxSize]), m_size(0), Next(nullptr)
 {
 	memset(RawData, 0, MaxSize);
@@ -44,7 +49,7 @@ NetPacket::NetPackage::~NetPackage()
 
 void NetPacket::NetPackage::resize(int32_t size)
 {
-	if (size > MaxSize)
+	if (size + HeaderSize > MaxSize)
 	{
 		MaxSize = size;
 		delete[] RawData;
@@ -79,15 +84,19 @@ const uint8_t* NetPacket::NetPackage::getRawData() const
 
 void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size)
 {
-	if (size > MaxSize)
+	if (size + HeaderSize > MaxSize)
 	{
 		MaxSize = size;
 		delete[] RawData;
 		RawData = new uint8_t[MaxSize];
 	}
 	memset(RawData, 0, MaxSize);
-	memcpy(RawData, data, size);
+	memcpy(RawData + HeaderSize, data, size);
 	this->m_size = size;
+	// 设置数据包长度和ClientID
+	FastBitConverter::GetBytes(RawData, 0, this->m_size);
+	FastBitConverter::GetBytes(RawData, 4, (int16_t)0);
+
 }
 
 int32_t NetPacket::NetPackage::getSize() const
