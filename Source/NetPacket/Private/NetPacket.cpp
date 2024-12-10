@@ -69,7 +69,7 @@ void NetPacket::NetPackage::GetData(NetDataReader* reader)
 	{
 		return;
 	}
-	reader->SetSource(RawData, m_size);
+	reader->SetSource(RawData + HeaderSize, m_size);
 	// ªÿπÈ∂‘œÛ≥ÿ
 	if (pool)
 	{
