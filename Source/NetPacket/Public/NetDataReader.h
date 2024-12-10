@@ -6,7 +6,7 @@
 // 放置于include最后
 #if NP_UE_SUPPORT
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
+#include "UObject/NoExportTypes.h"
 #include NP_GENERATE(NetDataReader)
 #endif
 
