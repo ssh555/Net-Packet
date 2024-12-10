@@ -1,5 +1,7 @@
 #include "nppch.h"
 #include "INetSerializable.h"
+#include "NetDataWriter.h"
+#include "NetDataReader.h"
 
 namespace NetPacket
 {
@@ -50,7 +52,7 @@ namespace NetPacket
 		return static_cast<uint16_t>(h & 0xFFFF); // ½Ø¶ÏÎª16Î»
 	}
 
-	uint16_t INetSerializable::GetTypeHash()
+	uint16_t INetSerializable::GetTypeHash() const
 	{
 		std::string typeName = typeid(*this).name();
 		return MurmurHash16(typeName);
