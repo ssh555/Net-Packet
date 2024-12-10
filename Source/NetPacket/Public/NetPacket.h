@@ -46,12 +46,16 @@ namespace NetPacket
 		int32_t getMaxSize() const;
 
 		// 包含header
-		void setRawData(const uint8_t* data, const int32_t size);
+		// bWithHeader = false -> 自动添加header
+		// = true -> data自带header
+		void setRawData(const uint8_t* data, const int32_t size, bool bWithHeader);
 		// 将数据拷贝到数据包的内存
 		void setData(NetDataWriter* writer);
 
 		// reader读取数据后回到对象池，但是依旧共享数据内存，需尽快处理 -> 不包含header
 		void GetData(NetDataReader* reader);
+
+		int16_t GetClientID() const;
 
 
 	private:

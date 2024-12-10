@@ -60,7 +60,7 @@ void NetPacket::NetPackage::resize(int32_t size)
 
 void NetPacket::NetPackage::setData(NetDataWriter* writer)
 {
-	setRawData(writer->Data(), writer->Length());
+	setRawData(writer->Data(), writer->Length(), false);
 }
 
 void NetPacket::NetPackage::GetData(NetDataReader* reader)
@@ -77,13 +77,32 @@ void NetPacket::NetPackage::GetData(NetDataReader* reader)
 	}
 }
 
+int16_t NetPacket::NetPackage::GetClientID() const
+{
+	int16_t id;
+	memcpy(&id, RawData + 4, sizeof(int16_t));
+	return id;
+}
+
 const uint8_t* NetPacket::NetPackage::getRawData() const
 {
 	return RawData;
 }
 
-void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size)
+void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size, bool bWithHeader)
 {
+	if (bWithHeader)
+	{
+		if (size > MaxSize)
+		{
+			MaxSize = size;
+			delete[] RawData;
+			RawData = new uint8_t[MaxSize];
+		}
+		memset(RawData, 0, MaxSize);
+		memcpy(RawData, data, size);
+		return;
+	}
 	if (size + HeaderSize > MaxSize)
 	{
 		MaxSize = size;
