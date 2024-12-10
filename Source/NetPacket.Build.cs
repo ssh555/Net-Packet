@@ -1,10 +1,11 @@
 using UnrealBuildTool;
 
-public class NetPakcet : ModuleRules
+public class NetPacket : ModuleRules
 {
-    public NetPakcet(ReadOnlyTargetRules Target) : base(Target)
+    public NetPacket(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+
         PublicIncludePaths.AddRange(
             new string[] {
             }
@@ -14,6 +15,7 @@ public class NetPakcet : ModuleRules
                 "NetPacket/Private",
             }
             );
+        PrivatePCHHeaderFile = "NetPacket/Public/nppch.h";
 
         // 模块的公共依赖
         PublicDependencyModuleNames.AddRange(new string[] { 
@@ -28,13 +30,9 @@ public class NetPakcet : ModuleRules
             "CoreUObject",
             "Core",
             "InputCore",
-            "Engine"
+            "Engine",
         });
 
-        // 如果需要支持插件在编辑器模式下运行，请加入 Editor 模块
-        if (Target.bBuildEditor)
-        {
-            }
-
+        PublicDefinitions.Add("NP_UE_SUPPORT=1");
     }
 }

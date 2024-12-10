@@ -12,6 +12,7 @@
 			"Name": "NetPacket",
 			"Type": "Runtime",
 			"LoadingPhase": "PreLoadingScreen",
+			"PCHUsage": "UseExplicitOrSharedPCHs",
 			"PlatformAllowList": [
 				"Win64",
 				"Mac",

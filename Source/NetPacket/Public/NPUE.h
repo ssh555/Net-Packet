@@ -1,4 +1,4 @@
-#if WITH_ENGINE
+#if NP_UE_SUPPORT
 #pragma once
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"

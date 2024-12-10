@@ -1,7 +1,7 @@
 #pragma once
 #include "nppch.h"
 
-#if WITH_ENGINE
+#if NP_UE_SUPPORT
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include NP_GENERATE(NetSerializable)
@@ -26,7 +26,7 @@ namespace NetPacket
 		NP_UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "NetPacket")
 		virtual void Deserialize(UNetDataReader& reader) = 0;
 	};
-#if WITH_ENGINE
+#if NP_UE_SUPPORT
 	NP_UINTERFACE(MinimalAPI, BlueprintType, Blueprintable)
 	INTERFACE NP_API UNetSerializable : public UInterface
 	{

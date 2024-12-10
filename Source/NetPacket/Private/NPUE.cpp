@@ -1,5 +1,5 @@
 #include "nppch.h"
-#if WITH_ENGINE
+#if NP_UE_SUPPORT
 #include "NPUE.h"
 
 void NetPacket::FNPUE::StartupModule()

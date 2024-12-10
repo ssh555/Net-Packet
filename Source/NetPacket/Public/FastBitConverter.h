@@ -3,7 +3,11 @@
 namespace NetPacket {
 
 	// 快速Bit转换器
-	class NP_API FastBitConverter {
+	class 
+#if !NP_UE_SUPPORT
+		NP_API
+#endif
+		FastBitConverter {
 	public:
 		// 获取指定类型的字节表示
 		template <typename T>
