@@ -32,12 +32,15 @@ project "NetPacket"
 	files
 	{
 		"Source/**.h",
-		"Source/**.cpp"
+		"Source/**.cpp",
+		"Source/**.hpp"
 	}
 
 	includedirs
 	{
 		"Source/%{prj.name}/Public",
+		"Source/%{prj.name}/Vendor/Json/include/include/nlohmann",
+		"Source/%{prj.name}/Vendor/Json/include/single_include/nlohmann",
 	}
 
 	links 
