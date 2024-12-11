@@ -79,8 +79,6 @@ namespace NetPacket {
 
 		// ÷ÿ÷√Œª÷√
 		int32_t SetPosition(int32_t position);
-
-		void Clear(bool isDelete = true);
 	};
 
 	template <typename T>

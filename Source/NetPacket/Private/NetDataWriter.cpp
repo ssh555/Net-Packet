@@ -62,15 +62,6 @@ int32_t NetPacket::NetDataWriter::SetPosition(int32_t position)
 	return prevPosition;
 }
 
-void NetPacket::NetDataWriter::Clear(bool isDelete)
-{
-	_position = 0;
-	_dataSize = 0;
-	if(isDelete)
-		delete[] _data;
-	_data = nullptr;
-}
-
 void NetPacket::NetDataWriter::Put(float value)
 {
 	ResizeIfNeed(_position + sizeof(float));

@@ -34,10 +34,10 @@ int32_t NetPacket::NetPacketPool::PoolCount() const
 	return _poolCount;
 }
 
-NetPacket::NetPackage* NetPacket::NetPacketPool::GetPacket(const uint8_t* data, int32_t start, int32_t length)
+NetPacket::NetPackage* NetPacket::NetPacketPool::GetPacket(const uint8_t* data, int32_t start, int32_t length, bool bWithHeader)
 {
 	NetPackage* package = InternalGetPacket(length);
-	package->setRawData(data + start, length);
+	package->setRawData(data + start, length, bWithHeader);
 	return package;
 }
 

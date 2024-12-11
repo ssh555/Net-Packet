@@ -35,7 +35,6 @@ namespace NetPacket
 		~NetPackage();
 
 		NetPackage* Next;
-		NetPacketPool* pool;
 		void resize(int32_t size);
 
 	public:

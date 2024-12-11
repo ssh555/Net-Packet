@@ -9,7 +9,7 @@ namespace NetPacket
 	{
 	public:
 		static const int32_t PacketPoolSize = 1000;
-		static const int32_t InitPoolSize = 10;
+		static const int32_t InitPoolSize = 30;
 
 		NetPacketPool();
 		~NetPacketPool();
@@ -17,7 +17,10 @@ namespace NetPacket
 		// 可用数量
 		int32_t PoolCount() const;
 
-		NetPackage* GetPacket(const uint8_t* data, int32_t start, int32_t length);
+		// 包含header
+		// bWithHeader = false -> 自动添加header
+		// = true -> data自带header
+		NetPackage* GetPacket(const uint8_t* data, int32_t start, int32_t length, bool bWithHeader);
 		NetPackage* GetPacket(int32_t size = 0);
 
 		void Recycle(NetPackage* packet);

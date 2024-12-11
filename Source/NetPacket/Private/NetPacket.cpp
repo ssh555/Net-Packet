@@ -26,7 +26,6 @@ IMPLEMENT_MODULE(FNetPacketModule, NetPacket)
 
 #include "NetDataWriter.h"
 #include "NetDataReader.h"
-#include "NetPacketPool.h"
 #include "FastBitConverter.h"
 
 const int32_t NetPacket::NetPackage::MaxPacketSize = 2048;
