@@ -35,8 +35,9 @@ NetPacket项目为导出供其他项目使用的DLL项目
 	序列化，字节流数据写入器
 #### NetSerializableStructGenerator
 	根据配置数据生成对应的实现INetSerializable接口的数据结构体C++文件(需加入UE宏支持蓝图 & 加入#if 支持非UE)
+	模板文件 Default.np UE.np，生成的代码只包含头文件
 #### NetSerializableStructLoader
-	读入需要生成的数据结构体的配置
+	读入需要生成的数据结构体的配置，只是载入配置文件数据
 #### ProjectBuilder.bat
 	编写用于生成数据结构体文件 & 编译生成UE项目
 	即运行即可生成所有文件&自动完成UE C++编译生成
@@ -45,7 +46,9 @@ NetPacket项目为导出供其他项目使用的DLL项目
 #### NetPacketProcessor
 	1. 网络数据包处理器，数据序列化写入(Write) & 数据反序列化读取(Read) & 接收包体时的数据处理回调，但不负责接收和发送。
 	2. 包括只进行序列化和反序列化的读写(类对象内部没有任何数据) 以及 NetSerializer对数据类型进行托管，接收处理时自动序列化读取并且响应事件。
-#### NetSerializer
+	3. 处理队列：接收包时将数据包放置于待处理队列，帧结束或者开始时统一调用Process统一处理，并在处理完之后回收所有数据包。
+	4. 提供接口：Receive(Packet)接收数据包、Process()处理所有待处理队列的数据包、Serialize(INetSerializable)序列化返回数据包
+#### NetSerializer -> 不再使用，与NetPacketProcessor合并
 	网络数据序列化器，托管处理网络数据，对在此进行注册的数据，反序列化接收数据后进行委托事件响应处理数据包，内部也不存储任何数据，只是对数据的序列化和反序列化进行了一层处理委托事件托管包装。
 
 # StructFileGenerator
