@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "INetSerializable.h"
+#include "FastBitConverter.h"
 
 
 namespace NetPacket {
@@ -65,30 +66,33 @@ namespace NetPacket {
 		void Put(int8_t value);
 		void Put(uint8_t value);
 		void Put(const std::string& value);
+		void Put(const INetSerializable& value);
 		void Put(const uint8_t* data, const int size);
 		void Put(const uint8_t* data, int32_t offset, int32_t length);
-		template <typename T>
-		typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-			Put(T value);
+
+		void PutArray(const std::string* value, unsigned short length);
+		void PutArray(INetSerializable* value, unsigned short length);
+		void PutArray(float* value, unsigned short length);
+		void PutArray(char* value, unsigned short length);
+		void PutArray(std::byte* value, unsigned short length);
+		void PutArray(double* value, unsigned short length);
+		void PutArray(bool* value, unsigned short length);
+		void PutArray(int64_t* value, unsigned short length);
+		void PutArray(uint64_t* value, unsigned short length);
+		void PutArray(int32_t* value, unsigned short length);
+		void PutArray(uint32_t* value, unsigned short length);
+		void PutArray(int16_t* value, unsigned short length);
+		void PutArray(uint16_t* value, unsigned short length);
+		void PutArray(int8_t* value, unsigned short length);
+		void PutArray(uint8_t* value, unsigned short length);
+
+		// 数据直接memcpy
 		template <typename T>
 		void PutArray(T* value, unsigned short length);
-		void PutArray(const std::string* value, unsigned short length);
-		template <typename T>
-		typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-			PutArray(T* value, unsigned short length);
 
 		// 重置位置
 		int32_t SetPosition(int32_t position);
 	};
-
-	template <typename T>
-	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::NetDataWriter::PutArray(T* value, unsigned short length)
-	{
-		Put(length);
-		for (int i = 0; i < length; i++)
-			value[i].Serialize(this);
-	}
 
 	template <typename T>
 	void NetPacket::NetDataWriter::PutArray(T* value, unsigned short length)
@@ -105,12 +109,4 @@ namespace NetPacket {
 		memcpy(value, _data + _position, size);
 		_position += size + 2;
 	}
-
-	template <typename T>
-	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::NetDataWriter::Put(T value)
-	{
-		value.Serialize(this);
-	}
-
 }

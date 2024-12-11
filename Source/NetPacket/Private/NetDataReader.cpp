@@ -46,156 +46,236 @@ int32_t NetPacket::NetDataReader::AvailableBytes() const
 	return _dataSize - _position;
 }
 
-uint8_t NetPacket::NetDataReader::GetByte()
+void NetPacket::NetDataReader::Get(uint8_t& value)
 {
 	if (_position + 1 <= _dataSize) {
-		return _data[_position++];
+		value = _data[_position++];
 	}
 	throw std::out_of_range("No enough data to get byte");
 }
 
-int8_t NetPacket::NetDataReader::GetSByte()
+void NetPacket::NetDataReader::Get(std::byte& value)
 {
 	if (_position + 1 <= _dataSize) {
-		return static_cast<int8_t>(_data[_position++]);
+		value = static_cast<std::byte>(_data[_position++]);
+	}
+	throw std::out_of_range("No enough data to get byte");
+}
+
+void NetPacket::NetDataReader::Get(char& value)
+{
+	if (_position + 1 <= _dataSize) {
+		value = static_cast<char>(_data[_position++]);
+	}
+	throw std::out_of_range("No enough data to get byte");
+}
+
+void NetPacket::NetDataReader::Get(INetSerializable& value)
+{
+	value.Deserialize(*this);
+}
+
+void NetPacket::NetDataReader::Get(int8_t& value)
+{
+	if (_position + 1 <= _dataSize) {
+		value = static_cast<int8_t>(_data[_position++]);
 	}
 	throw std::out_of_range("No enough data to get sbyte");
 }
 
-bool NetPacket::NetDataReader::GetBool()
+void NetPacket::NetDataReader::Get(bool& value)
 {
 	if (_position + 1 <= _dataSize) {
-		return _data[_position++] != 0;
+		value = (_data[_position++] != 0);
 	}
 	throw std::out_of_range("No enough data to get bool");
 }
 
-int16_t NetPacket::NetDataReader::GetShort()
+void NetPacket::NetDataReader::Get(int16_t& value)
 {
 	if (_position + 2 <= _dataSize) {
-		int16_t value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 2;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get short");
 }
 
-uint16_t NetPacket::NetDataReader::GetUShort()
+void NetPacket::NetDataReader::Get(uint16_t& value)
 {
 	if (_position + 2 <= _dataSize) {
-		uint16_t value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 2;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get ushort");
 }
 
-int32_t NetPacket::NetDataReader::GetInt()
+void NetPacket::NetDataReader::Get(int32_t& value)
 {
 	if (_position + 4 <= _dataSize) {
-		int32_t value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 4;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get int");
 }
 
-uint32_t NetPacket::NetDataReader::GetUInt()
+void NetPacket::NetDataReader::Get(uint32_t& value)
 {
 	if (_position + 4 <= _dataSize) {
-		uint32_t value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 4;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get uint");
 }
 
-int64_t NetPacket::NetDataReader::GetLong()
+void NetPacket::NetDataReader::Get(int64_t& value)
 {
 	if (_position + 8 <= _dataSize) {
-		int64_t value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 8;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get long");
 }
 
-uint64_t NetPacket::NetDataReader::GetULong()
+void NetPacket::NetDataReader::Get(uint64_t& value)
 {
 	if (_position + 8 <= _dataSize) {
-		uint64_t value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 8;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get ulong");
 }
 
-float NetPacket::NetDataReader::GetFloat()
+void NetPacket::NetDataReader::Get(float& value)
 {
 	if (_position + 4 <= _dataSize) {
-		float value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 4;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get float");
 }
 
-double NetPacket::NetDataReader::GetDouble()
+void NetPacket::NetDataReader::Get(double& value)
 {
 	if (_position + 8 <= _dataSize) {
-		double value;
 		std::memcpy(&value, &_data[_position], sizeof(value));
 		_position += 8;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get double");
 }
 
-std::string NetPacket::NetDataReader::GetString()
+void NetPacket::NetDataReader::Get(std::string& value)
 {
 	int32_t length = static_cast<int32_t>(PeekUShort());
 	if (_position + 2 + length <= _dataSize) {
 		std::string value(reinterpret_cast<char*>(&_data[_position + 2]), length);
 		_position += 2 + length;
-		return value;
 	}
 	throw std::out_of_range("No enough data to get string");
 }
 
-uint8_t* NetPacket::NetDataReader::GetBytesWithLength()
+uint16_t NetPacket::NetDataReader::GetArray(uint8_t* data)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());
-	if (_position + 2 + length <= _dataSize) {
-		//std::vector<uint8_t> value(_data.begin() + _position + 2, _data.begin() + _position + 2 + length);
-		uint8_t* value = new uint8_t[length];
-		memcpy(&value, &_data[_position], sizeof(value));
-		_position += 2 + length;
-		return value;
-	}
-	throw std::out_of_range("No enough data to get bytes with length");
+	return GetArray<uint8_t>(data);
 }
 
-std::string* NetPacket::NetDataReader::GetStringArray()
+uint16_t NetPacket::NetDataReader::GetArray(std::byte* data)
+{
+	return GetArray<std::byte>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(char* data)
+{
+	return GetArray<char>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(double* data)
+{
+	return GetArray<double>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(float* data)
+{
+	return GetArray<float>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(uint64_t* data)
+{
+	return GetArray<uint64_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(int64_t* data)
+{
+	return GetArray<int64_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(uint32_t* data)
+{
+	return GetArray<uint32_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(int32_t* data)
+{
+	return GetArray<int32_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(uint16_t* data)
+{
+	return GetArray<uint16_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(int16_t* data)
+{
+	return GetArray<int16_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(bool* data)
+{
+	return GetArray<bool>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(int8_t* data)
+{
+	return GetArray<int8_t>(data);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(INetSerializable* value)
+{
+	int32_t size = sizeof(*value);
+	uint16_t length = PeekUShort();
+	for (int i = 0; i < length; ++i)
+	{
+		value[i].Deserialize(*this);
+	}
+	return length;
+	throw std::out_of_range("No enough data to get array");
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(std::string* data)
 {
 	uint16_t length = PeekUShort();
-	std::string* arr = new std::string[length];
 	for (uint16_t i = 0; i < length; i++)
 	{
-		arr[i] = GetString();
+		Get(data[i]);
 	}
-	return arr;
+	return length;
 }
 
-uint16_t NetPacket::NetDataReader::PeekUShort()
+uint16_t NetPacket::NetDataReader::PeekUShort(bool isPop)
 {
-	return GetUShort();
+	if (isPop)
+	{
+		uint16_t value;
+		Get(value);
+		return value;
+	}
+	else
+	{
+		uint16_t value;
+		if (_position + 2 <= _dataSize) {
+			std::memcpy(&value, &_data[_position], sizeof(value));
+		}
+		throw std::out_of_range("No enough data to get ushort");
+	}
 }
 
 const uint8_t* NetPacket::NetDataReader::GetRawData()

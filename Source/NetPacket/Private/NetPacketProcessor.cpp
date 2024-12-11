@@ -41,7 +41,7 @@ namespace NetPacket
 				// client id
 				int16_t cid = p->GetClientID();
 				// type hash
-				uint16_t hashid = m_reader.PeekUShort();
+				uint16_t hashid = m_reader.PeekUShort(false);
 				// process data
 				if (IsRegister(hashid))
 				{

@@ -43,4 +43,78 @@ namespace NetPacket
 			}
 		}
 	}
+
+
+	void NetSerializableStructGenerator::DeclareData(std::stringstream& sst, const std::string& T, const std::string& name, int32_t mode)
+	{
+		if (mode == 0)
+		{
+			sst << "\t\t" << T << " " << name << "\n";
+		}
+		else if (mode == 1)
+		{
+
+		}
+	}
+
+	void NetSerializableStructGenerator::DeclareDataArray(std::stringstream& sst, const std::string& T, const std::string& name, const int32_t length, int32_t mode)
+	{
+		if (mode == 0)
+		{
+			sst << "\t\t" << T << " " << name << "[" << length << "]" << "\n";
+		}
+		else if (mode == 1)
+		{
+
+		}
+	}
+
+	void NetSerializableStructGenerator::WriteData(std::stringstream& sst, const std::string& name, int32_t mode)
+	{
+		if (mode == 0)
+		{
+			sst << "\t\t\twriter.Put(" << name << ");\n";
+		}
+		else if (mode == 1)
+		{
+
+		}
+	}
+
+	void NetSerializableStructGenerator::WriteDataArray(std::stringstream& sst, const std::string& name, int32_t mode)
+	{
+		if (mode == 0)
+		{
+			sst << "\t\t\twriter.PutArray(" << name << ");\n";
+		}
+		else if (mode == 1)
+		{
+
+		}
+	}
+
+	void NetSerializableStructGenerator::ReadData(std::stringstream& sst, const std::string& name, int32_t mode)
+	{
+		if (mode == 0)
+		{
+			sst << "\t\t\treader.Get(" << name << ");\n";
+		}
+		else if (mode == 1)
+		{
+
+		}
+	}
+
+	void NetSerializableStructGenerator::ReadDataArray(std::stringstream& sst, const std::string& name, int32_t mode)
+	{
+		if (mode == 0)
+		{
+			sst << "\t\t\treader.GetArray(" << name << ");\n";
+		}
+		else if (mode == 1)
+		{
+
+		}
+	}
+
 }

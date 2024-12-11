@@ -69,6 +69,11 @@ void NetPacket::NetDataWriter::Put(float value)
 	_position += sizeof(float);
 }
 
+void NetPacket::NetDataWriter::Put(const INetSerializable& value)
+{
+	value.Serialize(*this);
+}
+
 void NetPacket::NetDataWriter::Put(const uint8_t* data, const int size)
 {
 	ResizeIfNeed(_position + size);
@@ -231,4 +236,76 @@ void NetPacket::NetDataWriter::PutArray(const std::string* value, unsigned short
 	Put(length);
 	for (int i = 0; i < length; i++)
 		Put(value[i]);
+}
+
+void NetPacket::NetDataWriter::PutArray(uint8_t* value, unsigned short length)
+{
+	PutArray<uint8_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(int8_t* value, unsigned short length)
+{
+	PutArray<int8_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(uint16_t* value, unsigned short length)
+{
+	PutArray<uint16_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(int16_t* value, unsigned short length)
+{
+	PutArray<int16_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(uint32_t* value, unsigned short length)
+{
+	PutArray<uint32_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(int32_t* value, unsigned short length)
+{
+	PutArray<int32_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(uint64_t* value, unsigned short length)
+{
+	PutArray<uint64_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(int64_t* value, unsigned short length)
+{
+	PutArray<int64_t>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(bool* value, unsigned short length)
+{
+	PutArray<bool>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(double* value, unsigned short length)
+{
+	PutArray<double>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(std::byte* value, unsigned short length)
+{
+	PutArray<std::byte>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(char* value, unsigned short length)
+{
+	PutArray<char>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(float* value, unsigned short length)
+{
+	PutArray<float>(value, length);
+}
+
+void NetPacket::NetDataWriter::PutArray(INetSerializable* value, unsigned short length)
+{
+	Put(length);
+	for (int i = 0; i < length; i++)
+		value[i].Serialize(*this);
 }

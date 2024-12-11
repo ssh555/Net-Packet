@@ -6,6 +6,7 @@
 #include <thread>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 
 #include <Json/include/single_include/nlohmann/json.hpp>
 #include <Json/include/single_include/nlohmann/json_fwd.hpp>

@@ -5,19 +5,31 @@
 namespace NetPacket
 {
 	const std::string NetStructConfig::DefaultConfig = R"(
+#pragma once
+#include "nppch.h"
+#include "INetSerializable.h"
+#include "NetDataWriter.h"
+#include "NetDataReader.h"
+
 namespace NetPacket
 {
-	class MyClass
+	class {CLASSNAME} : public INetSerializable
 	{
 	public:
-		MyClass(T value) : value(value) {}
-	
-		void print() const {
-			std::cout << "Value: " << value << std::endl;
+{DECLATEDATA}
+
+	public:
+		virtual void Serialize(NetDataWriter& writer) const override
+		{
+			writer.Put(GetTypeHash());
+{WRITERDATA}
 		}
-	
-	private:
-		T value;
+
+		virtual void Deserialize(NetDataReader& reader) override
+		{
+			reader.PeekUShort();
+{READRDATA}
+		}
 	};
 }
 )";

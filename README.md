@@ -36,6 +36,7 @@ NetPacket项目为导出供其他项目使用的DLL项目
 #### NetSerializableStructGenerator
 	根据配置数据生成对应的实现INetSerializable接口的数据结构体C++文件(需加入UE宏支持蓝图 & 加入#if 支持非UE)
 	模板文件 Default.np UE.np，生成的代码只包含头文件
+	数组类型、非数组是不同的标识
 #### NetSerializableStructLoader -> 使用json第三方库代替，合并到NetSerializableStructGenerator
 	读入需要生成的数据结构体的配置，只是载入配置文件数据
 #### ProjectBuilder.bat

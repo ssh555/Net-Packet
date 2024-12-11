@@ -21,45 +21,45 @@ namespace NetPacket
 
 
 		// 获取字节数据
-		template <typename T>
-		typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-			GetStruct();
-
-		uint8_t GetByte();
-
-		int8_t GetSByte();
-
-		bool GetBool();
-
-		int16_t GetShort();
-
-		uint16_t GetUShort();
-
-		int32_t GetInt();
-
-		uint32_t GetUInt();
-
-		int64_t GetLong();
-
-		uint64_t GetULong();
-
-		float GetFloat();
-
-		double GetDouble();
-
-		std::string GetString();
-
-		uint8_t* GetBytesWithLength();
+		void Get(uint8_t& value);
+		void Get(int8_t& value);
+		void Get(bool& value);
+		void Get(int16_t& value);
+		void Get(uint16_t& value);
+		void Get(int32_t& value);
+		void Get(uint32_t& value);
+		void Get(int64_t& value);
+		void Get(uint64_t& value);
+		void Get(float& value);
+		void Get(double& value);
+		void Get(std::string& value);
+		void Get(INetSerializable& value);
+		void Get(char& value);
+		void Get(std::byte& value);
 
 		// 获取预读取的 ushort 数据
-		uint16_t PeekUShort();
+		// true: 获取数据并前进
+		// false: 只获取数据，下一次调用还是同样的数据
+		// Processor 使用时不能弹出
+		uint16_t PeekUShort(bool isPop = true);
 
 		template<typename T>
-		T* GetArray();
-		template <typename T>
-		typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-			GetArray();
-		std::string* GetStringArray();
+		uint16_t GetArray(T* value);
+		uint16_t GetArray(INetSerializable* value);
+		uint16_t GetArray(std::string* data);
+		uint16_t GetArray(uint8_t* data);
+		uint16_t GetArray(int8_t* data);
+		uint16_t GetArray(bool* data);
+		uint16_t GetArray(int16_t* data);
+		uint16_t GetArray(uint16_t* data);
+		uint16_t GetArray(int32_t* data);
+		uint16_t GetArray(uint32_t* data);
+		uint16_t GetArray(int64_t* data);
+		uint16_t GetArray(uint64_t* data);
+		uint16_t GetArray(float* data);
+		uint16_t GetArray(double* data);
+		uint16_t GetArray(char* data);
+		uint16_t GetArray(std::byte* data);
 
 		// 清空数据
 		void Clear(bool isDelete = true);
@@ -85,43 +85,17 @@ namespace NetPacket
 	};
 
 	template<typename T>
-	T* NetPacket::NetDataReader::GetArray()
+	uint16_t NetPacket::NetDataReader::GetArray(T* value)
 	{
 		int32_t size = sizeof(T);
-		int32_t length = static_cast<int32_t>(PeekUShort());
-		if (_position + length * size <= _dataSize) {
+		uint16_t length = PeekUShort();
+		if (_position + (int32_t)length * size <= _dataSize) {
 			T* value = new T[length];
-			memcpy(value, _data + _position, length * size);
+			memcpy(value, _data + _position, (int32_t)length * size);
 			_position += length * size;
-			return value;
+			return length;
 		}
 		throw std::out_of_range("No enough data to get array");
 	}
-
-	template <typename T>
-	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::NetDataReader::GetArray()
-	{
-		int32_t size = sizeof(T);
-		int32_t length = static_cast<int32_t>(PeekUShort());
-		if (_position + length * size <= _dataSize) {
-			T* value = new T[length];
-			value->Deserialize(this);
-			_position += length * size;
-			return value;
-		}
-		throw std::out_of_range("No enough data to get array");
-	}
-
-
-	template <typename T>
-	typename std::enable_if<std::is_class<T>::value&& std::is_base_of<INetSerializable, T>::value, T>::type
-		NetPacket::NetDataReader::GetStruct()
-	{
-		T result;
-		result.Deserialize(this);
-		return result;
-	}
-
 }
 
