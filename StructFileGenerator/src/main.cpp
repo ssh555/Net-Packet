@@ -5,6 +5,7 @@
 #include <cstdlib>  // For std::exit
 #include <cstring>  // For std::strcmp
 #include <windows.h> // For GetModuleFileName
+#include "NetSerializableStructGenerator.h"
 
 
 namespace fs = std::filesystem;
@@ -65,7 +66,9 @@ int main(int argc, char* argv[]) {
 
 	// TODO: 生成结构体文件的逻辑
 	// 在这里执行处理目录中数据文件的逻辑，并将结果写入 outputDir 目录
+	NetPacket::NetSerializableStructGenerator generator;
 
+	generator.GenerateAll(inputDir, outputDir);
 
 	system("pause");
 	return 0;

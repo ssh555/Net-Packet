@@ -4,7 +4,7 @@
 
 namespace NetPacket
 {
-	const std::string NetSerializableStructGenerator::DefaultConfig = R"(
+	const std::string NetStructConfig::DefaultConfig = R"(
 namespace NetPacket
 {
 	class MyClass

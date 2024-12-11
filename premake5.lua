@@ -39,8 +39,8 @@ project "NetPacket"
 	includedirs
 	{
 		"Source/%{prj.name}/Public",
-		"Source/%{prj.name}/Vendor/Json/include/include/nlohmann",
-		"Source/%{prj.name}/Vendor/Json/include/single_include/nlohmann",
+		-- "Source/%{prj.name}/Public/Json/include/include/nlohmann",
+		"Source/%{prj.name}/Public/Json/include/single_include/nlohmann",
 	}
 
 	links 
@@ -62,6 +62,8 @@ project "NetPacket"
 		{
 			"NP_BUILD_DLL"
 		}
+		
+		disablewarnings { "4251" }  -- 禁用 C4251 警告
 
 		postbuildcommands
 		{

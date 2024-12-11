@@ -4,7 +4,12 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <filesystem>
+#include <fstream>
 
+#include <Json/include/single_include/nlohmann/json.hpp>
+#include <Json/include/single_include/nlohmann/json_fwd.hpp>
+using json = nlohmann::json;
 #if NP_UE_SUPPORT
 #define NP_API
 #elif NP_BUILD_DLL

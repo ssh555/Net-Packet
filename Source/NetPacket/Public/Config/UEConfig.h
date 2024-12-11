@@ -4,6 +4,6 @@
 
 namespace NetPacket
 {
-	const std::string NetSerializableStructGenerator::UEConfig = "";
+	const std::string NetStructConfig::UEConfig = "";
 
 }

@@ -16,7 +16,7 @@ namespace NetPacket
 		const uint32_t m = 0x5bd1e995; // 常量
 		const int r = 16; // 16位输出
 
-		uint32_t h = hash ^ length;
+		uint32_t h = hash ^ (uint32_t)length;
 
 		// 4字节为一组进行计算
 		while (length >= 4) {
