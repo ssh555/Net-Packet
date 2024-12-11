@@ -25,7 +25,8 @@ NetPacket::NetDataReader::NetDataReader(uint8_t* source, int32_t offset, int32_t
 
 NetPacket::NetDataReader::~NetDataReader()
 {
-	delete _data;
+	// 不需要delete，不属于reader的数据，若需要，调用Clear
+	//delete _data;
 	_data = nullptr;
 }
 

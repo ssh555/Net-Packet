@@ -70,11 +70,12 @@ void NetPacket::NetPackage::GetData(NetDataReader* reader)
 		return;
 	}
 	reader->SetSource(RawData + HeaderSize, m_size);
+	// 不在这儿调用，统一在NetPacketProcessor中Process Packet 后统一调用全部回归对象池
 	// 回归对象池
-	if (pool)
-	{
-		pool->Recycle(this);
-	}
+	//if (pool)
+	//{
+	//	pool->Recycle(this);
+	//}
 }
 
 int16_t NetPacket::NetPackage::GetClientID() const
