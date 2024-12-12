@@ -12,5 +12,6 @@ bin\Debug-windows-x86_64\StructFileGenerator\StructFileGenerator.exe -i %CD%\Inp
 @REM 自己的UE目录 项目名称Editor(拼接) 平台 配置 所在.uproject项目 ...其余参数
 "D:\Unreal Engine\UE_5.1\Engine\Build\BatchFiles\Build.bat" FZHT_CppEditor Win64 DebugGame -Project="%CD%\..\..\FZHT_Cpp.uproject" -WaitMutex -FromMsBuild
 
+@REM pause无用，Build.bat执行完成后会关闭窗口
 pause
 
