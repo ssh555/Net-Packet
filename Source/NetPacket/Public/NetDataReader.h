@@ -84,6 +84,8 @@ namespace NetPacket
 
 #if NP_UE_SUPPORT
 		void Get(FString& value);
+		void Get(FText& value);
+		void Get(FName& value);
 		void Get(FVector& value);
 		void Get(FQuat& value);
 		void Get(FColor& value);
@@ -101,6 +103,11 @@ namespace NetPacket
 		template <typename T>
 		uint16_t GetArray(TArray<T>& value);
 		uint16_t GetArray(TArray<FString>& value);
+		uint16_t GetArray(TArray<FText>& value);
+		uint16_t GetArray(TArray<FName>& value);
+		uint16_t GetArray(TArray<int64>& value);
+		uint16_t GetArray(TArray<int32>& value);
+		uint16_t GetArray(TArray<uint8>& value);
 		uint16_t GetArray(TArray<FVector>& value);
 		uint16_t GetArray(TArray<FQuat>& value);
 		uint16_t GetArray(TArray<FColor>& value);
@@ -113,6 +120,7 @@ namespace NetPacket
 		uint16_t GetArray(TArray<FMatrix>& value);
 		uint16_t GetArray(TArray<FTransform>& value);
 		uint16_t GetArray(TArray<FLinearColor>& value);
+
 
 #endif
 
@@ -128,7 +136,7 @@ namespace NetPacket
 		int32_t size = sizeof(T);
 		uint16_t length = PeekUShort();
 		if (_position + (int32_t)length * size <= _dataSize) {
-			memcpy(value, _data + _position, (int32_t)length * size);
+			memcpy(value, _data + _position, length * size);
 			_position += length * size;
 			return length;
 		}

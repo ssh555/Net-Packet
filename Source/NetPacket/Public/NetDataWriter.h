@@ -97,6 +97,8 @@ namespace NetPacket {
 
 #if NP_UE_SUPPORT
 		void Put(const FString& value);
+		void Put(const FName& value);
+		void Put(const FText& value);
 		void Put(const FVector& value);
 		void Put(const FQuat& value);
 		void Put(const FColor& value);
@@ -114,6 +116,11 @@ namespace NetPacket {
 		template <typename T>
 		void PutArray(const TArray<T>& value);
 		void PutArray(const TArray<FString>& value);
+		void PutArray(const TArray<FName>& value);
+		void PutArray(const TArray<FText>& value);
+		void PutArray(const TArray<int64>& value);
+		void PutArray(const TArray<int32>& value);
+		void PutArray(const TArray<uint8>& value);
 		void PutArray(const TArray<FVector>& value);
 		void PutArray(const TArray<FQuat>& value);
 		void PutArray(const TArray<FColor>& value);
