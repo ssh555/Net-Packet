@@ -2,14 +2,14 @@
 
 namespace NetPacket {
 
-	// ¿ìËÙBit×ª»»Æ÷
+	// å¿«é€ŸBitè½¬æ¢å™¨
 	class NP_API FastBitConverter {
 	public:
-		// »ñÈ¡Ö¸¶¨ÀàĞÍµÄ×Ö½Ú±íÊ¾
+		// è·å–æŒ‡å®šç±»å‹çš„å­—èŠ‚è¡¨ç¤º
 		template <typename T>
 		static void GetBytes(uint8_t* bytes, int startIndex, T value);
 
-		// ×ª»»º¯Êı£¬ÓÃÓÚ²»Í¬ÀàĞÍµÄÊı¾İ£¨ulong, double, int, float µÈ£©
+		// è½¬æ¢å‡½æ•°ï¼Œç”¨äºä¸åŒç±»å‹çš„æ•°æ®ï¼ˆulong, double, int, float ç­‰ï¼‰
 		static void GetBytes(uint8_t* bytes, int startIndex, double value);
 		static void GetBytes(uint8_t* bytes, int startIndex, float value);
 		static void GetBytes(uint8_t* bytes, int startIndex, short value);
@@ -20,7 +20,7 @@ namespace NetPacket {
 		static void GetBytes(uint8_t* bytes, int startIndex, unsigned long long value);
 
 	private:
-		// ÓÃÓÚ½«Êı¾İ×ª»»Îª×Ö½Ú±íÊ¾µÄĞ¡¶Ë¸ñÊ½
+		// ç”¨äºå°†æ•°æ®è½¬æ¢ä¸ºå­—èŠ‚è¡¨ç¤ºçš„å°ç«¯æ ¼å¼
 		static void WriteLittleEndian(uint8_t* buffer, int offset, uint64_t data);
 		static void WriteLittleEndian(uint8_t* buffer, int offset, int data);
 		static void WriteLittleEndian(uint8_t* buffer, int offset, short data);

@@ -9,51 +9,51 @@
 
 namespace NetPacket {
 
-	// ¶¨Òå NetDataWriter Àà
+	// å®šä¹‰ NetDataWriter ç±»
 	class NP_API NetDataWriter
 	{
 	private:
-		int32_t _position;  // µ±Ç°Ğ´ÈëÎ»ÖÃ
-		bool _autoResize;  // ÊÇ·ñ×Ô¶¯µ÷ÕûÈİÁ¿
-		uint8_t* _data;  // ´æ´¢ĞòÁĞ»¯µÄÊı¾İ
-		int32_t _dataSize;           // Êı¾İ´óĞ¡
+		int32_t _position;  // å½“å‰å†™å…¥ä½ç½®
+		bool _autoResize;  // æ˜¯å¦è‡ªåŠ¨è°ƒæ•´å®¹é‡
+		uint8_t* _data;  // å­˜å‚¨åºåˆ—åŒ–çš„æ•°æ®
+		int32_t _dataSize;           // æ•°æ®å¤§å°
 
 		void resize(int32_t size);
 
 	public:
-		static constexpr size_t InitialSize = 64;  // ³õÊ¼ÈİÁ¿
+		static constexpr size_t InitialSize = 64;  // åˆå§‹å®¹é‡
 		static NetDataWriter* FromBytes(const uint8_t* bytes, int32_t size, bool copy);
 		static NetDataWriter* FromBytes(const uint8_t* bytes, int32_t offset, int32_t length);
 		static NetDataWriter* FromString(const std::string& value);
 
 	public:
-		// ¹¹Ôìº¯Êı
+		// æ„é€ å‡½æ•°
 		NetDataWriter(bool autoResize = true, int32_t initialSize = InitialSize);
 		~NetDataWriter();
 
 
-		// »ñÈ¡ÈİÁ¿
+		// è·å–å®¹é‡
 		int32_t Capacity() const;
 
-		// »ñÈ¡Êı¾İ
+		// è·å–æ•°æ®
 		const uint8_t* Data() const;
 
-		// »ñÈ¡µ±Ç°Êı¾İ³¤¶È
+		// è·å–å½“å‰æ•°æ®é•¿åº¦
 		uint8_t Length() const;
 
-		// È·±£Êı¾İ´óĞ¡×ã¹»
+		// ç¡®ä¿æ•°æ®å¤§å°è¶³å¤Ÿ
 		void ResizeIfNeed(int32_t newSize);
 
-		// È·±£À©Õ¹ÈİÁ¿
+		// ç¡®ä¿æ‰©å±•å®¹é‡
 		void EnsureFit(int32_t additionalSize);
 
-		// ÖØÖÃÊı¾İºÍÎ»ÖÃ
+		// é‡ç½®æ•°æ®å’Œä½ç½®
 		void Reset(int32_t size = 0);
 
-		// ¿½±´Êı¾İ
+		// æ‹·è´æ•°æ®
 		uint8_t* CopyData() const;
 
-		// Ğ´ÈëÊı¾İ·½·¨
+		// å†™å…¥æ•°æ®æ–¹æ³•
 		void Put(float value);
 		void Put(char value);
 		void Put(std::byte value);
@@ -88,11 +88,11 @@ namespace NetPacket {
 		void PutArray(int8_t* value, unsigned short length);
 		void PutArray(uint8_t* value, unsigned short length);
 
-		// Êı¾İÖ±½Ómemcpy
+		// æ•°æ®ç›´æ¥memcpy
 		template <typename T>
 		void PutArray(T* value, unsigned short length);
 
-		// ÖØÖÃÎ»ÖÃ
+		// é‡ç½®ä½ç½®
 		int32_t SetPosition(int32_t position);
 
 #if NP_UE_SUPPORT
@@ -110,7 +110,7 @@ namespace NetPacket {
 		void Put(const FTransform& value);
 		void Put(const FLinearColor& value);
 
-		// ĞòÁĞ»¯TArray
+		// åºåˆ—åŒ–TArray
 		template <typename T>
 		void PutArray(const TArray<T>& value);
 		void PutArray(const TArray<FString>& value);
@@ -146,7 +146,7 @@ namespace NetPacket {
 	template <typename T>
 	void NetPacket::NetDataWriter::PutArray(const TArray<T>& value)
 	{
-		// »ñÈ¡TArrayµÄ³¤¶È
+		// è·å–TArrayçš„é•¿åº¦
 		auto length = value.Num();
 		int32_t size = length * sizeof(T);
 
@@ -154,10 +154,10 @@ namespace NetPacket {
 
 		if (_autoResize)
 			ResizeIfNeed(_position + size);
-		// Ê¹ÓÃFMemory::Memcpy½øĞĞÄÚ´æ¿½±´
+		// ä½¿ç”¨FMemory::Memcpyè¿›è¡Œå†…å­˜æ‹·è´
 		FMemory::Memcpy(_data + _position, value.GetData(), size);
 
-		// ¸üĞÂµ±Ç°Ğ´ÈëÎ»ÖÃ
+		// æ›´æ–°å½“å‰å†™å…¥ä½ç½®
 		_position += size;
 	}
 #endif

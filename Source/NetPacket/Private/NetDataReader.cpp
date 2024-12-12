@@ -25,7 +25,7 @@ NetPacket::NetDataReader::NetDataReader(uint8_t* source, int32_t offset, int32_t
 
 NetPacket::NetDataReader::~NetDataReader()
 {
-	// 不需要delete，不属于reader的数据，若需要，调用Clear
+	// 涓嶉渶瑕乨elete锛屼笉灞炰簬reader鐨勬暟鎹紝鑻ラ渶瑕侊紝璋冪敤Clear
 	//delete _data;
 	_data = nullptr;
 }
@@ -474,10 +474,10 @@ void NetPacket::NetDataReader::Get(FVector& value)
 
 void NetPacket::NetDataReader::Get(FString& value)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
+	int32_t length = static_cast<int32_t>(PeekUShort());  // 鑾峰彇瀛楃涓茬殑闀垮害
 	if (_position + 2 + length <= _dataSize) {
 		value = FString(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), length);
-		_position += 2 + length;  // 更新读取位置
+		_position += 2 + length;  // 鏇存柊璇诲彇浣嶇疆
 	}
 	else {
 		throw std::out_of_range("No enough data to get FString");

@@ -20,7 +20,7 @@ public class NetPacket : ModuleRules
             }
             );
 
-        // Ä£¿éµÄ¹«¹²ÒÀÀµ
+        // æ¨¡å—çš„å…¬å…±ä¾èµ–
         PublicDependencyModuleNames.AddRange(new string[] {
             "Core",
             "CoreUObject",
@@ -28,7 +28,7 @@ public class NetPacket : ModuleRules
             "InputCore",
         });
 
-        // Ä£¿éµÄË½ÓĞÒÀÀµ
+        // æ¨¡å—çš„ç§æœ‰ä¾èµ–
         PrivateDependencyModuleNames.AddRange(new string[] {
             "CoreUObject",
             "Core",

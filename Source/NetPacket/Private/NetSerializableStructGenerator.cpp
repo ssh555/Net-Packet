@@ -8,7 +8,7 @@ namespace NetPacket
 		size_t startPos = 0;
 		while ((startPos = str.find(from, startPos)) != std::string::npos) {
 			str.replace(startPos, from.length(), to);
-			startPos += to.length(); // ·ÀÖ¹ÖØĞÂÌæ»»ÒÑÌæ»»µÄ²¿·Ö
+			startPos += to.length(); // é˜²æ­¢é‡æ–°æ›¿æ¢å·²æ›¿æ¢çš„éƒ¨åˆ†
 		}
 	}
 
@@ -16,19 +16,19 @@ namespace NetPacket
 	{
 		std::ifstream inputFile(input);
 		if (!inputFile.is_open()) {
-			// ÎÄ¼ş´ò¿ªÊ§°Ü
+			// æ–‡ä»¶æ‰“å¼€å¤±è´¥
 			return;
 		}
 
-		// ¶ÁÈ¡ÊäÈëÎÄ¼şÄÚÈİ
+		// è¯»å–è¾“å…¥æ–‡ä»¶å†…å®¹
 		std::string content((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
 		inputFile.close();
-		// Éú³É´úÂë
+		// ç”Ÿæˆä»£ç 
 		json j = json::parse(content);
 
 		std::string outContent = NetStructConfig::DefaultConfig;
 
-		// Ñ¡ÔñNetStructConfigÉú³É´úÂë
+		// é€‰æ‹©NetStructConfigç”Ÿæˆä»£ç 
 		std::string CLASSNAME;
 		std::stringstream INCLUDES;
 		std::stringstream DECLATEDATA;
@@ -39,15 +39,15 @@ namespace NetPacket
 		CLASSNAME = j["classname"];
 		mode = j["mode"];
 		// includes
-		INCLUDES << "// Ğè°üº¬×Ô¶¨ÒåÊı¾İÀàĞÍµÄÍ·ÎÄ¼ş\n";
+		INCLUDES << "// éœ€åŒ…å«è‡ªå®šä¹‰æ•°æ®ç±»å‹çš„å¤´æ–‡ä»¶\n";
 		for (auto& el : j["includes"])
 		{
 			INCLUDES << "#include " << el["name"] << "\n";
 		}
 		// basedata
-		DECLATEDATA << "\t\t// ·ÇÊı×éÊı¾İ\n";
-		WRITERDATA << "\t\t\t// ·ÇÊı×éÊı¾İ\n";
-		READRDATA << "\t\t\t// ·ÇÊı×éÊı¾İ\n";
+		DECLATEDATA << "\t\t// éæ•°ç»„æ•°æ®\n";
+		WRITERDATA << "\t\t\t// éæ•°ç»„æ•°æ®\n";
+		READRDATA << "\t\t\t// éæ•°ç»„æ•°æ®\n";
 		for (auto& el : j["basedata"])
 		{
 			DeclareData(DECLATEDATA, el["type"], el["name"], mode);
@@ -58,9 +58,9 @@ namespace NetPacket
 		WRITERDATA << "\n";
 		READRDATA << "\n";
 		// arraydata
-		DECLATEDATA << "\t\t// Êı×éÊı¾İ\n";
-		WRITERDATA << "\t\t\t// Êı×éÊı¾İ\n";
-		READRDATA << "\t\t\t// Êı×éÊı¾İ\n";
+		DECLATEDATA << "\t\t// æ•°ç»„æ•°æ®\n";
+		WRITERDATA << "\t\t\t// æ•°ç»„æ•°æ®\n";
+		READRDATA << "\t\t\t// æ•°ç»„æ•°æ®\n";
 		for (auto& el : j["arraydata"])
 		{
 			DeclareDataArray(DECLATEDATA, el["type"], el["name"], el["length"], mode);
@@ -79,7 +79,7 @@ namespace NetPacket
 
 		std::ofstream outputFile(output);
 		if (outputFile.is_open()) {
-			// ½«Éú³ÉµÄÄÚÈİĞ´Èë .hpp ÎÄ¼ş
+			// å°†ç”Ÿæˆçš„å†…å®¹å†™å…¥ .hpp æ–‡ä»¶
 			outputFile << outContent;
 			outputFile.close();
 		}
@@ -87,27 +87,27 @@ namespace NetPacket
 
 	void NetSerializableStructGenerator::GenerateAll(const std::string& inputDir, const std::string& outputDir)
 	{
-		// ÔÚÉú³ÉÄ¿Â¼ÏÂÉú³ÉNPStruct.h£¬°üº¬ËùÓĞµÄÍ·ÎÄ¼ş
+		// åœ¨ç”Ÿæˆç›®å½•ä¸‹ç”ŸæˆNPStruct.hï¼ŒåŒ…å«æ‰€æœ‰çš„å¤´æ–‡ä»¶
 		std::string output = outputDir + "/NPStruct.h";
 		std::ofstream outputFile(output);
 
 
-		// ±éÀú inputDir ÏÂµÄËùÓĞ .np ÎÄ¼ş
+		// éå† inputDir ä¸‹çš„æ‰€æœ‰ .np æ–‡ä»¶
 		for (const auto& entry : std::filesystem::directory_iterator(inputDir)) {
 			if (entry.is_regular_file() && entry.path().extension() == ".np") {
-				// »ñÈ¡ÎÄ¼şµÄÍêÕûÂ·¾¶
+				// è·å–æ–‡ä»¶çš„å®Œæ•´è·¯å¾„
 				std::string inputFilePath = entry.path().string();
 
-				// Éú³ÉÊä³öÎÄ¼şµÄÂ·¾¶£¬Ìæ»» .np ºó×ºÎª .hpp
+				// ç”Ÿæˆè¾“å‡ºæ–‡ä»¶çš„è·¯å¾„ï¼Œæ›¿æ¢ .np åç¼€ä¸º .hpp
 				std::string outputFilePath = outputDir + "/" + entry.path().stem().string() + ".hpp";
 
 				if (outputFile.is_open()) {
-					// ½«Éú³ÉµÄÄÚÈİĞ´Èë .hpp ÎÄ¼ş
+					// å°†ç”Ÿæˆçš„å†…å®¹å†™å…¥ .hpp æ–‡ä»¶
 					outputFile << "#include \"" << entry.path().stem().string() + ".hpp\"\n";
 				}
 
-				std::cout << "´¦ÀíÎÄ¼ş:" << entry.path().stem().string() + ".np" << std::endl;
-				// µ÷ÓÃ Generate ½øĞĞÎÄ¼şÉú³É
+				std::cout << "å¤„ç†æ–‡ä»¶:" << entry.path().stem().string() + ".np" << std::endl;
+				// è°ƒç”¨ Generate è¿›è¡Œæ–‡ä»¶ç”Ÿæˆ
 				Generate(inputFilePath, outputFilePath);
 			}
 		}
@@ -217,7 +217,7 @@ namespace NetPacket
 
 		virtual uint16_t GetTypeHash() const override
 		{
-			// Ê¹ÓÃ³£Á¿×Ö·û´®×÷ÎªÀàĞÍ±êÊ¶·û
+			// ä½¿ç”¨å¸¸é‡å­—ç¬¦ä¸²ä½œä¸ºç±»å‹æ ‡è¯†ç¬¦
 			return MurmurHash16("{CLASSNAME}");
 		}
 	};

@@ -1,61 +1,61 @@
-# ¹¹½¨ÏîÄ¿
-Ö´ÐÐGenerateProjects_VS2019.bat¹¹½¨£¬¿ÉÐÞ¸ÄbatÄÚµÄ²ÎÊý¹¹½¨Ö¸¶¨IDEµÄÏîÄ¿
-## ·ÇUE°æ±¾
-	Ö±½Ó¹¹½¨DLL¼´¿É
-## UE°æ±¾
-	UE°æ±¾ÓÃUE²å¼þµÄÐÎÊ½½ÓÈë£¬Óë·ÇUE°æ±¾×î´óµÄÇø±ðÊÇStructFileGeneratorÉú³ÉµÄÊÇUEÖÐÖ§³ÖÀ¶Í¼µÄ½á¹¹ÌåÀàÐÍ£¬²¢ÇÒÖ»ÓÐÉú³ÉµÄÊý¾Ý°ü½á¹¹Ìå²ÅÄÜÔÚÀ¶Í¼ÖÐµ÷ÓÃ£¬ÆäÓà¾ù²»ÄÜµ÷ÓÃ£¬¼´·¢ËÍ°üÐèÒªµ¥¶ÀÓÉC++¿ª·Å½Ó¿Ú¹©À¶Í¼µ÷ÓÃ£¬Ê¹ÓÃ´Ë°æ±¾£¬À¶Í¼Ö»ÄÜ²Ù×÷Êý¾Ý°ü½á¹¹ÌåÊý¾Ý£¬²»ÄÜ½øÐÐÐòÁÐ»¯ºÍ·´ÐòÁÐ»¯µÈ²Ù×÷
-	UE°æ±¾ÐèÒªÉ¾³ýÔ´ÎÄ¼þÖÐµÚÒ»ÐÐ°üº¬µÄÔ¤±àÒëÍ·ÎÄ¼þ
+# æž„å»ºé¡¹ç›®
+æ‰§è¡ŒGenerateProjects_VS2019.batæž„å»ºï¼Œå¯ä¿®æ”¹batå†…çš„å‚æ•°æž„å»ºæŒ‡å®šIDEçš„é¡¹ç›®
+## éžUEç‰ˆæœ¬
+	ç›´æŽ¥æž„å»ºDLLå³å¯
+## UEç‰ˆæœ¬
+	UEç‰ˆæœ¬ç”¨UEæ’ä»¶çš„å½¢å¼æŽ¥å…¥ï¼Œä¸ŽéžUEç‰ˆæœ¬æœ€å¤§çš„åŒºåˆ«æ˜¯StructFileGeneratorç”Ÿæˆçš„æ˜¯UEä¸­æ”¯æŒè“å›¾çš„ç»“æž„ä½“ç±»åž‹ï¼Œå¹¶ä¸”åªæœ‰ç”Ÿæˆçš„æ•°æ®åŒ…ç»“æž„ä½“æ‰èƒ½åœ¨è“å›¾ä¸­è°ƒç”¨ï¼Œå…¶ä½™å‡ä¸èƒ½è°ƒç”¨ï¼Œå³å‘é€åŒ…éœ€è¦å•ç‹¬ç”±C++å¼€æ”¾æŽ¥å£ä¾›è“å›¾è°ƒç”¨ï¼Œä½¿ç”¨æ­¤ç‰ˆæœ¬ï¼Œè“å›¾åªèƒ½æ“ä½œæ•°æ®åŒ…ç»“æž„ä½“æ•°æ®ï¼Œä¸èƒ½è¿›è¡Œåºåˆ—åŒ–å’Œååºåˆ—åŒ–ç­‰æ“ä½œ
+	UEç‰ˆæœ¬éœ€è¦åˆ é™¤æºæ–‡ä»¶ä¸­ç¬¬ä¸€è¡ŒåŒ…å«çš„é¢„ç¼–è¯‘å¤´æ–‡ä»¶
 
 # NetPacket
-NetPacketÏîÄ¿Îªµ¼³ö¹©ÆäËûÏîÄ¿Ê¹ÓÃµÄDLLÏîÄ¿
+NetPacketé¡¹ç›®ä¸ºå¯¼å‡ºä¾›å…¶ä»–é¡¹ç›®ä½¿ç”¨çš„DLLé¡¹ç›®
 
-²Î¿¼LiteNetLib¿âµÄÊý¾Ý°üÐ­Òé
-### PacketÐ­Òé
-	ÔÝ¶¨Ê¹ÓÃTCP½øÐÐÍøÂç´«Êä£¬×Ô¶¨ÒåµÄPacketHeaderÖ»ÐèÒª: PacketSize(²»°üÀ¨PacketSizeµÄ×Ö½ÚÊý)¡¢TypeHashID(Êý¾ÝÀàÐÍ¶ÔÓ¦µÄHashID)
-	Packet = PacketSize(4×Ö½Ú) + ClientID(2×Ö½Ú) + TypeHashID(2×Ö½Ú) + ÐòÁÐ»¯×Ö½ÚÁ÷Êý¾Ý
-	PacketSize =  TypeHashID(2×Ö½Ú) + ÐòÁÐ»¯×Ö½ÚÁ÷Êý¾Ý
-	×ÜµÄPacket×Ö½ÚÊý = 6×Ö½Ú + PacketSize
-	PacketSizeºÍClientIDÎªNetPacketÇ°²¿Ô¤ÁôµÄ6×Ö½ÚÊý¾Ý£¬×Ô¶¯Ìî×°£¬TypeHashIDÓÉINetSerializableÐòÁÐ»¯Ê±ÔÚÉú³É´úÂëÖÐ×Ô¶¯¼ÓÈë
-#### ×Ö·û´®|´ø³¤¶ÈµÄÊý×éÐÍÊý¾Ý
-	ushortÁ½×Ö½Ú×Ö·û´®³¤¶È(Êý×éÊýÁ¿)+Êµ¼ÊbyteÊý¾Ý
+å‚è€ƒLiteNetLibåº“çš„æ•°æ®åŒ…åè®®
+### Packetåè®®
+	æš‚å®šä½¿ç”¨TCPè¿›è¡Œç½‘ç»œä¼ è¾“ï¼Œè‡ªå®šä¹‰çš„PacketHeaderåªéœ€è¦: PacketSize(ä¸åŒ…æ‹¬PacketSizeçš„å­—èŠ‚æ•°)ã€TypeHashID(æ•°æ®ç±»åž‹å¯¹åº”çš„HashID)
+	Packet = PacketSize(4å­—èŠ‚) + ClientID(2å­—èŠ‚) + TypeHashID(2å­—èŠ‚) + åºåˆ—åŒ–å­—èŠ‚æµæ•°æ®
+	PacketSize =  TypeHashID(2å­—èŠ‚) + åºåˆ—åŒ–å­—èŠ‚æµæ•°æ®
+	æ€»çš„Packetå­—èŠ‚æ•° = 6å­—èŠ‚ + PacketSize
+	PacketSizeå’ŒClientIDä¸ºNetPacketå‰éƒ¨é¢„ç•™çš„6å­—èŠ‚æ•°æ®ï¼Œè‡ªåŠ¨å¡«è£…ï¼ŒTypeHashIDç”±INetSerializableåºåˆ—åŒ–æ—¶åœ¨ç”Ÿæˆä»£ç ä¸­è‡ªåŠ¨åŠ å…¥
+#### å­—ç¬¦ä¸²|å¸¦é•¿åº¦çš„æ•°ç»„åž‹æ•°æ®
+	ushortä¸¤å­—èŠ‚å­—ç¬¦ä¸²é•¿åº¦(æ•°ç»„æ•°é‡)+å®žé™…byteæ•°æ®
 
-### Êý¾Ý°ü¹ÜÀí
+### æ•°æ®åŒ…ç®¡ç†
 #### NetPacket
-	Êý¾Ý°üÔØÌå
+	æ•°æ®åŒ…è½½ä½“
 #### NetManager.PacketPool
-	Êý¾Ý°ü¶ÔÏó³Ø
+	æ•°æ®åŒ…å¯¹è±¡æ± 
 
 ### Utils
 #### FastBitConverter
-	bitºÍbyte´¦Àí
+	bitå’Œbyteå¤„ç†
 #### INetSerializable
-	ÍøÂçÊý¾ÝÐòÁÐ»¯ºÍ·´ÐòÁÐ»¯½Ó¿Ú£¬ÓÃÓÚ×Ô¶¨ÒåÍøÂçÊý¾ÝÀàÐÍ
+	ç½‘ç»œæ•°æ®åºåˆ—åŒ–å’Œååºåˆ—åŒ–æŽ¥å£ï¼Œç”¨äºŽè‡ªå®šä¹‰ç½‘ç»œæ•°æ®ç±»åž‹
 #### NetDataReader
-	·´ÐòÁÐ»¯£¬×Ö½ÚÁ÷Êý¾Ý¶ÁÈ¡Æ÷
+	ååºåˆ—åŒ–ï¼Œå­—èŠ‚æµæ•°æ®è¯»å–å™¨
 #### NetDataWriter 
-	ÐòÁÐ»¯£¬×Ö½ÚÁ÷Êý¾ÝÐ´ÈëÆ÷
+	åºåˆ—åŒ–ï¼Œå­—èŠ‚æµæ•°æ®å†™å…¥å™¨
 #### NetSerializableStructGenerator
-	¸ù¾ÝÅäÖÃÊý¾ÝÉú³É¶ÔÓ¦µÄÊµÏÖINetSerializable½Ó¿ÚµÄÊý¾Ý½á¹¹ÌåC++ÎÄ¼þ(Ðè¼ÓÈëUEºêÖ§³ÖÀ¶Í¼ & ¼ÓÈë#if Ö§³Ö·ÇUE)
-	Ä£°åÎÄ¼þ Default.np UE.np£¬Éú³ÉµÄ´úÂëÖ»°üº¬Í·ÎÄ¼þ
-	Êý×éÀàÐÍ¡¢·ÇÊý×éÊÇ²»Í¬µÄ±êÊ¶
-#### NetSerializableStructLoader -> Ê¹ÓÃjsonµÚÈý·½¿â´úÌæ£¬ºÏ²¢µ½NetSerializableStructGenerator
-	¶ÁÈëÐèÒªÉú³ÉµÄÊý¾Ý½á¹¹ÌåµÄÅäÖÃ£¬Ö»ÊÇÔØÈëÅäÖÃÎÄ¼þÊý¾Ý
+	æ ¹æ®é…ç½®æ•°æ®ç”Ÿæˆå¯¹åº”çš„å®žçŽ°INetSerializableæŽ¥å£çš„æ•°æ®ç»“æž„ä½“C++æ–‡ä»¶(éœ€åŠ å…¥UEå®æ”¯æŒè“å›¾ & åŠ å…¥#if æ”¯æŒéžUE)
+	æ¨¡æ¿æ–‡ä»¶ Default.np UE.npï¼Œç”Ÿæˆçš„ä»£ç åªåŒ…å«å¤´æ–‡ä»¶
+	æ•°ç»„ç±»åž‹ã€éžæ•°ç»„æ˜¯ä¸åŒçš„æ ‡è¯†
+#### NetSerializableStructLoader -> ä½¿ç”¨jsonç¬¬ä¸‰æ–¹åº“ä»£æ›¿ï¼Œåˆå¹¶åˆ°NetSerializableStructGenerator
+	è¯»å…¥éœ€è¦ç”Ÿæˆçš„æ•°æ®ç»“æž„ä½“çš„é…ç½®ï¼Œåªæ˜¯è½½å…¥é…ç½®æ–‡ä»¶æ•°æ®
 #### ProjectBuilder.bat
-	±àÐ´ÓÃÓÚÉú³ÉÊý¾Ý½á¹¹ÌåÎÄ¼þ & ±àÒëÉú³ÉUEÏîÄ¿
-	¼´ÔËÐÐ¼´¿ÉÉú³ÉËùÓÐÎÄ¼þ&×Ô¶¯Íê³ÉUE C++±àÒëÉú³É
+	ç¼–å†™ç”¨äºŽç”Ÿæˆæ•°æ®ç»“æž„ä½“æ–‡ä»¶ & ç¼–è¯‘ç”ŸæˆUEé¡¹ç›®
+	å³è¿è¡Œå³å¯ç”Ÿæˆæ‰€æœ‰æ–‡ä»¶&è‡ªåŠ¨å®ŒæˆUE C++ç¼–è¯‘ç”Ÿæˆ
 
-### Êý¾Ý°ü´¦Àí
+### æ•°æ®åŒ…å¤„ç†
 #### NetPacketProcessor
-	1. ÍøÂçÊý¾Ý°ü´¦ÀíÆ÷£¬Êý¾ÝÐòÁÐ»¯Ð´Èë(Write) & Êý¾Ý·´ÐòÁÐ»¯¶ÁÈ¡(Read) & ½ÓÊÕ°üÌåÊ±µÄÊý¾Ý´¦Àí»Øµ÷£¬µ«²»¸ºÔð½ÓÊÕºÍ·¢ËÍ¡£
-	2. °üÀ¨Ö»½øÐÐÐòÁÐ»¯ºÍ·´ÐòÁÐ»¯µÄ¶ÁÐ´(Àà¶ÔÏóÄÚ²¿Ã»ÓÐÈÎºÎÊý¾Ý) ÒÔ¼° NetSerializer¶ÔÊý¾ÝÀàÐÍ½øÐÐÍÐ¹Ü£¬½ÓÊÕ´¦ÀíÊ±×Ô¶¯ÐòÁÐ»¯¶ÁÈ¡²¢ÇÒÏìÓ¦ÊÂ¼þ¡£
-	3. ´¦Àí¶ÓÁÐ£º½ÓÊÕ°üÊ±½«Êý¾Ý°ü·ÅÖÃÓÚ´ý´¦Àí¶ÓÁÐ£¬Ö¡½áÊø»òÕß¿ªÊ¼Ê±Í³Ò»µ÷ÓÃProcessÍ³Ò»´¦Àí£¬²¢ÔÚ´¦ÀíÍêÖ®ºó»ØÊÕËùÓÐÊý¾Ý°ü¡£
-	4. Ìá¹©½Ó¿Ú£ºReceive(Packet)½ÓÊÕÊý¾Ý°ü¡¢Process()´¦ÀíËùÓÐ´ý´¦Àí¶ÓÁÐµÄÊý¾Ý°ü¡¢Serialize(INetSerializable)ÐòÁÐ»¯·µ»ØÊý¾Ý°ü
-#### NetSerializer -> ²»ÔÙÊ¹ÓÃ£¬ÓëNetPacketProcessorºÏ²¢
-	ÍøÂçÊý¾ÝÐòÁÐ»¯Æ÷£¬ÍÐ¹Ü´¦ÀíÍøÂçÊý¾Ý£¬¶ÔÔÚ´Ë½øÐÐ×¢²áµÄÊý¾Ý£¬·´ÐòÁÐ»¯½ÓÊÕÊý¾Ýºó½øÐÐÎ¯ÍÐÊÂ¼þÏìÓ¦´¦ÀíÊý¾Ý°ü£¬ÄÚ²¿Ò²²»´æ´¢ÈÎºÎÊý¾Ý£¬Ö»ÊÇ¶ÔÊý¾ÝµÄÐòÁÐ»¯ºÍ·´ÐòÁÐ»¯½øÐÐÁËÒ»²ã´¦ÀíÎ¯ÍÐÊÂ¼þÍÐ¹Ü°ü×°¡£
+	1. ç½‘ç»œæ•°æ®åŒ…å¤„ç†å™¨ï¼Œæ•°æ®åºåˆ—åŒ–å†™å…¥(Write) & æ•°æ®ååºåˆ—åŒ–è¯»å–(Read) & æŽ¥æ”¶åŒ…ä½“æ—¶çš„æ•°æ®å¤„ç†å›žè°ƒï¼Œä½†ä¸è´Ÿè´£æŽ¥æ”¶å’Œå‘é€ã€‚
+	2. åŒ…æ‹¬åªè¿›è¡Œåºåˆ—åŒ–å’Œååºåˆ—åŒ–çš„è¯»å†™(ç±»å¯¹è±¡å†…éƒ¨æ²¡æœ‰ä»»ä½•æ•°æ®) ä»¥åŠ NetSerializerå¯¹æ•°æ®ç±»åž‹è¿›è¡Œæ‰˜ç®¡ï¼ŒæŽ¥æ”¶å¤„ç†æ—¶è‡ªåŠ¨åºåˆ—åŒ–è¯»å–å¹¶ä¸”å“åº”äº‹ä»¶ã€‚
+	3. å¤„ç†é˜Ÿåˆ—ï¼šæŽ¥æ”¶åŒ…æ—¶å°†æ•°æ®åŒ…æ”¾ç½®äºŽå¾…å¤„ç†é˜Ÿåˆ—ï¼Œå¸§ç»“æŸæˆ–è€…å¼€å§‹æ—¶ç»Ÿä¸€è°ƒç”¨Processç»Ÿä¸€å¤„ç†ï¼Œå¹¶åœ¨å¤„ç†å®Œä¹‹åŽå›žæ”¶æ‰€æœ‰æ•°æ®åŒ…ã€‚
+	4. æä¾›æŽ¥å£ï¼šReceive(Packet)æŽ¥æ”¶æ•°æ®åŒ…ã€Process()å¤„ç†æ‰€æœ‰å¾…å¤„ç†é˜Ÿåˆ—çš„æ•°æ®åŒ…ã€Serialize(INetSerializable)åºåˆ—åŒ–è¿”å›žæ•°æ®åŒ…
+#### NetSerializer -> ä¸å†ä½¿ç”¨ï¼Œä¸ŽNetPacketProcessoråˆå¹¶
+	ç½‘ç»œæ•°æ®åºåˆ—åŒ–å™¨ï¼Œæ‰˜ç®¡å¤„ç†ç½‘ç»œæ•°æ®ï¼Œå¯¹åœ¨æ­¤è¿›è¡Œæ³¨å†Œçš„æ•°æ®ï¼Œååºåˆ—åŒ–æŽ¥æ”¶æ•°æ®åŽè¿›è¡Œå§”æ‰˜äº‹ä»¶å“åº”å¤„ç†æ•°æ®åŒ…ï¼Œå†…éƒ¨ä¹Ÿä¸å­˜å‚¨ä»»ä½•æ•°æ®ï¼Œåªæ˜¯å¯¹æ•°æ®çš„åºåˆ—åŒ–å’Œååºåˆ—åŒ–è¿›è¡Œäº†ä¸€å±‚å¤„ç†å§”æ‰˜äº‹ä»¶æ‰˜ç®¡åŒ…è£…ã€‚
 
 # StructFileGenerator
-StructFileGeneratorÏîÄ¿Îª¿ÉÖ´ÐÐµÄEXEÏîÄ¿£¬ÓÃÓÚÉú³ÉÊý¾ÝÀàÐÍ½á¹¹ÌåÎÄ¼þ
-### ²ÎÊý
-	-i ÊäÈëÄ¿Â¼ -o Êä³öÄ¿Â¼
-	²»Ìá¹©ÔòÄ¬ÈÏÎªµ±Ç°Ä¿Â¼µÄ./Generate
+StructFileGeneratoré¡¹ç›®ä¸ºå¯æ‰§è¡Œçš„EXEé¡¹ç›®ï¼Œç”¨äºŽç”Ÿæˆæ•°æ®ç±»åž‹ç»“æž„ä½“æ–‡ä»¶
+### å‚æ•°
+	-i è¾“å…¥ç›®å½• -o è¾“å‡ºç›®å½•
+	ä¸æä¾›åˆ™é»˜è®¤ä¸ºå½“å‰ç›®å½•çš„./Generate
 

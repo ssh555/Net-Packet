@@ -13,20 +13,20 @@ namespace NetPacket
 	public:
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
-			// ¿ªÍ·±ØĞëÓĞ
+			// å¼€å¤´å¿…é¡»æœ‰
 			writer.Put(GetTypeHash());
 			writer.Put(t);
 		}
 
 		virtual void Deserialize(NetDataReader& reader) override
 		{
-			// ¿ªÍ·±ØĞëÓĞ
+			// å¼€å¤´å¿…é¡»æœ‰
 			reader.PeekUShort();
 			reader.Get(t);
 		}
 		virtual uint16_t GetTypeHash() const override
 		{
-			// Ê¹ÓÃ³£Á¿×Ö·û´®×÷ÎªÀàĞÍ±êÊ¶·û
+			// ä½¿ç”¨å¸¸é‡å­—ç¬¦ä¸²ä½œä¸ºç±»å‹æ ‡è¯†ç¬¦
 			return MurmurHash16("Test");
 		}
 	};
@@ -34,8 +34,8 @@ namespace NetPacket
 	class EXAMPLE : public INetSerializable
 	{
 	public:
-		// Ö§³ÖµÄËùÓĞÊı¾İÀàĞÍ
-		// ·ÇÊı×é
+		// æ”¯æŒçš„æ‰€æœ‰æ•°æ®ç±»å‹
+		// éæ•°ç»„
 		uint8_t ui8;
 		int8_t i8;
 		bool b;
@@ -48,14 +48,14 @@ namespace NetPacket
 		float f;
 		double d;
 		std::string str;
-		// ÉèÖÃÊ¹ÓÃINetSerializable£¬Éú³É±ØĞë´ø*
+		// è®¾ç½®ä½¿ç”¨INetSerializableï¼Œç”Ÿæˆå¿…é¡»å¸¦*
 		// INetSerializable* value;
-		// INetSerializableÅÉÉúÀàÊı¾İºÍÆäËûÒ»ÑùÊ¹ÓÃ¼´¿É£¬ÈçTest
+		// INetSerializableæ´¾ç”Ÿç±»æ•°æ®å’Œå…¶ä»–ä¸€æ ·ä½¿ç”¨å³å¯ï¼Œå¦‚Test
 		Test test;
 		char ch;
 		std::byte bt;
 
-		// Êı×é
+		// æ•°ç»„
 		uint8_t ui8a[5];
 		int8_t i8a[5];
 		bool ba[5];
@@ -153,7 +153,7 @@ namespace NetPacket
 
 		virtual uint16_t GetTypeHash() const override
 		{
-			// Ê¹ÓÃ³£Á¿×Ö·û´®×÷ÎªÀàĞÍ±êÊ¶·û
+			// ä½¿ç”¨å¸¸é‡å­—ç¬¦ä¸²ä½œä¸ºç±»å‹æ ‡è¯†ç¬¦
 			return MurmurHash16("EXAMPLE");
 		}
 	};

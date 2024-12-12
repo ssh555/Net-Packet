@@ -14,12 +14,12 @@ namespace NetPacket
 		NetPacketPool();
 		~NetPacketPool();
 
-		// 可用数量
+		// 鍙敤鏁伴噺
 		int32_t PoolCount() const;
 
-		// 包含header
-		// bWithHeader = false -> 自动添加header
-		// = true -> data自带header
+		// 鍖呭惈header
+		// bWithHeader = false -> 鑷姩娣诲姞header
+		// = true -> data鑷甫header
 		NetPackage* GetPacket(const uint8_t* data, int32_t start, int32_t length, bool bWithHeader);
 		NetPackage* GetPacket(int32_t size = 0);
 

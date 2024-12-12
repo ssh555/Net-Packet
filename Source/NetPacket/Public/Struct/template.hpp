@@ -3,7 +3,7 @@
 #include "INetSerializable.h"
 #include "NetDataWriter.h"
 #include "NetDataReader.h"
-// Ğè°üº¬×Ô¶¨ÒåÊı¾İÀàĞÍµÄÍ·ÎÄ¼ş
+// éœ€åŒ…å«è‡ªå®šä¹‰æ•°æ®ç±»å‹çš„å¤´æ–‡ä»¶
 #include "example.hpp"
 
 
@@ -12,7 +12,7 @@ namespace NetPacket
 	class NP_API Example : public INetSerializable
 	{
 	public:
-		// ·ÇÊı×éÊı¾İ
+		// éæ•°ç»„æ•°æ®
 		uint8_t ui8;
 		int8_t i8;
 		bool b;
@@ -29,7 +29,7 @@ namespace NetPacket
 		char ch;
 		std::byte bt;
 
-		// Êı×éÊı¾İ
+		// æ•°ç»„æ•°æ®
 		uint8_t ui8a[5];
 		int8_t i8a[5];
 		bool ba[5];
@@ -52,7 +52,7 @@ namespace NetPacket
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
 			writer.Put(GetTypeHash());
-			// ·ÇÊı×éÊı¾İ
+			// éæ•°ç»„æ•°æ®
 			writer.Put(ui8);
 			writer.Put(i8);
 			writer.Put(b);
@@ -69,7 +69,7 @@ namespace NetPacket
 			writer.Put(ch);
 			writer.Put(bt);
 
-			// Êı×éÊı¾İ
+			// æ•°ç»„æ•°æ®
 			writer.PutArray(ui8a,5);
 			writer.PutArray(i8a,5);
 			writer.PutArray(ba,5);
@@ -92,7 +92,7 @@ namespace NetPacket
 		virtual void Deserialize(NetDataReader& reader) override
 		{
 			reader.PeekUShort();
-			// ·ÇÊı×éÊı¾İ
+			// éæ•°ç»„æ•°æ®
 			reader.Get(ui8);
 			reader.Get(i8);
 			reader.Get(b);
@@ -109,7 +109,7 @@ namespace NetPacket
 			reader.Get(ch);
 			reader.Get(bt);
 
-			// Êı×éÊı¾İ
+			// æ•°ç»„æ•°æ®
 			reader.GetArray(ui8a);
 			reader.GetArray(i8a);
 			reader.GetArray(ba);
@@ -131,7 +131,7 @@ namespace NetPacket
 
 		virtual uint16_t GetTypeHash() const override
 		{
-			// Ê¹ÓÃ³£Á¿×Ö·û´®×÷ÎªÀàĞÍ±êÊ¶·û
+			// ä½¿ç”¨å¸¸é‡å­—ç¬¦ä¸²ä½œä¸ºç±»å‹æ ‡è¯†ç¬¦
 			return MurmurHash16("Example");
 		}
 	};

@@ -5,25 +5,25 @@ namespace NetPacket
 	class NetDataWriter;
 	class NetDataReader;
 
-	// INetSerializable ½Ó¿Ú
+	// INetSerializable æ¥å£
 	/*
-		Packet = PacketSize(4×Ö½Ú) + ClientID(2×Ö½Ú) + TypeHashID(2×Ö½Ú) + ĞòÁĞ»¯×Ö½ÚÁ÷Êı¾İ
-		PacketSize =  ClientID(2×Ö½Ú) +  TypeHashID(2×Ö½Ú) + ĞòÁĞ»¯×Ö½ÚÁ÷Êı¾İ
-		×ÜµÄPacket×Ö½ÚÊı = 4×Ö½Ú + PacketSize
+		Packet = PacketSize(4å­—èŠ‚) + ClientID(2å­—èŠ‚) + TypeHashID(2å­—èŠ‚) + åºåˆ—åŒ–å­—èŠ‚æµæ•°æ®
+		PacketSize =  ClientID(2å­—èŠ‚) +  TypeHashID(2å­—èŠ‚) + åºåˆ—åŒ–å­—èŠ‚æµæ•°æ®
+		æ€»çš„Packetå­—èŠ‚æ•° = 4å­—èŠ‚ + PacketSize
 	*/
 	class NP_API INetSerializable
 	{
 	public:
 		static uint16_t MurmurHash16(const std::string& str);
 		// writer.Put(GetTypeHash());
-		// ÏÈÔÚ¿ªÍ·½øĞĞÕâ¸öĞòÁĞ»¯
-		// µİ¹éĞòÁĞ»¯Ò²»áĞòÁĞ»¯hash
+		// å…ˆåœ¨å¼€å¤´è¿›è¡Œè¿™ä¸ªåºåˆ—åŒ–
+		// é€’å½’åºåˆ—åŒ–ä¹Ÿä¼šåºåˆ—åŒ–hash
 		virtual void Serialize(NetDataWriter& writer) const = 0;
 
-		// ÏÈµ÷ÓÃreader.PeekUShort()µ¯³öhash
+		// å…ˆè°ƒç”¨reader.PeekUShort()å¼¹å‡ºhash
 		virtual void Deserialize(NetDataReader& reader) = 0;
 
-		// 2×Ö½Ú type hash -> ÔÚSerialize×îÇ°ÃæÓ¦¸ÃĞòÁĞ»¯2×Ö½ÚµÄÀàĞÍhash£¬ÔÚ×Ô¶¯Éú³É´úÂëÊ±×Ô¶¯¼ÓÈë
+		// 2å­—èŠ‚ type hash -> åœ¨Serializeæœ€å‰é¢åº”è¯¥åºåˆ—åŒ–2å­—èŠ‚çš„ç±»å‹hashï¼Œåœ¨è‡ªåŠ¨ç”Ÿæˆä»£ç æ—¶è‡ªåŠ¨åŠ å…¥
 		virtual uint16_t GetTypeHash() const;
 	};
 };

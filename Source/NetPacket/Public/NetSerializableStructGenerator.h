@@ -3,19 +3,19 @@
 
 namespace NetPacket
 {
-	// Éú³ÉÎÄ¼ş¾ùÎªÍ·ÎÄ¼ş
-	// ÊäÈëÎÄ¼ş¸ñÊ½Îªjson -> Ä£°åÎÄ¼ş¼û Config/template.np
+	// ç”Ÿæˆæ–‡ä»¶å‡ä¸ºå¤´æ–‡ä»¶
+	// è¾“å…¥æ–‡ä»¶æ ¼å¼ä¸ºjson -> æ¨¡æ¿æ–‡ä»¶è§ Config/template.np
 	class NP_API NetSerializableStructGenerator
 	{
 	private:
 
 
 	public:
-		// ¶¼ĞèÒª´øºó×º
+		// éƒ½éœ€è¦å¸¦åç¼€
 		void Generate(const std::string& input, const std::string output);
 
-		// ÊäÈëÎÄ¼ş¼ĞÖĞ *.np
-		// Êä³öÎÄ¼ş¼ĞÖĞ *.hpp
+		// è¾“å…¥æ–‡ä»¶å¤¹ä¸­ *.np
+		// è¾“å‡ºæ–‡ä»¶å¤¹ä¸­ *.hpp
 		void GenerateAll(const std::string& inputDir, const std::string& outputDir);
 
 	private:
@@ -31,7 +31,7 @@ namespace NetPacket
 		void ReadDataArray(std::stringstream& sst, const std::string& name, int32_t mode);
 	};
 
-	// ´úÂëÉú³ÉÄ£°å
+	// ä»£ç ç”Ÿæˆæ¨¡æ¿
 	struct NetStructConfig
 	{
 		static const std::string DefaultConfig;
