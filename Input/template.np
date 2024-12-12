@@ -1,0 +1,41 @@
+{
+    "classname" : "Example",
+    "mode" : 0,
+    "includes" : [
+        {"name":"example.hpp"}
+    ],
+    "basedata" : [
+        {"type":"uint8_t", "name":"ui8" },
+        {"type":"int8_t", "name":"i8" },
+        {"type":"bool", "name":"b" },
+        {"type":"int16_t", "name":"i16" },
+        {"type":"uint16_t", "name":"ui16" },
+        {"type":"int32_t", "name":"i32" },
+        {"type":"uint32_t", "name":"ui32" },
+        {"type":"int64_t", "name":"i64" },
+        {"type":"uint64_t", "name":"ui64" },
+        {"type":"float", "name":"f" },
+        {"type":"double", "name":"d" },
+        {"type":"std::string", "name":"str" },
+        {"type":"Test", "name":"test" },
+        {"type":"char", "name":"ch" },
+        {"type":"std::byte", "name":"bt" }
+    ],
+    "arraydata" : [
+        {"type":"uint8_t", "name":"ui8a", "length":5 },
+        {"type":"int8_t", "name":"i8a", "length":5 },
+        {"type":"bool", "name":"ba", "length":5 },
+        {"type":"int16_t", "name":"i16a", "length":5 },
+        {"type":"uint16_t", "name":"ui16a", "length":5 },
+        {"type":"int32_t", "name":"i32a", "length":5 },
+        {"type":"uint32_t", "name":"ui32a", "length":5 },
+        {"type":"int64_t", "name":"i64a", "length":5 },
+        {"type":"uint64_t", "name":"ui64a", "length":5 },
+        {"type":"float", "name":"fa", "length":5 },
+        {"type":"double", "name":"da", "length":5 },
+        {"type":"std::string", "name":"stra", "length":5 },
+        {"type":"Test", "name":"testa", "length":5 },
+        {"type":"char", "name":"cha", "length":5 },
+        {"type":"std::byte", "name":"bta", "length":5 }
+    ]
+}

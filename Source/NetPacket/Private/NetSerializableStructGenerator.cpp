@@ -39,24 +39,37 @@ namespace NetPacket
 		CLASSNAME = j["classname"];
 		mode = j["mode"];
 		// includes
+		INCLUDES << "// 需包含自定义数据类型的头文件\n";
 		for (auto& el : j["includes"])
 		{
 			INCLUDES << "#include " << el["name"] << "\n";
 		}
 		// basedata
+		DECLATEDATA << "\t\t// 非数组数据\n";
+		WRITERDATA << "\t\t\t// 非数组数据\n";
+		READRDATA << "\t\t\t// 非数组数据\n";
 		for (auto& el : j["basedata"])
 		{
 			DeclareData(DECLATEDATA, el["type"], el["name"], mode);
 			WriteData(WRITERDATA, el["name"], mode);
 			ReadData(READRDATA, el["name"], mode);
 		}
+		DECLATEDATA << "\n";
+		WRITERDATA << "\n";
+		READRDATA << "\n";
 		// arraydata
+		DECLATEDATA << "\t\t// 数组数据\n";
+		WRITERDATA << "\t\t\t// 数组数据\n";
+		READRDATA << "\t\t\t// 数组数据\n";
 		for (auto& el : j["arraydata"])
 		{
 			DeclareDataArray(DECLATEDATA, el["type"], el["name"], el["length"], mode);
 			WriteDataArray(WRITERDATA, el["name"], el["length"], mode);
 			ReadDataArray(READRDATA, el["name"], mode);
 		}
+		DECLATEDATA << "\n";
+		WRITERDATA << "\n";
+		READRDATA << "\n";
 
 		replaceAll(outContent, "{CLASSNAME}", CLASSNAME);
 		replaceAll(outContent, "{INCLUDES}", INCLUDES.str());
@@ -93,7 +106,7 @@ namespace NetPacket
 					outputFile << "#include \"" << entry.path().stem().string() + ".hpp\"\n";
 				}
 
-				std::cout << "处理文件:" << entry.path().stem().string() << std::endl;
+				std::cout << "处理文件:" << entry.path().stem().string() + ".np" << std::endl;
 				// 调用 Generate 进行文件生成
 				Generate(inputFilePath, outputFilePath);
 			}

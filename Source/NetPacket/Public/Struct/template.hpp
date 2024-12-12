@@ -3,6 +3,7 @@
 #include "INetSerializable.h"
 #include "NetDataWriter.h"
 #include "NetDataReader.h"
+// 需包含自定义数据类型的头文件
 #include "example.hpp"
 
 
@@ -11,6 +12,7 @@ namespace NetPacket
 	class NP_API Example : public INetSerializable
 	{
 	public:
+		// 非数组数据
 		uint8_t ui8;
 		int8_t i8;
 		bool b;
@@ -26,6 +28,8 @@ namespace NetPacket
 		Test test;
 		char ch;
 		std::byte bt;
+
+		// 数组数据
 		uint8_t ui8a[5];
 		int8_t i8a[5];
 		bool ba[5];
@@ -43,10 +47,12 @@ namespace NetPacket
 		std::byte bta[5];
 
 
+
 	public:
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
 			writer.Put(GetTypeHash());
+			// 非数组数据
 			writer.Put(ui8);
 			writer.Put(i8);
 			writer.Put(b);
@@ -62,6 +68,8 @@ namespace NetPacket
 			writer.Put(test);
 			writer.Put(ch);
 			writer.Put(bt);
+
+			// 数组数据
 			writer.PutArray(ui8a,5);
 			writer.PutArray(i8a,5);
 			writer.PutArray(ba,5);
@@ -78,11 +86,13 @@ namespace NetPacket
 			writer.PutArray(cha,5);
 			writer.PutArray(bta,5);
 
+
 		}
 
 		virtual void Deserialize(NetDataReader& reader) override
 		{
 			reader.PeekUShort();
+			// 非数组数据
 			reader.Get(ui8);
 			reader.Get(i8);
 			reader.Get(b);
@@ -98,6 +108,8 @@ namespace NetPacket
 			reader.Get(test);
 			reader.Get(ch);
 			reader.Get(bt);
+
+			// 数组数据
 			reader.GetArray(ui8a);
 			reader.GetArray(i8a);
 			reader.GetArray(ba);
@@ -113,6 +125,7 @@ namespace NetPacket
 			reader.GetArray(testa);
 			reader.GetArray(cha);
 			reader.GetArray(bta);
+
 
 		}
 	};
