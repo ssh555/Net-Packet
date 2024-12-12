@@ -72,6 +72,6 @@ int main(int argc, char* argv[]) {
 
 	generator.GenerateAll(inputDir, outputDir);
 
-	system("pause");
+	//system("pause");
 	return 0;
 }
