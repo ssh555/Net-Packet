@@ -24,6 +24,11 @@ namespace NetPacket
 			reader.PeekUShort();
 			reader.Get(t);
 		}
+		virtual uint16_t GetTypeHash() const override
+		{
+			// 使用常量字符串作为类型标识符
+			return MurmurHash16("Test");
+		}
 	};
 
 	class EXAMPLE : public INetSerializable
@@ -144,6 +149,12 @@ namespace NetPacket
 			reader.GetArray(testa);
 			reader.GetArray(cha);
 			reader.GetArray(bta);
+		}
+
+		virtual uint16_t GetTypeHash() const override
+		{
+			// 使用常量字符串作为类型标识符
+			return MurmurHash16("EXAMPLE");
 		}
 	};
 }

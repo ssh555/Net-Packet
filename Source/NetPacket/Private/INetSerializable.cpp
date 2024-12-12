@@ -6,7 +6,8 @@
 namespace NetPacket
 {
 	// MurmurHash16 算法
-	inline static uint16_t MurmurHash16(const std::string& str) {
+	uint16_t INetSerializable::MurmurHash16(const std::string& str)
+	{
 		const uint32_t seed = 0x1234ABCD;  // 随便选一个种子
 		uint32_t hash = seed;
 
@@ -54,8 +55,9 @@ namespace NetPacket
 
 	uint16_t INetSerializable::GetTypeHash() const
 	{
-		std::string typeName = typeid(*this).name();
-		return MurmurHash16(typeName);
+		// 使用常量字符串作为类型标识符
+		return MurmurHash16("INetSerializable");
 	}
+
 
 }

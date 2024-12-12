@@ -3,6 +3,9 @@
 #include "INetSerializable.h"
 #include "FastBitConverter.h"
 
+#if NP_UE_SUPPORT
+#include "CoreMinimal.h"
+#endif
 
 namespace NetPacket {
 
@@ -10,19 +13,18 @@ namespace NetPacket {
 	class NP_API NetDataWriter
 	{
 	private:
-		uint8_t* _data;  // 存储序列化的数据
-		int32_t _dataSize;           // 数据大小
-		void resize(int32_t size);
-
 		int32_t _position;  // 当前写入位置
 		bool _autoResize;  // 是否自动调整容量
+		uint8_t* _data;  // 存储序列化的数据
+		int32_t _dataSize;           // 数据大小
+
+		void resize(int32_t size);
 
 	public:
 		static constexpr size_t InitialSize = 64;  // 初始容量
-		static NetDataWriter FromBytes(uint8_t* bytes, int32_t size, bool copy);
-		static NetDataWriter FromBytes(uint8_t* bytes, int32_t offset, int32_t length);
-		static NetDataWriter FromString(std::string value);
-		static NetDataWriter FromString(const std::string& value);
+		static NetDataWriter* FromBytes(const uint8_t* bytes, int32_t size, bool copy);
+		static NetDataWriter* FromBytes(const uint8_t* bytes, int32_t offset, int32_t length);
+		static NetDataWriter* FromString(const std::string& value);
 
 	public:
 		// 构造函数
@@ -92,21 +94,71 @@ namespace NetPacket {
 
 		// 重置位置
 		int32_t SetPosition(int32_t position);
+
+#if NP_UE_SUPPORT
+		void Put(const FString& value);
+		void Put(const FVector& value);
+		void Put(const FQuat& value);
+		void Put(const FColor& value);
+		void Put(const FIntPoint& value);
+		void Put(const FVector2D& value);
+		void Put(const FRotator& value);
+		void Put(const FDateTime& value);
+		void Put(const FTimespan& value);
+		void Put(const FBox& value);
+		void Put(const FMatrix& value);
+		void Put(const FTransform& value);
+		void Put(const FLinearColor& value);
+
+		// 序列化TArray
+		template <typename T>
+		void PutArray(const TArray<T>& value);
+		void PutArray(const TArray<FString>& value);
+		void PutArray(const TArray<FVector>& value);
+		void PutArray(const TArray<FQuat>& value);
+		void PutArray(const TArray<FColor>& value);
+		void PutArray(const TArray<FIntPoint>& value);
+		void PutArray(const TArray<FVector2D>& value);
+		void PutArray(const TArray<FRotator>& value);
+		void PutArray(const TArray<FDateTime>& value);
+		void PutArray(const TArray<FTimespan>& value);
+		void PutArray(const TArray<FBox>& value);
+		void PutArray(const TArray<FMatrix>& value);
+		void PutArray(const TArray<FTransform>& value);
+		void PutArray(const TArray<FLinearColor>& value);
+
+#endif
 	};
 
 	template <typename T>
 	void NetPacket::NetDataWriter::PutArray(T* value, unsigned short length)
 	{
 		int32_t size = sizeof(T) * length;
+
+		Put(length);
 		if (_autoResize)
-			ResizeIfNeed(_position + size + 2);
-		FastBitConverter::GetBytes(_data, _position, length);
-		if (value != nullptr)
-		{
-			delete[] value;
-		}
-		//value = new T[length];
+			ResizeIfNeed(_position + size);
 		memcpy((void*)value, _data + _position, size);
-		_position += size + 2;
+		_position += size;
 	}
+#if NP_UE_SUPPORT
+
+	template <typename T>
+	void NetPacket::NetDataWriter::PutArray(const TArray<T>& value)
+	{
+		// 获取TArray的长度
+		auto length = value.Num();
+		int32_t size = length * sizeof(T);
+
+		Put(length);
+
+		if (_autoResize)
+			ResizeIfNeed(_position + size);
+		// 使用FMemory::Memcpy进行内存拷贝
+		FMemory::Memcpy(_data + _position, value.GetData(), size);
+
+		// 更新当前写入位置
+		_position += size;
+	}
+#endif
 }

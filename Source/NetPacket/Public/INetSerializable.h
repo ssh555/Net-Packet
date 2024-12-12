@@ -14,6 +14,7 @@ namespace NetPacket
 	class NP_API INetSerializable
 	{
 	public:
+		static uint16_t MurmurHash16(const std::string& str);
 		// writer.Put(GetTypeHash());
 		// 先在开头进行这个序列化
 		// 递归序列化也会序列化hash

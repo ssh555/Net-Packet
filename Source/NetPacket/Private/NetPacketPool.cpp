@@ -6,7 +6,7 @@ const int32_t NetPacket::NetPacketPool::PacketPoolSize;
 
 const int32_t NetPacket::NetPacketPool::InitPoolSize;
 
-NetPacket::NetPacketPool::NetPacketPool() : _poolHead(nullptr), _poolCount(0), _poolEnd(nullptr)
+NetPacket::NetPacketPool::NetPacketPool() : _poolHead(nullptr), _poolEnd(nullptr), _poolCount(0)
 {
 	for (int32_t i = 0; i < InitPoolSize; ++i)
 	{

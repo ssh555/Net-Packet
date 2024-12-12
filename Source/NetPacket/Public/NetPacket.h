@@ -34,7 +34,6 @@ namespace NetPacket
 		NetPackage(uint32_t maxSize = 1024);
 		~NetPackage();
 
-		NetPackage* Next;
 		void resize(int32_t size);
 
 	public:
@@ -58,12 +57,14 @@ namespace NetPacket
 
 
 	private:
+		// 最多容量
+		int32_t MaxSize;
 		// 总数据，包含冗余未使用的空间
 		uint8_t* RawData;
 		// 当前占用的大小: 最大也比MaxSize小HeaderSize
 		// 实际数据的大小，不包括Header
 		int32_t m_size;
-		// 最多容量
-		int32_t MaxSize;
+		NetPackage* Next;
+
 	};
 }

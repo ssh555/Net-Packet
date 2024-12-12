@@ -214,6 +214,12 @@ namespace NetPacket
 			reader.PeekUShort();
 {READRDATA}
 		}
+
+		virtual uint16_t GetTypeHash() const override
+		{
+			// 使用常量字符串作为类型标识符
+			return MurmurHash16("{CLASSNAME}");
+		}
 	};
 }
 )";

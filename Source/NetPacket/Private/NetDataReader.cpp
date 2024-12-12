@@ -167,7 +167,7 @@ void NetPacket::NetDataReader::Get(std::string& value)
 {
 	int32_t length = static_cast<int32_t>(PeekUShort());
 	if (_position + 2 + length <= _dataSize) {
-		std::string value(reinterpret_cast<char*>(&_data[_position + 2]), length);
+		value = reinterpret_cast<char*>(&_data[_position + 2]);
 		_position += 2 + length;
 	}
 	throw std::out_of_range("No enough data to get string");
@@ -177,6 +177,8 @@ uint16_t NetPacket::NetDataReader::GetArray(uint8_t* data)
 {
 	return GetArray<uint8_t>(data);
 }
+
+
 
 uint16_t NetPacket::NetDataReader::GetArray(std::byte* data)
 {
@@ -336,3 +338,220 @@ uint8_t* NetPacket::NetDataReader::GetRemainingBytes()
 	_position = _dataSize;
 	return outgoingData;
 }
+
+#if NP_UE_SUPPORT
+void NetPacket::NetDataReader::Get(FLinearColor& value)
+{
+	if (_position + sizeof(FLinearColor) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FLinearColor));
+		_position += sizeof(FLinearColor);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FLinearColor");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FTransform& value)
+{
+	if (_position + sizeof(FTransform) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FTransform));
+		_position += sizeof(FTransform);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FTransform");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FMatrix& value)
+{
+	if (_position + sizeof(FMatrix) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FMatrix));
+		_position += sizeof(FMatrix);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FMatrix");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FBox& value)
+{
+	if (_position + sizeof(FBox) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FBox));
+		_position += sizeof(FBox);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FBox");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FTimespan& value)
+{
+	if (_position + sizeof(FTimespan) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FTimespan));
+		_position += sizeof(FTimespan);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FTimespan");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FDateTime& value)
+{
+	if (_position + sizeof(FDateTime) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FDateTime));
+		_position += sizeof(FDateTime);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FDateTime");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FRotator& value)
+{
+	if (_position + sizeof(FRotator) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FRotator));
+		_position += sizeof(FRotator);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FRotator");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FVector2D& value)
+{
+	if (_position + sizeof(FVector2D) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FVector2D));
+		_position += sizeof(FVector2D);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FVector2D");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FIntPoint& value)
+{
+	if (_position + sizeof(FIntPoint) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FIntPoint));
+		_position += sizeof(FIntPoint);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FIntPoint");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FColor& value)
+{
+	if (_position + sizeof(FColor) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FColor));
+		_position += sizeof(FColor);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FColor");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FQuat& value)
+{
+	if (_position + sizeof(FQuat) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FQuat));
+		_position += sizeof(FQuat);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FQuat");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FVector& value)
+{
+	if (_position + sizeof(FVector) <= _dataSize) {
+		FMemory::Memcpy(&value, &_data[_position], sizeof(FVector));
+		_position += sizeof(FVector);
+	}
+	else {
+		throw std::out_of_range("No enough data to get FVector");
+	}
+}
+
+void NetPacket::NetDataReader::Get(FString& value)
+{
+	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
+	if (_position + 2 + length <= _dataSize) {
+		value = FString(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), length);
+		_position += 2 + length;  // 更新读取位置
+	}
+	else {
+		throw std::out_of_range("No enough data to get FString");
+	}
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FLinearColor>& value)
+{
+	return GetArray<FLinearColor>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FTransform>& value)
+{
+	return GetArray<FTransform>(value);
+
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FMatrix>& value)
+{
+	return GetArray<FMatrix>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FBox>& value)
+{
+	return GetArray<FBox>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FTimespan>& value)
+{
+	return GetArray<FTimespan>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FDateTime>& value)
+{
+	return GetArray<FDateTime>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FRotator>& value)
+{
+	return GetArray<FRotator>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FVector2D>& value)
+{
+	return GetArray<FVector2D>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FIntPoint>& value)
+{
+	return GetArray<FIntPoint>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FColor>& value)
+{
+	return GetArray<FColor>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FQuat>& value)
+{
+	return GetArray<FQuat>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FVector>& value)
+{
+	return GetArray<FVector>(value);
+}
+
+uint16_t NetPacket::NetDataReader::GetArray(TArray<FString>& value)
+{
+	uint16_t length = PeekUShort();
+	for (uint16_t i = 0; i < length; i++)
+	{
+		Get(value[i]);
+	}
+	return length;
+}
+#endif
