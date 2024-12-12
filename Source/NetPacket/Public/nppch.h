@@ -8,6 +8,8 @@
 #include <fstream>
 #include <sstream>
 
+//#include "Struct/NPStruct.h"
+
 #include <Json/include/single_include/nlohmann/json.hpp>
 #include <Json/include/single_include/nlohmann/json_fwd.hpp>
 using json = nlohmann::json;
@@ -22,6 +24,5 @@ using json = nlohmann::json;
 // 头文件声明，源文件实现，加上NP_API即可
 NP_API std::string GetNPVersion();
 
-#define INTERFACE class
 
 

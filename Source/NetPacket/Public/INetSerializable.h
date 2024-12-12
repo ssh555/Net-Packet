@@ -14,8 +14,6 @@ namespace NetPacket
 	class NP_API INetSerializable
 	{
 	public:
-		virtual ~INetSerializable() = default;
-
 		// writer.Put(GetTypeHash());
 		// 先在开头进行这个序列化
 		// 递归序列化也会序列化hash

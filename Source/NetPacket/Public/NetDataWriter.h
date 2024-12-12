@@ -105,8 +105,8 @@ namespace NetPacket {
 		{
 			delete[] value;
 		}
-		value = new T[length];
-		memcpy(value, _data + _position, size);
+		//value = new T[length];
+		memcpy((void*)value, _data + _position, size);
 		_position += size + 2;
 	}
 }

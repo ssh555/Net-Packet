@@ -21,14 +21,14 @@ namespace NetPacket
 	private:
 		// mode: 0 - default
 		// mode: 1 - ue
-		void DeclareData(std::stringstream& sst, const std::string& T, const std::string& name, int32_t mode = 0);
-		void DeclareDataArray(std::stringstream& sst, const std::string& T, const std::string& name, const int32_t length, int32_t mode = 0);
+		void DeclareData(std::stringstream& sst, const std::string& T, const std::string& name, int32_t mode);
+		void DeclareDataArray(std::stringstream& sst, const std::string& T, const std::string& name, const int32_t length, int32_t mode);
 
-		void WriteData(std::stringstream& sst, const std::string& name, int32_t mode = 0);
-		void WriteDataArray(std::stringstream& sst, const std::string& name, int32_t mode = 0);
+		void WriteData(std::stringstream& sst, const std::string& name, int32_t mode);
+		void WriteDataArray(std::stringstream& sst, const std::string& name, const int32_t length, int32_t mode);
 
-		void ReadData(std::stringstream& sst, const std::string& name, int32_t mode = 0);
-		void ReadDataArray(std::stringstream& sst, const std::string& name, int32_t mode = 0);
+		void ReadData(std::stringstream& sst, const std::string& name, int32_t mode);
+		void ReadDataArray(std::stringstream& sst, const std::string& name, int32_t mode);
 	};
 
 	// 代码生成模板

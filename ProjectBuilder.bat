@@ -17,6 +17,6 @@
 @REM :: 3. 完成
 @REM echo Build process completed.
 
-bin\Debug-windows-x86_64\StructFileGenerator\StructFileGenerator.exe -i %CD%\Input -o %CD%\Source\NetPacket\Public
+bin\Debug-windows-x86_64\StructFileGenerator\StructFileGenerator.exe -i %CD%\Input -o %CD%\Source\NetPacket\Public\Struct
 
 pause

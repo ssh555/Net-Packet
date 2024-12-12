@@ -6,7 +6,7 @@
 namespace NetPacket
 {
 	class NetDataWriter;
-	INTERFACE INetSerializable;
+	class INetSerializable;
 
 	class NP_API NetDataReader
 	{

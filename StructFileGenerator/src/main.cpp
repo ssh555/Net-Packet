@@ -7,6 +7,8 @@
 #include <windows.h> // For GetModuleFileName
 #include "NetSerializableStructGenerator.h"
 
+#include "Struct/NPStruct.h"
+
 
 namespace fs = std::filesystem;
 
