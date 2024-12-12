@@ -9,8 +9,8 @@ bin\Debug-windows-x86_64\StructFileGenerator\StructFileGenerator.exe -i %CD%\Inp
 "C:\Program Files (x86)\Epic Games\Launcher\Engine\Binaries\Win64\UnrealVersionSelector.exe" /projectfiles "%CD%\..\..\FZHT_Cpp.uproject"
 
 @REM compile&build project - VS中生成(Build)
-@REM 修改为自己的MSBuild.exe路径 自己的解决方案和配置 若要清理然后Build，使用Rebuild
-call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" %CD%\..\..\FZHT_Cpp.sln /p:Configuration=DebugGame /p:Platform=Win64 /t:Build
-
+@REM 自己的UE目录 项目名称Editor(拼接) 平台 配置 所在.uproject项目 ...其余参数
+"D:\Unreal Engine\UE_5.1\Engine\Build\BatchFiles\Build.bat" FZHT_CppEditor Win64 DebugGame -Project="%CD%\..\..\FZHT_Cpp.uproject" -WaitMutex -FromMsBuild
 
 pause
+
