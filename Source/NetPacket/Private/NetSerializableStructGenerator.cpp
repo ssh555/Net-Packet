@@ -26,7 +26,6 @@ namespace NetPacket
 		// 生成代码
 		json j = json::parse(content);
 
-		std::string outContent = NetStructConfig::DefaultConfig;
 
 		// 选择NetStructConfig生成代码
 		std::string CLASSNAME;
@@ -38,6 +37,9 @@ namespace NetPacket
 
 		CLASSNAME = j["classname"];
 		mode = j["mode"];
+
+		std::string outContent = GetConfigTemplate(mode);
+
 		// includes
 		INCLUDES << "// 需包含自定义数据类型的头文件\n";
 		for (auto& el : j["includes"])
@@ -71,11 +73,12 @@ namespace NetPacket
 		WRITERDATA << "\n";
 		READRDATA << "\n";
 
-		replaceAll(outContent, "{CLASSNAME}", CLASSNAME);
 		replaceAll(outContent, "{INCLUDES}", INCLUDES.str());
 		replaceAll(outContent, "{DECLATEDATA}", DECLATEDATA.str());
 		replaceAll(outContent, "{WRITERDATA}", WRITERDATA.str());
 		replaceAll(outContent, "{READRDATA}", READRDATA.str());
+		// 最后替换
+		replaceAll(outContent, "{CLASSNAME}", CLASSNAME);
 
 		std::ofstream outputFile(output);
 		if (outputFile.is_open()) {
@@ -99,11 +102,11 @@ namespace NetPacket
 				std::string inputFilePath = entry.path().string();
 
 				// 生成输出文件的路径，替换 .np 后缀为 .hpp
-				std::string outputFilePath = outputDir + "/" + entry.path().stem().string() + ".hpp";
+				std::string outputFilePath = outputDir + "/" + entry.path().stem().string() + ".h";
 
 				if (outputFile.is_open()) {
 					// 将生成的内容写入 .hpp 文件
-					outputFile << "#include \"" << entry.path().stem().string() + ".hpp\"\n";
+					outputFile << "#include \"" << entry.path().stem().string() + ".h\"\n";
 				}
 
 				std::cout << "处理文件:" << entry.path().stem().string() + ".np" << std::endl;
@@ -123,7 +126,8 @@ namespace NetPacket
 		}
 		else if (mode == 1)
 		{
-
+			sst << "\tUPROPERTY(BlueprintReadWrite, Category = \"{CLASSNAME}\")\n";
+			sst << "\t" << T << " " << name << ";\n";
 		}
 	}
 
@@ -135,7 +139,8 @@ namespace NetPacket
 		}
 		else if (mode == 1)
 		{
-
+			sst << "\tUPROPERTY(BlueprintReadWrite, Category = \"{CLASSNAME}\")\n";
+			sst << "\tTArray<" << T << "> " << name << ";\n";
 		}
 	}
 
@@ -147,7 +152,7 @@ namespace NetPacket
 		}
 		else if (mode == 1)
 		{
-
+			sst << "\t\twriter.Put(" << name << ");\n";
 		}
 	}
 
@@ -155,11 +160,11 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\t\twriter.PutArray(" << name << "," << length << ");\n";
+			sst << "\t\twriter.PutArray(" << name << ");\n";
 		}
 		else if (mode == 1)
 		{
-
+			sst << "\t\twriter.PutArray(" << name << ");\n";
 		}
 	}
 
@@ -167,11 +172,11 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\t\treader.Get(" << name << ");\n";
+			sst << "\t\treader.Get(" << name << ");\n";
 		}
 		else if (mode == 1)
 		{
-
+			sst << "\t\treader.Get(" << name << ");\n";
 		}
 	}
 
@@ -179,14 +184,27 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\t\treader.GetArray(" << name << ");\n";
+			sst << "\t\treader.GetArray(" << name << ");\n";
 		}
 		else if (mode == 1)
 		{
-
+			sst << "\t\treader.GetArray(" << name << ");\n";
 		}
 	}
 
+
+	std::string NetSerializableStructGenerator::GetConfigTemplate(int32_t mode)
+	{
+		if (mode == 0)
+		{
+			return NetStructConfig::DefaultConfig;
+		}
+		else if (mode == 1)
+		{
+			return NetStructConfig::UEConfig;
+		}
+		throw new std::exception("mode error: 不是有效mode");
+	}
 
 	const std::string NetStructConfig::DefaultConfig = R"(#pragma once
 #include "nppch.h"
@@ -217,13 +235,52 @@ namespace NetPacket
 
 		virtual uint16_t GetTypeHash() const override
 		{
-			// 使用常量字符串作为类型标识符
 			return MurmurHash16("{CLASSNAME}");
 		}
 	};
 }
 )";
 
-	const std::string NetStructConfig::UEConfig = "";
+	const std::string NetStructConfig::UEConfig = R"(#pragma once
+#include "CoreMinimal.h"
+#include "NetDataWriter.h"
+#include "NetDataReader.h"
+#include "INetSerializable.h"
+#include "UObject/NoExportTypes.h"
+#include "UObject/Object.h"
+
+{INCLUDES}
+
+#include "{CLASSNAME}.generated.h"
+// 使用class而不是struct，在UE中有额外开销，若要使用struct，必须修改INetSerializable为UE版本的接口
+UCLASS(BlueprintType, Blueprintable)
+class U{CLASSNAME} : public UObject, public NetPacket::INetSerializable
+{
+	GENERATED_BODY()
+
+public:
+{DECLATEDATA}
+
+public:
+	// 实现 Serialize 函数
+	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
+	{
+		writer.Put(GetTypeHash());
+{WRITERDATA}
+	}
+
+	virtual void Deserialize(NetPacket::NetDataReader& reader) override
+	{
+		reader.PeekUShort();
+{READRDATA}
+	}
+
+	virtual uint16_t GetTypeHash() const override
+	{
+		return MurmurHash16("{CLASSNAME}");
+	}
+};
+
+)";
 
 }

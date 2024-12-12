@@ -1,0 +1,47 @@
+{
+    "classname" : "template_ue",
+    "mode" : 1,
+    "includes" : [
+        {"name":"example.hpp"}
+    ],
+    "basedata" : [
+        {"type":"FString", "name":"str" },
+        {"type":"FName", "name":"strN" },
+        {"type":"FText", "name":"strT" },
+        {"type":"int64", "name":"i64" },
+        {"type":"int32", "name":"i32" },
+        {"type":"uint8", "name":"ui8" },
+        {"type":"FVector", "name":"vec" },
+        {"type":"FQuat", "name":"q" },
+        {"type":"FColor", "name":"color" },
+        {"type":"FIntPoint", "name":"intp" },
+        {"type":"FVector2D", "name":"vec2d" },
+        {"type":"FRotator", "name":"rot" },
+        {"type":"FDateTime", "name":"datetime" },
+        {"type":"FTimespan", "name":"timespan" },
+        {"type":"FBox", "name":"box" },
+        {"type":"FMatrix", "name":"mat" },
+        {"type":"FTransform", "name":"trans" },
+        {"type":"FLinearColor", "name":"lcolor" }
+    ],
+    "arraydata" : [
+        {"type":"FString", "name":"strA", "length":5},
+        {"type":"FName", "name":"strNA", "length":5},
+        {"type":"FText", "name":"strTA", "length":5},
+        {"type":"int64", "name":"i64A", "length":5},
+        {"type":"int32", "name":"i32A", "length":5},
+        {"type":"uint8", "name":"ui8A", "length":5},
+        {"type":"FVector", "name":"vecA", "length":5},
+        {"type":"FQuat", "name":"qA", "length":5},
+        {"type":"FColor", "name":"colorA", "length":5},
+        {"type":"FIntPoint", "name":"intpA", "length":5},
+        {"type":"FVector2D", "name":"vec2dA", "length":5},
+        {"type":"FRotator", "name":"rotA", "length":5},
+        {"type":"FDateTime", "name":"datetimeA", "length":5},
+        {"type":"FTimespan", "name":"timespanA", "length":5},
+        {"type":"FBox", "name":"boxA", "length":5},
+        {"type":"FMatrix", "name":"matA", "length":5},
+        {"type":"FTransform", "name":"transA", "length":5},
+        {"type":"FLinearColor", "name":"lcolorA", "length":5}
+    ]
+}

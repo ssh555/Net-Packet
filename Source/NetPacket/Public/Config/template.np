@@ -1,11 +1,11 @@
 {
-    "classname" : "Example",
-    "mode" : 1,
+    "classname" : "template_ue",
+    "mode" : 0,
     "includes" : [
         {"name":"example.hpp"}
     ],
     "basedata" : [
-        {"type":"uint8_t", "name":"ui8" },
+        {"type":"uint8", "name":"ui8" },
         {"type":"int8_t", "name":"i8" },
         {"type":"bool", "name":"b" },
         {"type":"int16_t", "name":"i16" },

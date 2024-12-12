@@ -29,6 +29,8 @@ namespace NetPacket
 
 		void ReadData(std::stringstream& sst, const std::string& name, int32_t mode);
 		void ReadDataArray(std::stringstream& sst, const std::string& name, int32_t mode);
+
+		std::string GetConfigTemplate(int32_t mode);
 	};
 
 	// 代码生成模板

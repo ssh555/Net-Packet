@@ -1,6 +1,6 @@
 {
-    "classname" : "Example",
-    "mode" : 1,
+    "classname" : "template",
+    "mode" : 0,
     "includes" : [
         {"name":"example.hpp"}
     ],
