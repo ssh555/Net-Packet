@@ -12,7 +12,8 @@ namespace NetPacket
 
 	public:
 		// 都需要带后缀
-		void Generate(const std::string& input, const std::string output);
+		// 返回mode
+		int Generate(const std::string& input, const std::string output);
 
 		// 输入文件夹中 *.np
 		// 输出文件夹中 *.hpp
@@ -38,5 +39,7 @@ namespace NetPacket
 	{
 		static const std::string DefaultConfig;
 		static const std::string UEConfig;
+
+		static const std::string UEDummyStruct;
 	};
 }

@@ -2,7 +2,6 @@
     "classname" : "template_ue",
     "mode" : 1,
     "includes" : [
-        {"name":"example.hpp"}
     ],
     "basedata" : [
         {"type":"FString", "name":"str" },

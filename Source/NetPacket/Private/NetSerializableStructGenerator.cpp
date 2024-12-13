@@ -12,12 +12,12 @@ namespace NetPacket
 		}
 	}
 
-	void NetSerializableStructGenerator::Generate(const std::string& input, const std::string output)
+	int NetSerializableStructGenerator::Generate(const std::string& input, const std::string output)
 	{
 		std::ifstream inputFile(input);
 		if (!inputFile.is_open()) {
 			// 文件打开失败
-			return;
+			return -1;
 		}
 
 		// 读取输入文件内容
@@ -86,6 +86,7 @@ namespace NetPacket
 			outputFile << outContent;
 			outputFile.close();
 		}
+		return mode;
 	}
 
 	void NetSerializableStructGenerator::GenerateAll(const std::string& inputDir, const std::string& outputDir)
@@ -94,7 +95,7 @@ namespace NetPacket
 		std::string output = outputDir + "/NPStruct.h";
 		std::ofstream outputFile(output);
 
-
+		bool bIsUE = false;
 		// 遍历 inputDir 下的所有 .np 文件
 		for (const auto& entry : std::filesystem::directory_iterator(inputDir)) {
 			if (entry.is_regular_file() && entry.path().extension() == ".np") {
@@ -111,10 +112,22 @@ namespace NetPacket
 
 				std::cout << "处理文件:" << entry.path().stem().string() + ".np" << std::endl;
 				// 调用 Generate 进行文件生成
-				Generate(inputFilePath, outputFilePath);
+				int mode = Generate(inputFilePath, outputFilePath);
+				if (mode == 1)
+				{
+					bIsUE = true;
+				}
 			}
 		}
 		outputFile.close();
+
+		// 在目标文件夹下生成 DummyStruct
+		if (bIsUE)
+		{
+			output = outputDir + "/DummyStruct.h";
+			outputFile.open(output);
+			outputFile << NetStructConfig::UEDummyStruct;
+		}
 	}
 
 
@@ -247,14 +260,13 @@ namespace NetPacket
 #include "NetDataReader.h"
 #include "INetSerializable.h"
 #include "UObject/NoExportTypes.h"
-#include "UObject/Object.h"
+#include "DummyStruct.h"
 
 {INCLUDES}
 
 #include "{CLASSNAME}.generated.h"
-// 使用class而不是struct，在UE中有额外开销，若要使用struct，必须修改INetSerializable为UE版本的接口
-UCLASS(BlueprintType, Blueprintable)
-class U{CLASSNAME} : public UObject, public NetPacket::INetSerializable
+USTRUCT(BlueprintType, Blueprintable)
+struct F{CLASSNAME} : public FDummyStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 
@@ -280,6 +292,26 @@ public:
 		return MurmurHash16("{CLASSNAME}");
 	}
 };
+
+)";
+
+	const std::string NetStructConfig::UEDummyStruct = R"(#pragma once
+#include "CoreMinimal.h"
+#include "NetDataWriter.h"
+#include "NetDataReader.h"
+#include "INetSerializable.h"
+#include "UObject/NoExportTypes.h"
+
+
+#include "DummyStruct.generated.h"
+USTRUCT(BlueprintType, Blueprintable)
+struct FDummyStruct
+{
+	GENERATED_BODY()
+public:
+	virtual ~FDummyStruct() = default; // 添加虚析构函数
+};
+
 
 )";
 

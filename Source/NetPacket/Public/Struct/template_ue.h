@@ -4,16 +4,14 @@
 #include "NetDataReader.h"
 #include "INetSerializable.h"
 #include "UObject/NoExportTypes.h"
-#include "UObject/Object.h"
+#include "DummyStruct.h"
 
 // 需包含自定义数据类型的头文件
-#include "example.hpp"
 
 
 #include "template_ue.generated.h"
-// 使用class而不是struct，在UE中有额外开销，若要使用struct，必须修改INetSerializable为UE版本的接口
-UCLASS(BlueprintType, Blueprintable)
-class Utemplate_ue : public UObject, public NetPacket::INetSerializable
+USTRUCT(BlueprintType, Blueprintable)
+struct Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 
