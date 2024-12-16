@@ -39,7 +39,7 @@ namespace NetPacket {
 		const uint8_t* Data() const;
 
 		// 获取当前数据长度
-		uint8_t Length() const;
+		int32_t Length() const;
 
 		// 确保数据大小足够
 		void ResizeIfNeed(int32_t newSize);

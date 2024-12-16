@@ -1,3 +1,4 @@
+#include "nppch.h"
 #include "NetDataWriter.h"
 
 constexpr size_t NetPacket::NetDataWriter::InitialSize;
@@ -22,7 +23,7 @@ const uint8_t* NetPacket::NetDataWriter::Data() const
 	return _data;
 }
 
-uint8_t NetPacket::NetDataWriter::Length() const
+int32_t NetPacket::NetDataWriter::Length() const
 {
 	return _position;
 }
