@@ -1,4 +1,3 @@
-#include "nppch.h"
 #include "NetDataReader.h"
 #include "NetDataWriter.h"
 
@@ -295,6 +294,7 @@ uint16_t NetPacket::NetDataReader::PeekUShort(bool isPop)
 		else
 			throw std::out_of_range("No enough data to get ushort");
 	}
+	return 0;
 }
 
 const uint8_t* NetPacket::NetDataReader::GetRawData()
