@@ -3,7 +3,7 @@
 #include <string>
 #include "INetSerializable.h"
 
-#if NP_UE_SUPPORT
+#ifdef NP_UE_SUPPORT
 #include "CoreMinimal.h"
 #endif
 
@@ -82,7 +82,7 @@ namespace NetPacket
 
 		uint8_t* GetRemainingBytes();
 
-#if NP_UE_SUPPORT
+#ifdef NP_UE_SUPPORT
 		void Get(FString& value);
 		void Get(FText& value);
 		void Get(FName& value);
@@ -142,7 +142,7 @@ namespace NetPacket
 		}
 		throw std::out_of_range("No enough data to get array");
 	}
-#if NP_UE_SUPPORT
+#ifdef NP_UE_SUPPORT
 
 	template<typename T>
 	uint16_t NetPacket::NetDataReader::GetArray(TArray<T>& value)

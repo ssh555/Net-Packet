@@ -3,7 +3,7 @@
 #include "INetSerializable.h"
 #include "FastBitConverter.h"
 
-#if NP_UE_SUPPORT
+#ifdef NP_UE_SUPPORT
 #include "CoreMinimal.h"
 #endif
 
@@ -95,7 +95,7 @@ namespace NetPacket {
 		// 重置位置
 		int32_t SetPosition(int32_t position);
 
-#if NP_UE_SUPPORT
+#ifdef NP_UE_SUPPORT
 		void Put(const FString& value);
 		void Put(const FName& value);
 		void Put(const FText& value);
@@ -148,7 +148,7 @@ namespace NetPacket {
 		memcpy((void*)value, _data + _position, size);
 		_position += size;
 	}
-#if NP_UE_SUPPORT
+#ifdef NP_UE_SUPPORT
 
 	template <typename T>
 	void NetPacket::NetDataWriter::PutArray(const TArray<T>& value)

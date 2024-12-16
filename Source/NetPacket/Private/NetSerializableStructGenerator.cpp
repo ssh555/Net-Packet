@@ -220,10 +220,11 @@ namespace NetPacket
 	}
 
 	const std::string NetStructConfig::DefaultConfig = R"(#pragma once
-#include "nppch.h"
-#include "INetSerializable.h"
-#include "NetDataWriter.h"
-#include "NetDataReader.h"
+#include "../nppch.h"
+// 如果报错，修改include为你自己的正确路径
+#include "../INetSerializable.h"
+#include "../NetDataWriter.h"
+#include "../NetDataReader.h"
 {INCLUDES}
 
 namespace NetPacket
@@ -256,9 +257,10 @@ namespace NetPacket
 
 	const std::string NetStructConfig::UEConfig = R"(#pragma once
 #include "CoreMinimal.h"
-#include "NetDataWriter.h"
-#include "NetDataReader.h"
-#include "INetSerializable.h"
+// 如果报错，修改include为你自己的正确路径
+#include "../NetDataWriter.h"
+#include "../NetDataReader.h"
+#include "../INetSerializable.h"
 #include "UObject/NoExportTypes.h"
 #include "DummyStruct.h"
 
@@ -297,9 +299,6 @@ public:
 
 	const std::string NetStructConfig::UEDummyStruct = R"(#pragma once
 #include "CoreMinimal.h"
-#include "NetDataWriter.h"
-#include "NetDataReader.h"
-#include "INetSerializable.h"
 #include "UObject/NoExportTypes.h"
 
 
