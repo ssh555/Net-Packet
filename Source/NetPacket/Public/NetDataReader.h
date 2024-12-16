@@ -15,7 +15,7 @@ namespace NetPacket
 	class NP_API NetDataReader
 	{
 	public:
-		// æ„é€ å‡½æ•°å’Œææ„å‡½æ•°
+		// ¹¹Ôìº¯ÊıºÍÎö¹¹º¯Êı
 		NetDataReader();
 		NetDataReader(NetDataWriter writer);
 		NetDataReader(uint8_t* source, int32_t size);
@@ -24,7 +24,7 @@ namespace NetPacket
 
 
 
-		// è·å–å­—èŠ‚æ•°æ®
+		// »ñÈ¡×Ö½ÚÊı¾İ
 		void Get(uint8_t& value);
 		void Get(int8_t& value);
 		void Get(bool& value);
@@ -41,10 +41,10 @@ namespace NetPacket
 		void Get(char& value);
 		void Get(std::byte& value);
 
-		// è·å–é¢„è¯»å–çš„ ushort æ•°æ®
-		// true: è·å–æ•°æ®å¹¶å‰è¿›
-		// false: åªè·å–æ•°æ®ï¼Œä¸‹ä¸€æ¬¡è°ƒç”¨è¿˜æ˜¯åŒæ ·çš„æ•°æ®
-		// Processor ä½¿ç”¨æ—¶ä¸èƒ½å¼¹å‡º
+		// »ñÈ¡Ô¤¶ÁÈ¡µÄ ushort Êı¾İ
+		// true: »ñÈ¡Êı¾İ²¢Ç°½ø
+		// false: Ö»»ñÈ¡Êı¾İ£¬ÏÂÒ»´Îµ÷ÓÃ»¹ÊÇÍ¬ÑùµÄÊı¾İ
+		// Processor Ê¹ÓÃÊ±²»ÄÜµ¯³ö
 		uint16_t PeekUShort(bool isPop = true);
 
 		template<typename T>
@@ -65,14 +65,14 @@ namespace NetPacket
 		uint16_t GetArray(char* data);
 		uint16_t GetArray(std::byte* data);
 
-		// æ¸…ç©ºæ•°æ®
+		// Çå¿ÕÊı¾İ
 		void Clear(bool isDelete = true);
 
 		const uint8_t* GetRawData();
 		int32_t GetRawDataSize();
 		int32_t GetPosition();
 		bool EndOfData();
-		// è·å–å½“å‰å¯ç”¨çš„å­—èŠ‚æ•°
+		// »ñÈ¡µ±Ç°¿ÉÓÃµÄ×Ö½ÚÊı
 		int32_t AvailableBytes() const;
 		void SkipBytes(int32_t count);
 		void SetPosition(int32_t position);
@@ -99,7 +99,7 @@ namespace NetPacket
 		void Get(FTransform& value);
 		void Get(FLinearColor& value);
 
-		// åºåˆ—åŒ–TArray
+		// ĞòÁĞ»¯TArray
 		template <typename T>
 		uint16_t GetArray(TArray<T>& value);
 		uint16_t GetArray(TArray<FString>& value);
@@ -125,9 +125,9 @@ namespace NetPacket
 #endif
 
 	private:
-		int32_t _position;           // å½“å‰è¯»å–ä½ç½®
-		int32_t _dataSize;           // æ•°æ®å¤§å°
-		uint8_t* _data; // æ•°æ®å­˜å‚¨
+		int32_t _position;           // µ±Ç°¶ÁÈ¡Î»ÖÃ
+		int32_t _dataSize;           // Êı¾İ´óĞ¡
+		uint8_t* _data; // Êı¾İ´æ´¢
 	};
 
 	template<typename T>

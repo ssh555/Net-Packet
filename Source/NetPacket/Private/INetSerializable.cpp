@@ -5,21 +5,21 @@
 
 namespace NetPacket
 {
-	// MurmurHash16 ç®—æ³•
+	// MurmurHash16 Ëã·¨
 	uint16_t INetSerializable::MurmurHash16(const std::string& str)
 	{
-		const uint32_t seed = 0x1234ABCD;  // éšä¾¿é€‰ä¸€ä¸ªç§å­
+		const uint32_t seed = 0x1234ABCD;  // Ëæ±ãÑ¡Ò»¸öÖÖ×Ó
 		uint32_t hash = seed;
 
 		const uint8_t* data = reinterpret_cast<const uint8_t*>(str.c_str());
 		size_t length = str.size();
 
-		const uint32_t m = 0x5bd1e995; // å¸¸é‡
-		const int r = 16; // 16ä½è¾“å‡º
+		const uint32_t m = 0x5bd1e995; // ³£Á¿
+		const int r = 16; // 16Î»Êä³ö
 
 		uint32_t h = hash ^ (uint32_t)length;
 
-		// 4å­—èŠ‚ä¸ºä¸€ç»„è¿›è¡Œè®¡ç®—
+		// 4×Ö½ÚÎªÒ»×é½øĞĞ¼ÆËã
 		while (length >= 4) {
 			uint32_t k = *(reinterpret_cast<const uint32_t*>(data));
 
@@ -34,7 +34,7 @@ namespace NetPacket
 			length -= 4;
 		}
 
-		// å¤„ç†å‰©ä½™çš„å­—èŠ‚
+		// ´¦ÀíÊ£ÓàµÄ×Ö½Ú
 		if (length == 3) {
 			h ^= static_cast<uint32_t>(data[2]) << 16;
 		}
@@ -45,17 +45,17 @@ namespace NetPacket
 			h ^= static_cast<uint32_t>(data[0]);
 		}
 
-		// æœ€ç»ˆçš„æ··åˆå’Œç¼©å°ä¸º16ä½
+		// ×îÖÕµÄ»ìºÏºÍËõĞ¡Îª16Î»
 		h *= m;
 		h ^= h >> r;
 		h *= m;
 
-		return static_cast<uint16_t>(h & 0xFFFF); // æˆªæ–­ä¸º16ä½
+		return static_cast<uint16_t>(h & 0xFFFF); // ½Ø¶ÏÎª16Î»
 	}
 
 	uint16_t INetSerializable::GetTypeHash() const
 	{
-		// ä½¿ç”¨å¸¸é‡å­—ç¬¦ä¸²ä½œä¸ºç±»å‹æ ‡è¯†ç¬¦
+		// Ê¹ÓÃ³£Á¿×Ö·û´®×÷ÎªÀàĞÍ±êÊ¶·û
 		return MurmurHash16("INetSerializable");
 	}
 

@@ -30,20 +30,20 @@ IMPLEMENT_MODULE(FNetPacketModule, NetPacket)
 
 const int32_t NetPacket::NetPackage::MaxPacketSize = 2048;
 
-// é¢„ç•™6å­—èŠ‚æ•°æ®: PacketSize(4å­—èŠ‚) + ClientID(2å­—èŠ‚)
+// Ô¤Áô6×Ö½ÚÊý¾Ý: PacketSize(4×Ö½Ú) + ClientID(2×Ö½Ú)
 const int32_t NetPacket::NetPackage::HeaderSize = 6;
 
 NetPacket::NetPackage::NetPackage(uint32_t maxSize) : MaxSize(maxSize), RawData(new uint8_t[maxSize]), m_size(0), Next(nullptr)
 {
 	memset(RawData, 0, MaxSize);
-	// åªèƒ½åœ¨Pool new ï¼Œæ‰€ä»¥åœ¨poolåŠ å…¥
+	// Ö»ÄÜÔÚPool new £¬ËùÒÔÔÚpool¼ÓÈë
 }
 
 NetPacket::NetPackage::~NetPackage()
 {
 	delete RawData;
 	RawData = nullptr;
-	// åœ¨poolç§»é™¤
+	// ÔÚpoolÒÆ³ý
 }
 
 void NetPacket::NetPackage::resize(int32_t size)
@@ -69,8 +69,8 @@ void NetPacket::NetPackage::GetData(NetDataReader* reader)
 		return;
 	}
 	reader->SetSource(RawData + HeaderSize, m_size);
-	// ä¸åœ¨è¿™å„¿è°ƒç”¨ï¼Œç»Ÿä¸€åœ¨NetPacketProcessorä¸­Process Packet åŽç»Ÿä¸€è°ƒç”¨å…¨éƒ¨å›žå½’å¯¹è±¡æ± 
-	// å›žå½’å¯¹è±¡æ± 
+	// ²»ÔÚÕâ¶ùµ÷ÓÃ£¬Í³Ò»ÔÚNetPacketProcessorÖÐProcess Packet ºóÍ³Ò»µ÷ÓÃÈ«²¿»Ø¹é¶ÔÏó³Ø
+	// »Ø¹é¶ÔÏó³Ø
 	//if (pool)
 	//{
 	//	pool->Recycle(this);
@@ -112,7 +112,7 @@ void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size, 
 	memset(RawData, 0, MaxSize);
 	memcpy(RawData + HeaderSize, data, size);
 	this->m_size = size;
-	// è®¾ç½®æ•°æ®åŒ…é•¿åº¦å’ŒClientID
+	// ÉèÖÃÊý¾Ý°ü³¤¶ÈºÍClientID
 	FastBitConverter::GetBytes(RawData, 0, this->m_size);
 	FastBitConverter::GetBytes(RawData, 4, (int16_t)0);
 

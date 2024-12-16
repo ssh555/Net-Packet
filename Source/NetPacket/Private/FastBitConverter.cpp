@@ -3,7 +3,7 @@
 
 namespace NetPacket {
 
-	// è·å–æŒ‡å®šç±»å‹çš„å­—èŠ‚è¡¨ç¤º
+	// »ñÈ¡Ö¸¶¨ÀàĞÍµÄ×Ö½Ú±íÊ¾
 	template <typename T>
 	void FastBitConverter::GetBytes(uint8_t* bytes, int startIndex, T value) {
 		static_assert(std::is_trivially_copyable<T>::value, "T must be a trivially copyable type");
@@ -14,7 +14,7 @@ namespace NetPacket {
 		std::memcpy(&bytes[startIndex], &value, size);
 	}
 
-	// é’ˆå¯¹ä¸åŒç±»å‹çš„ GetBytes é‡è½½
+	// Õë¶Ô²»Í¬ÀàĞÍµÄ GetBytes ÖØÔØ
 
 	void FastBitConverter::GetBytes(uint8_t* bytes, int startIndex, double value) {
 		uint64_t temp = *reinterpret_cast<uint64_t*>(&value);
@@ -50,7 +50,7 @@ namespace NetPacket {
 		WriteLittleEndian(bytes, startIndex, value);
 	}
 
-	// å°†æ•°æ®è½¬æ¢ä¸ºå­—èŠ‚è¡¨ç¤ºçš„å°ç«¯æ ¼å¼
+	// ½«Êı¾İ×ª»»Îª×Ö½Ú±íÊ¾µÄĞ¡¶Ë¸ñÊ½
 	void FastBitConverter::WriteLittleEndian(uint8_t* buffer, int offset, uint64_t data) {
 		for (int i = 0; i < 8; ++i) {
 			buffer[offset + i] = static_cast<uint8_t>(data >> (i * 8));

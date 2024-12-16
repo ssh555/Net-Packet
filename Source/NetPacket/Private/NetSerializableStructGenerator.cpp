@@ -8,7 +8,7 @@ namespace NetPacket
 		size_t startPos = 0;
 		while ((startPos = str.find(from, startPos)) != std::string::npos) {
 			str.replace(startPos, from.length(), to);
-			startPos += to.length(); // é˜²æ­¢é‡æ–°æ›¿æ¢å·²æ›¿æ¢çš„éƒ¨åˆ†
+			startPos += to.length(); // ·ÀÖ¹ÖØĞÂÌæ»»ÒÑÌæ»»µÄ²¿·Ö
 		}
 	}
 
@@ -16,18 +16,18 @@ namespace NetPacket
 	{
 		std::ifstream inputFile(input);
 		if (!inputFile.is_open()) {
-			// æ–‡ä»¶æ‰“å¼€å¤±è´¥
+			// ÎÄ¼ş´ò¿ªÊ§°Ü
 			return -1;
 		}
 
-		// è¯»å–è¾“å…¥æ–‡ä»¶å†…å®¹
+		// ¶ÁÈ¡ÊäÈëÎÄ¼şÄÚÈİ
 		std::string content((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
 		inputFile.close();
-		// ç”Ÿæˆä»£ç 
+		// Éú³É´úÂë
 		json j = json::parse(content);
 
 
-		// é€‰æ‹©NetStructConfigç”Ÿæˆä»£ç 
+		// Ñ¡ÔñNetStructConfigÉú³É´úÂë
 		std::string CLASSNAME;
 		std::stringstream INCLUDES;
 		std::stringstream DECLATEDATA;
@@ -41,15 +41,15 @@ namespace NetPacket
 		std::string outContent = GetConfigTemplate(mode);
 
 		// includes
-		INCLUDES << "// éœ€åŒ…å«è‡ªå®šä¹‰æ•°æ®ç±»å‹çš„å¤´æ–‡ä»¶\n";
+		INCLUDES << "// Ğè°üº¬×Ô¶¨ÒåÊı¾İÀàĞÍµÄÍ·ÎÄ¼ş\n";
 		for (auto& el : j["includes"])
 		{
 			INCLUDES << "#include " << el["name"] << "\n";
 		}
 		// basedata
-		DECLATEDATA << "\t\t// éæ•°ç»„æ•°æ®\n";
-		WRITERDATA << "\t\t\t// éæ•°ç»„æ•°æ®\n";
-		READRDATA << "\t\t\t// éæ•°ç»„æ•°æ®\n";
+		DECLATEDATA << "\t\t// ·ÇÊı×éÊı¾İ\n";
+		WRITERDATA << "\t\t\t// ·ÇÊı×éÊı¾İ\n";
+		READRDATA << "\t\t\t// ·ÇÊı×éÊı¾İ\n";
 		for (auto& el : j["basedata"])
 		{
 			DeclareData(DECLATEDATA, el["type"], el["name"], mode);
@@ -60,9 +60,9 @@ namespace NetPacket
 		WRITERDATA << "\n";
 		READRDATA << "\n";
 		// arraydata
-		DECLATEDATA << "\t\t// æ•°ç»„æ•°æ®\n";
-		WRITERDATA << "\t\t\t// æ•°ç»„æ•°æ®\n";
-		READRDATA << "\t\t\t// æ•°ç»„æ•°æ®\n";
+		DECLATEDATA << "\t\t// Êı×éÊı¾İ\n";
+		WRITERDATA << "\t\t\t// Êı×éÊı¾İ\n";
+		READRDATA << "\t\t\t// Êı×éÊı¾İ\n";
 		for (auto& el : j["arraydata"])
 		{
 			DeclareDataArray(DECLATEDATA, el["type"], el["name"], el["length"], mode);
@@ -77,12 +77,12 @@ namespace NetPacket
 		replaceAll(outContent, "{DECLATEDATA}", DECLATEDATA.str());
 		replaceAll(outContent, "{WRITERDATA}", WRITERDATA.str());
 		replaceAll(outContent, "{READRDATA}", READRDATA.str());
-		// æœ€åæ›¿æ¢
+		// ×îºóÌæ»»
 		replaceAll(outContent, "{CLASSNAME}", CLASSNAME);
 
 		std::ofstream outputFile(output);
 		if (outputFile.is_open()) {
-			// å°†ç”Ÿæˆçš„å†…å®¹å†™å…¥ .hpp æ–‡ä»¶
+			// ½«Éú³ÉµÄÄÚÈİĞ´Èë .hpp ÎÄ¼ş
 			outputFile << outContent;
 			outputFile.close();
 		}
@@ -91,27 +91,27 @@ namespace NetPacket
 
 	void NetSerializableStructGenerator::GenerateAll(const std::string& inputDir, const std::string& outputDir)
 	{
-		// åœ¨ç”Ÿæˆç›®å½•ä¸‹ç”ŸæˆNPStruct.hï¼ŒåŒ…å«æ‰€æœ‰çš„å¤´æ–‡ä»¶
+		// ÔÚÉú³ÉÄ¿Â¼ÏÂÉú³ÉNPStruct.h£¬°üº¬ËùÓĞµÄÍ·ÎÄ¼ş
 		std::string output = outputDir + "/NPStruct.h";
 		std::ofstream outputFile(output);
 
 		bool bIsUE = false;
-		// éå† inputDir ä¸‹çš„æ‰€æœ‰ .np æ–‡ä»¶
+		// ±éÀú inputDir ÏÂµÄËùÓĞ .np ÎÄ¼ş
 		for (const auto& entry : std::filesystem::directory_iterator(inputDir)) {
 			if (entry.is_regular_file() && entry.path().extension() == ".np") {
-				// è·å–æ–‡ä»¶çš„å®Œæ•´è·¯å¾„
+				// »ñÈ¡ÎÄ¼şµÄÍêÕûÂ·¾¶
 				std::string inputFilePath = entry.path().string();
 
-				// ç”Ÿæˆè¾“å‡ºæ–‡ä»¶çš„è·¯å¾„ï¼Œæ›¿æ¢ .np åç¼€ä¸º .hpp
+				// Éú³ÉÊä³öÎÄ¼şµÄÂ·¾¶£¬Ìæ»» .np ºó×ºÎª .hpp
 				std::string outputFilePath = outputDir + "/" + entry.path().stem().string() + ".h";
 
 				if (outputFile.is_open()) {
-					// å°†ç”Ÿæˆçš„å†…å®¹å†™å…¥ .hpp æ–‡ä»¶
+					// ½«Éú³ÉµÄÄÚÈİĞ´Èë .hpp ÎÄ¼ş
 					outputFile << "#include \"" << entry.path().stem().string() + ".h\"\n";
 				}
 
-				std::cout << "å¤„ç†æ–‡ä»¶:" << entry.path().stem().string() + ".np" << std::endl;
-				// è°ƒç”¨ Generate è¿›è¡Œæ–‡ä»¶ç”Ÿæˆ
+				std::cout << "´¦ÀíÎÄ¼ş:" << entry.path().stem().string() + ".np" << std::endl;
+				// µ÷ÓÃ Generate ½øĞĞÎÄ¼şÉú³É
 				int mode = Generate(inputFilePath, outputFilePath);
 				if (mode == 1)
 				{
@@ -121,7 +121,7 @@ namespace NetPacket
 		}
 		outputFile.close();
 
-		// åœ¨ç›®æ ‡æ–‡ä»¶å¤¹ä¸‹ç”Ÿæˆ DummyStruct
+		// ÔÚÄ¿±êÎÄ¼ş¼ĞÏÂÉú³É DummyStruct
 		if (bIsUE)
 		{
 			output = outputDir + "/DummyStruct.h";
@@ -216,12 +216,12 @@ namespace NetPacket
 		{
 			return NetStructConfig::UEConfig;
 		}
-		throw new std::exception("mode error: ä¸æ˜¯æœ‰æ•ˆmode");
+		throw new std::exception("mode error: ²»ÊÇÓĞĞ§mode");
 	}
 
 	const std::string NetStructConfig::DefaultConfig = R"(#pragma once
 #include "../nppch.h"
-// å¦‚æœæŠ¥é”™ï¼Œä¿®æ”¹includeä¸ºä½ è‡ªå·±çš„æ­£ç¡®è·¯å¾„
+// Èç¹û±¨´í£¬ĞŞ¸ÄincludeÎªÄã×Ô¼ºµÄÕıÈ·Â·¾¶
 #include "../INetSerializable.h"
 #include "../NetDataWriter.h"
 #include "../NetDataReader.h"
@@ -257,7 +257,7 @@ namespace NetPacket
 
 	const std::string NetStructConfig::UEConfig = R"(#pragma once
 #include "CoreMinimal.h"
-// å¦‚æœæŠ¥é”™ï¼Œä¿®æ”¹includeä¸ºä½ è‡ªå·±çš„æ­£ç¡®è·¯å¾„
+// Èç¹û±¨´í£¬ĞŞ¸ÄincludeÎªÄã×Ô¼ºµÄÕıÈ·Â·¾¶
 #include "../NetDataWriter.h"
 #include "../NetDataReader.h"
 #include "../INetSerializable.h"
@@ -276,7 +276,7 @@ public:
 {DECLATEDATA}
 
 public:
-	// å®ç° Serialize å‡½æ•°
+	// ÊµÏÖ Serialize º¯Êı
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{
 		writer.Put(GetTypeHash());
@@ -308,7 +308,7 @@ struct FDummyStruct
 {
 	GENERATED_BODY()
 public:
-	virtual ~FDummyStruct() = default; // æ·»åŠ è™šææ„å‡½æ•°
+	virtual ~FDummyStruct() = default; // Ìí¼ÓĞéÎö¹¹º¯Êı
 };
 
 

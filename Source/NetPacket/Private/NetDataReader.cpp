@@ -25,7 +25,7 @@ NetPacket::NetDataReader::NetDataReader(uint8_t* source, int32_t offset, int32_t
 
 NetPacket::NetDataReader::~NetDataReader()
 {
-	// ä¸éœ€è¦deleteï¼Œä¸å±äºreaderçš„æ•°æ®ï¼Œè‹¥éœ€è¦ï¼Œè°ƒç”¨Clear
+	// ²»ĞèÒªdelete£¬²»ÊôÓÚreaderµÄÊı¾İ£¬ÈôĞèÒª£¬µ÷ÓÃClear
 	//delete _data;
 	_data = nullptr;
 }
@@ -476,10 +476,10 @@ void NetPacket::NetDataReader::Get(FVector& value)
 
 void NetPacket::NetDataReader::Get(FString& value)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());  // è·å–å­—ç¬¦ä¸²çš„é•¿åº¦
+	int32_t length = static_cast<int32_t>(PeekUShort());  // »ñÈ¡×Ö·û´®µÄ³¤¶È
 	if (_position + 2 + length <= _dataSize) {
 		value = FString(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), length);
-		_position += 2 + length;  // æ›´æ–°è¯»å–ä½ç½®
+		_position += 2 + length;  // ¸üĞÂ¶ÁÈ¡Î»ÖÃ
 	}
 	else {
 		throw std::out_of_range("No enough data to get FString");
@@ -488,12 +488,12 @@ void NetPacket::NetDataReader::Get(FString& value)
 
 void NetPacket::NetDataReader::Get(FText& value)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());  // è·å–å­—ç¬¦ä¸²çš„é•¿åº¦
+	int32_t length = static_cast<int32_t>(PeekUShort());  // »ñÈ¡×Ö·û´®µÄ³¤¶È
 	if (_position + 2 + length <= _dataSize) {
-		// ä»æ•°æ®æµä¸­è¯»å–å­—ç¬¦ä¸²å¹¶å°†å…¶è½¬æ¢ä¸º FText
+		// ´ÓÊı¾İÁ÷ÖĞ¶ÁÈ¡×Ö·û´®²¢½«Æä×ª»»Îª FText
 		FString tempStr(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), length);
 		value = FText::FromString(tempStr);
-		_position += 2 + length;  // æ›´æ–°è¯»å–ä½ç½®
+		_position += 2 + length;  // ¸üĞÂ¶ÁÈ¡Î»ÖÃ
 	}
 	else {
 		throw std::out_of_range("No enough data to get FText");
@@ -502,11 +502,11 @@ void NetPacket::NetDataReader::Get(FText& value)
 
 void NetPacket::NetDataReader::Get(FName& value)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());  // è·å–å­—ç¬¦ä¸²çš„é•¿åº¦
+	int32_t length = static_cast<int32_t>(PeekUShort());  // »ñÈ¡×Ö·û´®µÄ³¤¶È
 	if (_position + 2 + length <= _dataSize) {
-		// ä»æ•°æ®æµä¸­è¯»å–å­—ç¬¦ä¸²ï¼Œå¹¶é€šè¿‡ FName æ„é€ 
+		// ´ÓÊı¾İÁ÷ÖĞ¶ÁÈ¡×Ö·û´®£¬²¢Í¨¹ı FName ¹¹Ôì
 		value = FName(FString(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), length));
-		_position += 2 + length;  // æ›´æ–°è¯»å–ä½ç½®
+		_position += 2 + length;  // ¸üĞÂ¶ÁÈ¡Î»ÖÃ
 	}
 	else {
 		throw std::out_of_range("No enough data to get FName");
@@ -591,12 +591,12 @@ uint16_t NetPacket::NetDataReader::GetArray(TArray<uint8>& value)
 
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FString>& value)
 {
-	uint16_t length = PeekUShort();  // è·å–æ•°ç»„çš„é•¿åº¦
-	value.SetNumUninitialized(length);  // ä¸ºæ•°ç»„åˆ†é…ç©ºé—´
+	uint16_t length = PeekUShort();  // »ñÈ¡Êı×éµÄ³¤¶È
+	value.SetNumUninitialized(length);  // ÎªÊı×é·ÖÅä¿Õ¼ä
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		Get(value[i]);  // è¯»å–æ¯ä¸ª FString åˆ°æ•°ç»„ä¸­
+		Get(value[i]);  // ¶ÁÈ¡Ã¿¸ö FString µ½Êı×éÖĞ
 	}
 
 	return length;
@@ -604,16 +604,16 @@ uint16_t NetPacket::NetDataReader::GetArray(TArray<FString>& value)
 
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FName>& value)
 {
-	uint16_t length = PeekUShort();  // è·å–æ•°ç»„çš„é•¿åº¦
-	value.SetNumUninitialized(length);  // ä¸ºæ•°ç»„åˆ†é…ç©ºé—´
+	uint16_t length = PeekUShort();  // »ñÈ¡Êı×éµÄ³¤¶È
+	value.SetNumUninitialized(length);  // ÎªÊı×é·ÖÅä¿Õ¼ä
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		int32_t strLength = static_cast<int32_t>(PeekUShort());  // è·å–å­—ç¬¦ä¸²çš„é•¿åº¦
+		int32_t strLength = static_cast<int32_t>(PeekUShort());  // »ñÈ¡×Ö·û´®µÄ³¤¶È
 		if (_position + 2 + strLength <= _dataSize) {
 			FString str(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), strLength);
-			value[i] = FName(str);  // ä½¿ç”¨ FString æ„é€  FName
-			_position += 2 + strLength;  // æ›´æ–°è¯»å–ä½ç½®
+			value[i] = FName(str);  // Ê¹ÓÃ FString ¹¹Ôì FName
+			_position += 2 + strLength;  // ¸üĞÂ¶ÁÈ¡Î»ÖÃ
 		}
 		else {
 			throw std::out_of_range("No enough data to get FName");
@@ -624,16 +624,16 @@ uint16_t NetPacket::NetDataReader::GetArray(TArray<FName>& value)
 }
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FText>& value)
 {
-	uint16_t length = PeekUShort();  // è·å–æ•°ç»„çš„é•¿åº¦
-	value.SetNumUninitialized(length);  // ä¸ºæ•°ç»„åˆ†é…ç©ºé—´
+	uint16_t length = PeekUShort();  // »ñÈ¡Êı×éµÄ³¤¶È
+	value.SetNumUninitialized(length);  // ÎªÊı×é·ÖÅä¿Õ¼ä
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		int32_t strLength = static_cast<int32_t>(PeekUShort());  // è·å–å­—ç¬¦ä¸²çš„é•¿åº¦
+		int32_t strLength = static_cast<int32_t>(PeekUShort());  // »ñÈ¡×Ö·û´®µÄ³¤¶È
 		if (_position + 2 + strLength <= _dataSize) {
 			FString str(reinterpret_cast<const TCHAR*>(&_data[_position + 2]), strLength);
-			value[i] = FText::FromString(str);  // ä½¿ç”¨ FString æ„é€  FText
-			_position += 2 + strLength;  // æ›´æ–°è¯»å–ä½ç½®
+			value[i] = FText::FromString(str);  // Ê¹ÓÃ FString ¹¹Ôì FText
+			_position += 2 + strLength;  // ¸üĞÂ¶ÁÈ¡Î»ÖÃ
 		}
 		else {
 			throw std::out_of_range("No enough data to get FText");

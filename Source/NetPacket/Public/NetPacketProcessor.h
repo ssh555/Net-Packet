@@ -19,18 +19,18 @@ namespace NetPacket
 	class NetPacketProcessor
 	{
 	public:
-		// æ¥æ”¶æ•°æ®åŒ…æ”¾å…¥ç­‰å¾…é˜Ÿåˆ—
+		// ½ÓÊÕÊı¾İ°ü·ÅÈëµÈ´ı¶ÓÁĞ
 		bool Receive(NetPackage* package);
-		// åŸç”Ÿæ•°æ®: packet size + client id + type hash + data
+		// Ô­ÉúÊı¾İ: packet size + client id + type hash + data
 		bool Receive(uint8_t* data, int32_t size);
 
-		// å¤„ç†æ‰€æœ‰é˜Ÿåˆ—ä¸­çš„æ•°æ®åŒ…
+		// ´¦ÀíËùÓĞ¶ÓÁĞÖĞµÄÊı¾İ°ü
 		bool Process();
 
-		// è·å–åºåˆ—åŒ–çš„æ•°æ®åŒ…
+		// »ñÈ¡ĞòÁĞ»¯µÄÊı¾İ°ü
 		NetPackage* Serialize(INetSerializable* obj);
 
-		// æ³¨å†Œå¯¹åº”ç±»å‹çš„æ¥æ”¶åŒ…å›è°ƒ(è¦†ç›–)
+		// ×¢²á¶ÔÓ¦ÀàĞÍµÄ½ÓÊÕ°ü»Øµ÷(¸²¸Ç)
 		bool Register(uint16_t hashid, std::function<void(int16_t, NetDataReader*)> callback);
 
 		bool Unregister(uint16_t hashid);

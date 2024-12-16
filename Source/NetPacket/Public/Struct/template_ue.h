@@ -1,9 +1,9 @@
 #pragma once
 #include "CoreMinimal.h"
 // 如果报错，修改include为你自己的正确路径
-#include "NetDataWriter.h"
-#include "NetDataReader.h"
-#include "INetSerializable.h"
+#include "../NetDataWriter.h"
+#include "../NetDataReader.h"
+#include "../INetSerializable.h"
 #include "UObject/NoExportTypes.h"
 #include "DummyStruct.h"
 

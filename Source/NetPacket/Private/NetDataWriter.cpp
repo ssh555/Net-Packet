@@ -318,7 +318,7 @@ void NetPacket::NetDataWriter::Put(const FString& value)
 
 void NetPacket::NetDataWriter::Put(const FName& value)
 {
-	// å¤„ç† FName ç±»å‹çš„å†™å…¥
+	// ´¦Àí FName ÀàĞÍµÄĞ´Èë
 	int32_t length = value.ToString().Len();
 	ResizeIfNeed(_position + sizeof(int16_t) + length * sizeof(TCHAR));
 
@@ -332,8 +332,8 @@ void NetPacket::NetDataWriter::Put(const FName& value)
 
 void NetPacket::NetDataWriter::Put(const FText& value)
 {
-	// å¤„ç† FText ç±»å‹çš„å†™å…¥
-	FString tempStr = value.ToString();  // è·å–åŸºç¡€å­—ç¬¦ä¸²
+	// ´¦Àí FText ÀàĞÍµÄĞ´Èë
+	FString tempStr = value.ToString();  // »ñÈ¡»ù´¡×Ö·û´®
 	int32_t length = tempStr.Len();
 	ResizeIfNeed(_position + sizeof(int16_t) + length * sizeof(TCHAR));
 
@@ -515,26 +515,26 @@ void NetPacket::NetDataWriter::PutArray(const TArray<FString>& value)
 void NetPacket::NetDataWriter::PutArray(const TArray<FName>& value)
 {
 	uint16_t length = value.Num();
-	Put(length);  // å†™å…¥æ•°ç»„çš„é•¿åº¦
+	Put(length);  // Ğ´ÈëÊı×éµÄ³¤¶È
 
 	for (int i = 0; i < length; i++)
 	{
-		// å°† FName è½¬æ¢ä¸º FStringï¼Œç„¶åå†™å…¥
+		// ½« FName ×ª»»Îª FString£¬È»ºóĞ´Èë
 		FString str = value[i].ToString();
-		Put(str);  // å†™å…¥å­—ç¬¦ä¸²
+		Put(str);  // Ğ´Èë×Ö·û´®
 	}
 }
 
 void NetPacket::NetDataWriter::PutArray(const TArray<FText>& value)
 {
 	uint16_t length = value.Num();
-	Put(length);  // å†™å…¥æ•°ç»„çš„é•¿åº¦
+	Put(length);  // Ğ´ÈëÊı×éµÄ³¤¶È
 
 	for (int i = 0; i < length; i++)
 	{
-		// å°† FText è½¬æ¢ä¸º FStringï¼Œç„¶åå†™å…¥
+		// ½« FText ×ª»»Îª FString£¬È»ºóĞ´Èë
 		FString str = value[i].ToString();
-		Put(str);  // å†™å…¥å­—ç¬¦ä¸²
+		Put(str);  // Ğ´Èë×Ö·û´®
 	}
 }
 #endif

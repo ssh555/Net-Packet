@@ -1,5 +1,5 @@
 #pragma once
-#include <stdexcept>  // 寮曞叆 std::exception
+#include <stdexcept>  // 引入 std::exception
 #include <iostream>
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@ using json = nlohmann::json;
 #endif
 
 
-// 澶存枃浠跺０鏄庯紝婧愭枃浠跺疄鐜帮紝鍔犱笂NP_API鍗冲彲
+// 头文件声明，源文件实现，加上NP_API即可
 NP_API std::string GetNPVersion();
 
 

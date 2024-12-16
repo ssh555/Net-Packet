@@ -23,46 +23,46 @@ namespace NetPacket
 	class NetDataWriter;
 
 	class NetPackage {
-		// æ·»åŠ å¯¹è±¡æ± çš„å‹å…ƒ
+		// Ìí¼Ó¶ÔÏó³ØµÄÓÑÔª
 		friend class NetPacketPool;
 	public:
 		static const int32_t MaxPacketSize;
 		static const int32_t HeaderSize;
 
 	private:
-		// è®¾ç½®æ•°æ®åŒ…å¤§å°
+		// ÉèÖÃÊı¾İ°ü´óĞ¡
 		NetPackage(uint32_t maxSize = 1024);
 		~NetPackage();
 
 		void resize(int32_t size);
 
 	public:
-		// å‘é€æ•°æ®åŒ…ä¸éœ€è¦æ ¹æ® m_size æˆªæ–­ï¼Œç›´æ¥å®Œæ•´å‘é€ï¼Œåæ­£å…¶ä»–ç«¯æ¥æ”¶çš„æ—¶å€™ä¹Ÿä¼šå› ä¸ºæ•°æ®åŒ…å†…å­˜ç¼“å­˜ä¹Ÿæœ‰ç©ºä½™æµªè´¹
+		// ·¢ËÍÊı¾İ°ü²»ĞèÒª¸ù¾İ m_size ½Ø¶Ï£¬Ö±½ÓÍêÕû·¢ËÍ£¬·´ÕıÆäËû¶Ë½ÓÊÕµÄÊ±ºòÒ²»áÒòÎªÊı¾İ°üÄÚ´æ»º´æÒ²ÓĞ¿ÕÓàÀË·Ñ
 		const uint8_t* getRawData() const;
-		// æ•°æ®åŒ…å¤§å°
+		// Êı¾İ°ü´óĞ¡
 		int32_t getSize() const;
 		int32_t getMaxSize() const;
 
-		// åŒ…å«header
-		// bWithHeader = false -> è‡ªåŠ¨æ·»åŠ header
-		// = true -> dataè‡ªå¸¦header
+		// °üº¬header
+		// bWithHeader = false -> ×Ô¶¯Ìí¼Óheader
+		// = true -> data×Ô´øheader
 		void setRawData(const uint8_t* data, const int32_t size, bool bWithHeader);
-		// å°†æ•°æ®æ‹·è´åˆ°æ•°æ®åŒ…çš„å†…å­˜
+		// ½«Êı¾İ¿½±´µ½Êı¾İ°üµÄÄÚ´æ
 		void setData(NetDataWriter* writer);
 
-		// readerè¯»å–æ•°æ®åå›åˆ°å¯¹è±¡æ± ï¼Œä½†æ˜¯ä¾æ—§å…±äº«æ•°æ®å†…å­˜ï¼Œéœ€å°½å¿«å¤„ç† -> ä¸åŒ…å«header
+		// reader¶ÁÈ¡Êı¾İºó»Øµ½¶ÔÏó³Ø£¬µ«ÊÇÒÀ¾É¹²ÏíÊı¾İÄÚ´æ£¬Ğè¾¡¿ì´¦Àí -> ²»°üº¬header
 		void GetData(NetDataReader* reader);
 
 		int16_t GetClientID() const;
 
 
 	private:
-		// æœ€å¤šå®¹é‡
+		// ×î¶àÈİÁ¿
 		int32_t MaxSize;
-		// æ€»æ•°æ®ï¼ŒåŒ…å«å†—ä½™æœªä½¿ç”¨çš„ç©ºé—´
+		// ×ÜÊı¾İ£¬°üº¬ÈßÓàÎ´Ê¹ÓÃµÄ¿Õ¼ä
 		uint8_t* RawData;
-		// å½“å‰å ç”¨çš„å¤§å°: æœ€å¤§ä¹Ÿæ¯”MaxSizeå°HeaderSize
-		// å®é™…æ•°æ®çš„å¤§å°ï¼Œä¸åŒ…æ‹¬Header
+		// µ±Ç°Õ¼ÓÃµÄ´óĞ¡: ×î´óÒ²±ÈMaxSizeĞ¡HeaderSize
+		// Êµ¼ÊÊı¾İµÄ´óĞ¡£¬²»°üÀ¨Header
 		int32_t m_size;
 		NetPackage* Next;
 

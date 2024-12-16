@@ -13,20 +13,20 @@ namespace NetPacket
 	public:
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
-			// 寮�澶村繀椤绘湁
+			// 开头必须有
 			writer.Put(GetTypeHash());
 			writer.Put(t);
 		}
 
 		virtual void Deserialize(NetDataReader& reader) override
 		{
-			// 寮�澶村繀椤绘湁
+			// 开头必须有
 			reader.PeekUShort();
 			reader.Get(t);
 		}
 		virtual uint16_t GetTypeHash() const override
 		{
-			// 浣跨敤甯搁噺瀛楃涓蹭綔涓虹被鍨嬫爣璇嗙
+			// 使用常量字符串作为类型标识符
 			return MurmurHash16("Test");
 		}
 	};
