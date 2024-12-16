@@ -304,7 +304,7 @@ public:
 
 
 #include "DummyStruct.generated.h"
-USTRUCT(BlueprintType, Blueprintable)
+USTRUCT()
 struct FDummyStruct
 {
 	GENERATED_BODY()
