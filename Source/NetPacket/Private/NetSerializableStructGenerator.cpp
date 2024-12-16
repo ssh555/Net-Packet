@@ -139,7 +139,7 @@ namespace NetPacket
 		}
 		else if (mode == 1)
 		{
-			sst << "\tUPROPERTY(BlueprintReadWrite, Category = \"{CLASSNAME}\")\n";
+			sst << "\tUPROPERTY(BlueprintReadWrite, EditAnywhere, Category = \"{CLASSNAME}\")\n";
 			sst << "\t" << T << " " << name << ";\n";
 		}
 	}
@@ -152,7 +152,7 @@ namespace NetPacket
 		}
 		else if (mode == 1)
 		{
-			sst << "\tUPROPERTY(BlueprintReadWrite, Category = \"{CLASSNAME}\")\n";
+			sst << "\tUPROPERTY(BlueprintReadWrite, EditAnywhere, Category = \"{CLASSNAME}\")\n";
 			sst << "\tTArray<" << T << "> " << name << ";\n";
 		}
 	}

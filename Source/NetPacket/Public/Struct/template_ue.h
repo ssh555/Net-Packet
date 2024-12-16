@@ -17,79 +17,79 @@ struct Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
 
 public:
 		// 非数组数据
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FString str;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FName strN;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FText strT;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	int64 i64;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	int32 i32;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	uint8 ui8;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FVector vec;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FQuat q;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FColor color;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FIntPoint intp;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FVector2D vec2d;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FRotator rot;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FDateTime datetime;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FTimespan timespan;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FBox box;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FMatrix mat;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FTransform trans;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FLinearColor lcolor;
 
 		// 数组数据
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FString> strA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FName> strNA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FText> strTA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<int64> i64A;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<int32> i32A;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<uint8> ui8A;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FVector> vecA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FQuat> qA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FColor> colorA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FIntPoint> intpA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FVector2D> vec2dA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FRotator> rotA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FDateTime> datetimeA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FTimespan> timespanA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FBox> boxA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FMatrix> matA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FTransform> transA;
-	UPROPERTY(BlueprintReadWrite, Category = "template_ue")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FLinearColor> lcolorA;
 
 
