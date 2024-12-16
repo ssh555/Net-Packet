@@ -154,7 +154,7 @@ namespace NetPacket {
 	void NetPacket::NetDataWriter::PutArray(const TArray<T>& value)
 	{
 		// 获取TArray的长度
-		auto length = value.Num();
+		uint16_t length = value.Num();
 		int32_t size = length * sizeof(T);
 
 		Put(length);

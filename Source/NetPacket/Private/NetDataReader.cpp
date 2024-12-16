@@ -508,7 +508,7 @@ void NetPacket::NetDataReader::Get(FText& value)
 	if (_position + length <= _dataSize) {
 		// 从数据流中读取字符串并将其转换为 FText
 		FString tempStr(length, reinterpret_cast<const TCHAR*>(&_data[_position]));
-		value = FText::FromString(tempStr);
+		value.FromString(tempStr);
 		_position += length * sizeof(TCHAR);  // 更新读取位置
 	}
 	else {
