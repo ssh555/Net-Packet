@@ -1,4 +1,3 @@
-#include "nppch.h"
 #include "NetDataWriter.h"
 
 constexpr size_t NetPacket::NetDataWriter::InitialSize;
@@ -306,6 +305,11 @@ void NetPacket::NetDataWriter::PutArray(INetSerializable* value, unsigned short 
 #if NP_UE_SUPPORT
 void NetPacket::NetDataWriter::Put(const FString& value)
 {
+	if (value.IsEmpty()) // 检查空字符串
+	{
+		UE_LOG(LogTemp, Error, TEXT("Attempted to write an empty FString value"));
+		return; // 或者抛出异常
+	}
 	ResizeIfNeed(_position + sizeof(int16_t) + value.Len() * sizeof(TCHAR));
 
 	int16_t strLength = value.Len();
@@ -318,6 +322,11 @@ void NetPacket::NetDataWriter::Put(const FString& value)
 
 void NetPacket::NetDataWriter::Put(const FName& value)
 {
+	if (value.IsNone()) // FName的有效性检查
+	{
+		UE_LOG(LogTemp, Error, TEXT("Attempted to write an invalid FName value"));
+		return; // 或者抛出异常
+	}
 	// 处理 FName 类型的写入
 	int32_t length = value.ToString().Len();
 	ResizeIfNeed(_position + sizeof(int16_t) + length * sizeof(TCHAR));
@@ -332,6 +341,12 @@ void NetPacket::NetDataWriter::Put(const FName& value)
 
 void NetPacket::NetDataWriter::Put(const FText& value)
 {
+	if (value.IsEmpty()) // 检查 FText 是否有效
+	{
+		UE_LOG(LogTemp, Error, TEXT("Attempted to write an invalid FText value"));
+		return; // 或者抛出异常
+	}
+
 	// 处理 FText 类型的写入
 	FString tempStr = value.ToString();  // 获取基础字符串
 	int32_t length = tempStr.Len();
