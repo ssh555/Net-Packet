@@ -9,7 +9,7 @@ struct FDummyStruct
 {
 	GENERATED_BODY()
 public:
-	virtual ~FDummyStruct() = default; // æ·»åŠ è™šææ„å‡½æ•°
+	virtual ~FDummyStruct() = default; // Ìí¼ÓĞéÎö¹¹º¯Êı
 };
 
 

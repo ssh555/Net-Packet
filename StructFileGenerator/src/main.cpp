@@ -13,61 +13,61 @@
 namespace fs = std::filesystem;
 
 std::string getExecutableDirectory() {
-	char buffer[MAX_PATH];  // ç”¨ char æ•°ç»„å­˜å‚¨è·¯å¾„
-	DWORD len = GetModuleFileNameA(NULL, buffer, MAX_PATH);  // ä½¿ç”¨ GetModuleFileNameA è·å–è·¯å¾„
+	char buffer[MAX_PATH];  // ÓÃ char Êı×é´æ´¢Â·¾¶
+	DWORD len = GetModuleFileNameA(NULL, buffer, MAX_PATH);  // Ê¹ÓÃ GetModuleFileNameA »ñÈ¡Â·¾¶
 	if (len == 0) {
 		std::cerr << "Error retrieving module path: " << GetLastError() << std::endl;
 		return "";
 	}
-	return fs::path(buffer).parent_path().string();  // è·å–è·¯å¾„éƒ¨åˆ†
+	return fs::path(buffer).parent_path().string();  // »ñÈ¡Â·¾¶²¿·Ö
 }
 void printUsage() {
 	std::cout << "Usage: StructFileGenerator [-i <input_dir>] [-o <output_dir>]\n";
-	std::cout << "  -i <input_dir>  : è¾“å…¥ç›®å½• (é»˜è®¤: ./Input)\n";
-	std::cout << "  -o <output_dir> : è¾“å‡ºç›®å½• (é»˜è®¤: ./Generate)\n";
+	std::cout << "  -i <input_dir>  : ÊäÈëÄ¿Â¼ (Ä¬ÈÏ: ./Input)\n";
+	std::cout << "  -o <output_dir> : Êä³öÄ¿Â¼ (Ä¬ÈÏ: ./Generate)\n";
 }
 
 int main(int argc, char* argv[]) {
-	// ä½¿ç”¨ EXE æ‰€åœ¨ç›®å½•ä½œä¸ºé»˜è®¤è·¯å¾„
+	// Ê¹ÓÃ EXE ËùÔÚÄ¿Â¼×÷ÎªÄ¬ÈÏÂ·¾¶
 	std::string exeDir = getExecutableDirectory();
-	std::string inputDir = exeDir + "/Input"; // é»˜è®¤è¾“å…¥ç›®å½•
-	std::string outputDir = exeDir + "/Generate"; // é»˜è®¤è¾“å‡ºç›®å½•
+	std::string inputDir = exeDir + "/Input"; // Ä¬ÈÏÊäÈëÄ¿Â¼
+	std::string outputDir = exeDir + "/Generate"; // Ä¬ÈÏÊä³öÄ¿Â¼
 
-	// è§£æå‘½ä»¤è¡Œå‚æ•°
+	// ½âÎöÃüÁîĞĞ²ÎÊı
 	for (int i = 1; i < argc; ++i) {
 		if (std::strcmp(argv[i], "-i") == 0 && i + 1 < argc) {
-			inputDir = argv[++i]; // è·å–è¾“å…¥ç›®å½•
+			inputDir = argv[++i]; // »ñÈ¡ÊäÈëÄ¿Â¼
 		}
 		else if (std::strcmp(argv[i], "-o") == 0 && i + 1 < argc) {
-			outputDir = argv[++i]; // è·å–è¾“å‡ºç›®å½•
+			outputDir = argv[++i]; // »ñÈ¡Êä³öÄ¿Â¼
 		}
 		else {
-			std::cerr << "æœªçŸ¥å‚æ•°: " << argv[i] << std::endl;
+			std::cerr << "Î´Öª²ÎÊı: " << argv[i] << std::endl;
 			printUsage();
 			return 1;
 		}
 	}
 
-	// ç¡®ä¿è¾“å…¥ç›®å½•å­˜åœ¨
+	// È·±£ÊäÈëÄ¿Â¼´æÔÚ
 	if (!fs::exists(inputDir)) {
-		std::cerr << "è¾“å…¥ç›®å½•ä¸å­˜åœ¨: " << inputDir << std::endl;
+		std::cerr << "ÊäÈëÄ¿Â¼²»´æÔÚ: " << inputDir << std::endl;
 		return 1;
 	}
 
-	// ç¡®ä¿è¾“å‡ºç›®å½•å­˜åœ¨
+	// È·±£Êä³öÄ¿Â¼´æÔÚ
 	if (!fs::exists(outputDir)) {
 		if (!fs::create_directory(outputDir)) {
-			std::cerr << "åˆ›å»ºè¾“å‡ºç›®å½•å¤±è´¥: " << outputDir << std::endl;
+			std::cerr << "´´½¨Êä³öÄ¿Â¼Ê§°Ü: " << outputDir << std::endl;
 			return 1;
 		}
 	}
 
-	// è¾“å‡ºè·å–åˆ°çš„å‚æ•°
-	std::cout << "è¾“å…¥ç›®å½•: " << inputDir << std::endl;
-	std::cout << "è¾“å‡ºç›®å½•: " << outputDir << std::endl;
+	// Êä³ö»ñÈ¡µ½µÄ²ÎÊı
+	std::cout << "ÊäÈëÄ¿Â¼: " << inputDir << std::endl;
+	std::cout << "Êä³öÄ¿Â¼: " << outputDir << std::endl;
 
-	// TODO: ç”Ÿæˆç»“æ„ä½“æ–‡ä»¶çš„é€»è¾‘
-	// åœ¨è¿™é‡Œæ‰§è¡Œå¤„ç†ç›®å½•ä¸­æ•°æ®æ–‡ä»¶çš„é€»è¾‘ï¼Œå¹¶å°†ç»“æœå†™å…¥ outputDir ç›®å½•
+	// TODO: Éú³É½á¹¹ÌåÎÄ¼şµÄÂß¼­
+	// ÔÚÕâÀïÖ´ĞĞ´¦ÀíÄ¿Â¼ÖĞÊı¾İÎÄ¼şµÄÂß¼­£¬²¢½«½á¹ûĞ´Èë outputDir Ä¿Â¼
 	NetPacket::NetSerializableStructGenerator generator;
 
 	generator.GenerateAll(inputDir, outputDir);

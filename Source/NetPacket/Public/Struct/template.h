@@ -1,10 +1,10 @@
 #pragma once
-#include "nppch.h"
-// å¦‚æœæŠ¥é”™ï¼Œä¿®æ”¹includeä¸ºä½ è‡ªå·±çš„æ­£ç¡®è·¯å¾„
+#include "../nppch.h"
+// Èç¹û±¨´í£¬ĞŞ¸ÄincludeÎªÄã×Ô¼ºµÄÕıÈ·Â·¾¶
 #include "../INetSerializable.h"
 #include "../NetDataWriter.h"
 #include "../NetDataReader.h"
-// éœ€åŒ…å«è‡ªå®šä¹‰æ•°æ®ç±»å‹çš„å¤´æ–‡ä»¶
+// Ğè°üº¬×Ô¶¨ÒåÊı¾İÀàĞÍµÄÍ·ÎÄ¼ş
 #include "example.hpp"
 
 
@@ -13,7 +13,7 @@ namespace NetPacket
 	class NP_API template : public INetSerializable
 	{
 	public:
-		// éæ•°ç»„æ•°æ®
+		// ·ÇÊı×éÊı¾İ
 		uint8_t ui8;
 		int8_t i8;
 		bool b;
@@ -30,7 +30,7 @@ namespace NetPacket
 		char ch;
 		std::byte bt;
 
-		// æ•°ç»„æ•°æ®
+		// Êı×éÊı¾İ
 		uint8_t ui8a[5];
 		int8_t i8a[5];
 		bool ba[5];
@@ -53,7 +53,7 @@ namespace NetPacket
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
 			writer.Put(GetTypeHash());
-			// éæ•°ç»„æ•°æ®
+			// ·ÇÊı×éÊı¾İ
 			writer.Put(ui8);
 			writer.Put(i8);
 			writer.Put(b);
@@ -70,7 +70,7 @@ namespace NetPacket
 			writer.Put(ch);
 			writer.Put(bt);
 
-			// æ•°ç»„æ•°æ®
+			// Êı×éÊı¾İ
 		writer.PutArray(ui8a);
 		writer.PutArray(i8a);
 		writer.PutArray(ba);
@@ -93,7 +93,7 @@ namespace NetPacket
 		virtual void Deserialize(NetDataReader& reader) override
 		{
 			reader.PeekUShort();
-			// éæ•°ç»„æ•°æ®
+			// ·ÇÊı×éÊı¾İ
 		reader.Get(ui8);
 		reader.Get(i8);
 		reader.Get(b);
@@ -110,7 +110,7 @@ namespace NetPacket
 		reader.Get(ch);
 		reader.Get(bt);
 
-			// æ•°ç»„æ•°æ®
+			// Êı×éÊı¾İ
 		reader.GetArray(ui8a);
 		reader.GetArray(i8a);
 		reader.GetArray(ba);

@@ -1,13 +1,13 @@
 #pragma once
 #include "CoreMinimal.h"
-// å¦‚æœæŠ¥é”™ï¼Œä¿®æ”¹includeä¸ºä½ è‡ªå·±çš„æ­£ç¡®è·¯å¾„
+// Èç¹û±¨´í£¬ĞŞ¸ÄincludeÎªÄã×Ô¼ºµÄÕıÈ·Â·¾¶
 #include "../NetDataWriter.h"
 #include "../NetDataReader.h"
 #include "../INetSerializable.h"
 #include "UObject/NoExportTypes.h"
 #include "DummyStruct.h"
 
-// éœ€åŒ…å«è‡ªå®šä¹‰æ•°æ®ç±»å‹çš„å¤´æ–‡ä»¶
+// Ğè°üº¬×Ô¶¨ÒåÊı¾İÀàĞÍµÄÍ·ÎÄ¼ş
 
 
 #include "template_ue.generated.h"
@@ -17,7 +17,7 @@ struct Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
 	GENERATED_BODY()
 
 public:
-		// éæ•°ç»„æ•°æ®
+		// ·ÇÊı×éÊı¾İ
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FString str;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
@@ -55,7 +55,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	FLinearColor lcolor;
 
-		// æ•°ç»„æ•°æ®
+		// Êı×éÊı¾İ
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FString> strA;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
@@ -96,11 +96,11 @@ public:
 
 
 public:
-	// å®ç° Serialize å‡½æ•°
+	// ÊµÏÖ Serialize º¯Êı
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{
 		writer.Put(GetTypeHash());
-			// éæ•°ç»„æ•°æ®
+			// ·ÇÊı×éÊı¾İ
 		writer.Put(str);
 		writer.Put(strN);
 		writer.Put(strT);
@@ -120,7 +120,7 @@ public:
 		writer.Put(trans);
 		writer.Put(lcolor);
 
-			// æ•°ç»„æ•°æ®
+			// Êı×éÊı¾İ
 		writer.PutArray(strA);
 		writer.PutArray(strNA);
 		writer.PutArray(strTA);
@@ -146,7 +146,7 @@ public:
 	virtual void Deserialize(NetPacket::NetDataReader& reader) override
 	{
 		reader.PeekUShort();
-			// éæ•°ç»„æ•°æ®
+			// ·ÇÊı×éÊı¾İ
 		reader.Get(str);
 		reader.Get(strN);
 		reader.Get(strT);
@@ -166,7 +166,7 @@ public:
 		reader.Get(trans);
 		reader.Get(lcolor);
 
-			// æ•°ç»„æ•°æ®
+			// Êı×éÊı¾İ
 		reader.GetArray(strA);
 		reader.GetArray(strNA);
 		reader.GetArray(strTA);
