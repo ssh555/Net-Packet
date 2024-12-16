@@ -12,7 +12,7 @@
 
 #include "template_ue.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
+struct NP_API Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 

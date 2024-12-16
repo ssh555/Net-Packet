@@ -268,7 +268,7 @@ namespace NetPacket
 
 #include "{CLASSNAME}.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct F{CLASSNAME} : public FDummyStruct, public NetPacket::INetSerializable
+struct NP_API F{CLASSNAME} : public FDummyStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 

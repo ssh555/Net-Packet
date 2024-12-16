@@ -14,7 +14,7 @@
 #include "Json/include/single_include/nlohmann/json_fwd.hpp"
 using json = nlohmann::json;
 #ifdef NP_UE_SUPPORT
-#define NP_API
+#define NP_API DLLEXPORT
 #else
 #ifdef NP_BUILD_DLL
 #define NP_API __declspec(dllexport)
@@ -24,8 +24,6 @@ using json = nlohmann::json;
 #endif
 
 
-// 头文件声明，源文件实现，加上NP_API即可
-NP_API std::string GetNPVersion();
 
 
 
