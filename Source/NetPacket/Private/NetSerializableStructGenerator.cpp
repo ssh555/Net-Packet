@@ -390,7 +390,8 @@ namespace NetPacket
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static void ConvertTo{TYPE}(const FDummyStruct& Parent, F{TYPE}& data)
 	{
-		data = reinterpret_cast<F{TYPE}&>(const_cast<FDummyStruct&>(Parent));
+		F{TYPE}& obj = *((F{TYPE}*)(&Parent));
+		FMemory::Memcpy(data, obj);
 	}
 )";
 

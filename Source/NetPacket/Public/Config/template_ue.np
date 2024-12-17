@@ -24,9 +24,7 @@
         {"type":"FLinearColor", "name":"lcolor" }
     ],
     "arraydata" : [
-        {"type":"FString", "name":"strA", "length":5},
         {"type":"FName", "name":"strNA", "length":5},
-        {"type":"FText", "name":"strTA", "length":5},
         {"type":"int64", "name":"i64A", "length":5},
         {"type":"int32", "name":"i32A", "length":5},
         {"type":"uint8", "name":"ui8A", "length":5},
