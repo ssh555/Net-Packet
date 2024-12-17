@@ -257,6 +257,8 @@ namespace NetPacket
 {DECLATEDATA}
 
 	public:
+		~{CLASSNAME}() = default;
+
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
 			writer.Put(GetTypeHash());
@@ -298,6 +300,8 @@ public:
 {DECLATEDATA}
 
 public:
+	~F{CLASSNAME}() = default; // 添加虚析构函数
+
 	// 实现 Serialize 函数
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{

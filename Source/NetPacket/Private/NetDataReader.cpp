@@ -291,6 +291,7 @@ uint16_t NetPacket::NetDataReader::PeekUShort(bool isPop)
 		uint16_t value;
 		if (_position + 2 <= _dataSize) {
 			std::memcpy(&value, &_data[_position], sizeof(value));
+			return value;
 		}
 		else
 			throw std::out_of_range("No enough data to get ushort");
