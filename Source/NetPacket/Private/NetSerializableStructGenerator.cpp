@@ -173,7 +173,7 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\twriter.PutArray(" << name << ");\n";
+			sst << "\t\twriter.PutArray(" << name << ", " << length << ");\n";
 		}
 		else if (mode == 1)
 		{

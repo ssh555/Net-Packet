@@ -71,21 +71,21 @@ namespace NetPacket
 			writer.Put(bt);
 
 			// 数组数据
-		writer.PutArray(ui8a);
-		writer.PutArray(i8a);
-		writer.PutArray(ba);
-		writer.PutArray(i16a);
-		writer.PutArray(ui16a);
-		writer.PutArray(i32a);
-		writer.PutArray(ui32a);
-		writer.PutArray(i64a);
-		writer.PutArray(ui64a);
-		writer.PutArray(fa);
-		writer.PutArray(da);
-		writer.PutArray(stra);
-		writer.PutArray(testa);
-		writer.PutArray(cha);
-		writer.PutArray(bta);
+		writer.PutArray(ui8a, 5);
+		writer.PutArray(i8a, 5);
+		writer.PutArray(ba, 5);
+		writer.PutArray(i16a, 5);
+		writer.PutArray(ui16a, 5);
+		writer.PutArray(i32a, 5);
+		writer.PutArray(ui32a, 5);
+		writer.PutArray(i64a, 5);
+		writer.PutArray(ui64a, 5);
+		writer.PutArray(fa, 5);
+		writer.PutArray(da, 5);
+		writer.PutArray(stra, 5);
+		writer.PutArray(testa, 5);
+		writer.PutArray(cha, 5);
+		writer.PutArray(bta, 5);
 
 
 		}
