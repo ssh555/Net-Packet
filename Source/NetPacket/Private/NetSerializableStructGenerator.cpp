@@ -149,6 +149,11 @@ namespace NetPacket
 			replaceAll(o, "{FUNCTION}", tmp);
 			outputFile << o;
 			outputFile.close();
+
+			output = outputDir + "/NPStructRef.h";
+			outputFile.open(output);
+			outputFile << NetStructConfig::UENPSTRUCTREF;
+			outputFile.close();
 		}
 	}
 
@@ -347,11 +352,12 @@ public:
 #include "../NetDataReader.h"
 #include <Kismet/BlueprintFunctionLibrary.h>
 #include "NPStruct.h"
+#include "NPStructRef.h"
 
 #include "NPBPFunctionLibrary.generated.h"
 
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, const FDummyStruct&, data);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, UNPStructRef*, data);
 
 UCLASS()
 class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
@@ -370,13 +376,16 @@ namespace NetPacket
 
 		// 包裹蓝图委托事件，用于C++调用，然后在Processor中注册。若在蓝图中使用，需要自行再封装一层
 		// UFUNCTION(BlueprintCallable, Category = "NPBPFunction")
-		static std::function<void(int16_t, const INetSerializable&)> WrapDelegate(FRegisterProcessDelegate Delegate)
+		static std::function<void(int16_t, INetSerializable*)> WrapDelegate(FRegisterProcessDelegate Delegate)
 		{
 			// 用 Lambda 函数包装蓝图委托
-			return [Delegate](int16_t clienID, const INetSerializable& obj)
+			return [Delegate](int16_t clienID, INetSerializable* obj)
 			{
 				// 调用蓝图委托
-				Delegate.ExecuteIfBound(clienID, reinterpret_cast<const FDummyStruct&>(obj));
+				UNPStructRef* data = NewObject<UNPStructRef>();
+				data->obj = static_cast<FDummyStruct*>(static_cast<Ftemplate_ue*>(obj));
+
+				Delegate.ExecuteIfBound(clienID, data);
 			};
 		}
 	};
@@ -388,11 +397,33 @@ namespace NetPacket
 
 	const std::string NetStructConfig::UEBPCONVERT = R"(
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static void ConvertTo{TYPE}(const FDummyStruct& Parent, F{TYPE}& data)
+	static void ConvertTo{TYPE}(const UNPStructRef* Parent, F{TYPE}& data)
 	{
-		F{TYPE}& obj = *((F{TYPE}*)(&Parent));
-		FMemory::Memcpy(data, obj);
+		data = *static_cast<F{TYPE}*>(Parent->obj);
 	}
+)";
+
+	const std::string NetStructConfig::UENPSTRUCTREF = R"(#pragma once
+#include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
+#include <UObject/Object.h>
+#include "NPStruct.h"
+
+#include "NPStructRef.generated.h"
+UCLASS(Blueprintable, BlueprintType)
+class NP_API UNPStructRef : public UObject
+{
+	GENERATED_BODY()
+public:
+	FDummyStruct* obj;
+
+	UFUNCTION(BlueprintCallable, Category = "NPStructRef")
+	FDummyStruct& Get()
+	{
+		return *obj;
+	}
+};
+
 )";
 
 }

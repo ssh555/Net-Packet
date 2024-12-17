@@ -35,7 +35,7 @@ namespace NetPacket
 		// (clientID, 数据)
 		template<typename T>
 		typename std::enable_if<std::is_base_of<INetSerializable, T>::value, void>::type
-		Register(uint16_t hashid, std::function<void(int16_t, const INetSerializable&)> callback);
+		Register(uint16_t hashid, std::function<void(int16_t, INetSerializable*)> callback);
 
 		void Unregister(uint16_t hashid);
 
@@ -56,7 +56,7 @@ namespace NetPacket
 
 	template<typename T>
 	typename std::enable_if<std::is_base_of<INetSerializable, T>::value, void>::type
-	NetPacket::NetPacketProcessor::Register(uint16_t hashid, std::function<void(int16_t, const INetSerializable&)> callback)
+	NetPacket::NetPacketProcessor::Register(uint16_t hashid, std::function<void(int16_t, INetSerializable*)> callback)
 	{
 		std::lock_guard<std::mutex> lock(m_mapLock);
 		m_packetCallbackMap[hashid] = [callback](int16_t clienID, NetDataReader* reader)
@@ -64,8 +64,8 @@ namespace NetPacket
 			// 生成对应的栈对象
 			T obj;
 			obj.Deserialize(*reader);
-			// 传入
-			callback(clienID, obj);
+			INetSerializable* p = static_cast<INetSerializable*>(&obj);
+			callback(clienID, p);
 		};
 	}
 

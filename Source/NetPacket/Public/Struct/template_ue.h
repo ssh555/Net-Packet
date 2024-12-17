@@ -57,11 +57,7 @@ public:
 
 		// 数组数据
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
-	TArray<FString> strA;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<FName> strNA;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
-	TArray<FText> strTA;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
 	TArray<int64> i64A;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "template_ue")
@@ -96,6 +92,8 @@ public:
 
 
 public:
+	~Ftemplate_ue() = default; // 添加虚析构函数
+
 	// 实现 Serialize 函数
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{
@@ -121,9 +119,7 @@ public:
 		writer.Put(lcolor);
 
 			// 数组数据
-		writer.PutArray(strA);
 		writer.PutArray(strNA);
-		writer.PutArray(strTA);
 		writer.PutArray(i64A);
 		writer.PutArray(i32A);
 		writer.PutArray(ui8A);
@@ -167,9 +163,7 @@ public:
 		reader.Get(lcolor);
 
 			// 数组数据
-		reader.GetArray(strA);
 		reader.GetArray(strNA);
-		reader.GetArray(strTA);
 		reader.GetArray(i64A);
 		reader.GetArray(i32A);
 		reader.GetArray(ui8A);

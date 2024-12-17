@@ -50,6 +50,8 @@ namespace NetPacket
 
 
 	public:
+		~templateA() = default;
+
 		virtual void Serialize(NetDataWriter& writer) const override
 		{
 			writer.Put(GetTypeHash());
