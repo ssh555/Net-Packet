@@ -86,11 +86,21 @@ namespace NetPacket
 			outputFile << outContent;
 			outputFile.close();
 		}
+
+		// 加入UE蓝图的类型转换函数
+		if (mode == 1)
+		{
+			std::string tmp = NetStructConfig::UEBPCONVERT;
+			replaceAll(tmp, "{TYPE}", CLASSNAME);
+			uebpfunctions << tmp;
+		}
 		return mode;
 	}
 
 	void NetSerializableStructGenerator::GenerateAll(const std::string& inputDir, const std::string& outputDir)
 	{
+		uebpfunctions.clear();
+
 		// 在生成目录下生成NPStruct.h，包含所有的头文件
 		std::string output = outputDir + "/NPStruct.h";
 		std::ofstream outputFile(output);
@@ -130,10 +140,14 @@ namespace NetPacket
 			outputFile.open(output);
 			outputFile << NetStructConfig::UEDummyStruct;
 			outputFile.close();
+
 			// 生成蓝图函数库
 			output = outputDir + "/NPBPFunctionLibrary.h";
 			outputFile.open(output);
-			outputFile << NetStructConfig::UEBPAPI;
+			std::string o = NetStructConfig::UEBPAPI;
+			std::string tmp = uebpfunctions.str();
+			replaceAll(o, "{FUNCTION}", tmp);
+			outputFile << o;
 			outputFile.close();
 		}
 	}
@@ -328,6 +342,7 @@ public:
 #include <functional>
 #include "../NetDataReader.h"
 #include <Kismet/BlueprintFunctionLibrary.h>
+#include "NPStruct.h"
 
 #include "NPBPFunctionLibrary.generated.h"
 
@@ -338,6 +353,8 @@ UCLASS()
 class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+public:
+{FUNCTION}
 };
 
 
@@ -363,6 +380,14 @@ namespace NetPacket
 
 
 
+)";
+
+	const std::string NetStructConfig::UEBPCONVERT = R"(
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static void ConvertTo{TYPE}(const FDummyStruct& Parent, F{TYPE}& data)
+	{
+		data = reinterpret_cast<F{TYPE}&>(const_cast<FDummyStruct&>(Parent));
+	}
 )";
 
 }

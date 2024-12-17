@@ -11,11 +11,11 @@ namespace NetPacket
 		m_packagequeue.push(package);
 	}
 
-	void NetPacketProcessor::Receive(uint8_t* data, int32_t size)
+	void NetPacketProcessor::Receive(uint8_t* data, int32_t size, bool bWithHead)
 	{
 		std::lock_guard<std::mutex> lock(m_queueLock);
 		NetPackage* package = m_pool.GetPacket(size);
-		package->setRawData(data, size, true);
+		package->setRawData(data, size, bWithHead);
 		m_packagequeue.push(package);
 	}
 

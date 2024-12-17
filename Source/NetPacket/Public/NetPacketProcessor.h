@@ -22,7 +22,7 @@ namespace NetPacket
 		// 接收数据包放入等待队列
 		void Receive(NetPackage* package);
 		// 原生数据: packet size + client id + type hash + data
-		void Receive(uint8_t* data, int32_t size);
+		void Receive(uint8_t* data, int32_t size, bool bWithHead = true);
 
 		// 处理所有队列中的数据包
 		void Process();

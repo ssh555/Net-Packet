@@ -10,7 +10,7 @@
 
 namespace NetPacket
 {
-	class template : public INetSerializable
+	class templateA : public INetSerializable
 	{
 	public:
 		// 非数组数据
@@ -132,7 +132,7 @@ namespace NetPacket
 
 		static uint16_t GetTypeHash()
 		{
-			return MurmurHash16("template");
+			return MurmurHash16("templateA");
 		}
 	};
 }

@@ -84,6 +84,11 @@ int16_t NetPacket::NetPackage::GetClientID() const
 	return id;
 }
 
+void NetPacket::NetPackage::SetClientID(int16_t cid)
+{
+	memcpy(&RawData + 4, &cid, sizeof(int16_t));
+}
+
 const uint8_t* NetPacket::NetPackage::getRawData() const
 {
 	return RawData;

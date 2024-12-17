@@ -55,6 +55,8 @@ namespace NetPacket
 
 		int16_t GetClientID() const;
 
+		void SetClientID(int16_t cid);
+
 
 	private:
 		// ×î¶àÈÝÁ¿

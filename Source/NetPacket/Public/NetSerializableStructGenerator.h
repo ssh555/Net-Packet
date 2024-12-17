@@ -32,6 +32,8 @@ namespace NetPacket
 		void ReadDataArray(std::stringstream& sst, const std::string& name, int32_t mode);
 
 		std::string GetConfigTemplate(int32_t mode);
+
+		std::stringstream uebpfunctions;
 	};
 
 	// 代码生成模板
@@ -42,5 +44,7 @@ namespace NetPacket
 
 		static const std::string UEDummyStruct;
 		static const std::string UEBPAPI;
+		static const std::string UEBPCONVERT;
+
 	};
 }

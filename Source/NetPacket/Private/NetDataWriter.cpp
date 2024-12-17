@@ -311,14 +311,15 @@ void NetPacket::NetDataWriter::Put(const FString& value)
 		UE_LOG(LogTemp, Error, TEXT("Attempted to write an empty FString value"));
 		return; // 或者抛出异常
 	}
-	ResizeIfNeed(_position + sizeof(int16_t) + value.Len() * sizeof(TCHAR));
+	int16_t strLength = value.Len() * sizeof(TCHAR);
 
-	int16_t strLength = value.Len();
+	ResizeIfNeed(_position + sizeof(int16_t) + value.Len());
+
 	FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
 	_position += sizeof(int16_t);
 
-	FMemory::Memcpy(_data + _position, value.GetCharArray().GetData(), strLength * sizeof(TCHAR));
-	_position += strLength * sizeof(TCHAR);
+	FMemory::Memcpy(_data + _position, value.GetCharArray().GetData(), strLength);
+	_position += strLength;
 }
 
 void NetPacket::NetDataWriter::Put(const FName& value)
@@ -329,15 +330,14 @@ void NetPacket::NetDataWriter::Put(const FName& value)
 		return; // 或者抛出异常
 	}
 	// 处理 FName 类型的写入
-	int32_t length = value.ToString().Len();
-	ResizeIfNeed(_position + sizeof(int16_t) + length * sizeof(TCHAR));
+	int16_t strLength = value.ToString().Len() * sizeof(TCHAR);
+	ResizeIfNeed(_position + sizeof(int16_t) + strLength);
 
-	int16_t strLength = length;
 	FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
 	_position += sizeof(int16_t);
 
-	FMemory::Memcpy(_data + _position, value.ToString().GetCharArray().GetData(), length * sizeof(TCHAR));
-	_position += length * sizeof(TCHAR);
+	FMemory::Memcpy(_data + _position, value.ToString().GetCharArray().GetData(), strLength);
+	_position += strLength;
 }
 
 void NetPacket::NetDataWriter::Put(const FText& value)
@@ -350,15 +350,14 @@ void NetPacket::NetDataWriter::Put(const FText& value)
 
 	// 处理 FText 类型的写入
 	FString tempStr = value.ToString();  // 获取基础字符串
-	int32_t length = tempStr.Len();
-	ResizeIfNeed(_position + sizeof(int16_t) + length * sizeof(TCHAR));
+	int16_t strLength = tempStr.Len() * sizeof(TCHAR);
+	ResizeIfNeed(_position + sizeof(int16_t) + strLength);
 
-	int16_t strLength = length;
 	FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
 	_position += sizeof(int16_t);
 
-	FMemory::Memcpy(_data + _position, tempStr.GetCharArray().GetData(), length * sizeof(TCHAR));
-	_position += length * sizeof(TCHAR);
+	FMemory::Memcpy(_data + _position, tempStr.GetCharArray().GetData(), strLength);
+	_position += strLength;
 }
 
 void NetPacket::NetDataWriter::Put(const FVector& value)

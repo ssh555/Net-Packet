@@ -494,8 +494,8 @@ void NetPacket::NetDataReader::Get(FString& value)
 {
 	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
 	if (_position + length <= _dataSize) {
-		value = FString(length, reinterpret_cast<const TCHAR*>(&_data[_position]));
-		_position += length * sizeof(TCHAR);  // 更新读取位置
+		value = FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
+		_position += length;  // 更新读取位置
 	}
 	else {
 		throw std::out_of_range("No enough data to get FString");
@@ -507,9 +507,9 @@ void NetPacket::NetDataReader::Get(FText& value)
 	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
 	if (_position + length <= _dataSize) {
 		// 从数据流中读取字符串并将其转换为 FText
-		FString tempStr(length, reinterpret_cast<const TCHAR*>(&_data[_position]));
+		FString tempStr(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
 		value.FromString(tempStr);
-		_position += length * sizeof(TCHAR);  // 更新读取位置
+		_position += length;  // 更新读取位置
 	}
 	else {
 		throw std::out_of_range("No enough data to get FText");
@@ -521,8 +521,8 @@ void NetPacket::NetDataReader::Get(FName& value)
 	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
 	if (_position + length <= _dataSize) {
 		// 从数据流中读取字符串，并通过 FName 构造
-		value = FName(FString(length, reinterpret_cast<const TCHAR*>(&_data[_position])));
-		_position += length * sizeof(TCHAR);  // 更新读取位置
+		value = FName(FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position])));
+		_position += length;  // 更新读取位置
 	}
 	else {
 		throw std::out_of_range("No enough data to get FName");
