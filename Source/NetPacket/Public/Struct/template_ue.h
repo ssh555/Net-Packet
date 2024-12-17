@@ -12,7 +12,7 @@
 
 #include "template_ue.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct NP_API Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
+struct Ftemplate_ue : public FDummyStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 
@@ -189,7 +189,7 @@ public:
 
 	}
 
-	virtual uint16_t GetTypeHash() const override
+	static uint16_t GetTypeHash()
 	{
 		return MurmurHash16("template_ue");
 	}

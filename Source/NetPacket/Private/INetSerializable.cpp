@@ -53,11 +53,11 @@ namespace NetPacket
 		return static_cast<uint16_t>(h & 0xFFFF); // 截断为16位
 	}
 
-	uint16_t INetSerializable::GetTypeHash() const
-	{
-		// 使用常量字符串作为类型标识符
-		return MurmurHash16("INetSerializable");
-	}
+	//uint16_t INetSerializable::GetTypeHash() const
+	//{
+	//	// 使用常量字符串作为类型标识符
+	//	return MurmurHash16("INetSerializable");
+	//}
 
 
 }

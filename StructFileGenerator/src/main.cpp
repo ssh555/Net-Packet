@@ -6,6 +6,9 @@
 #include <cstring>  // For std::strcmp
 #include <windows.h> // For GetModuleFileName
 #include "NetSerializableStructGenerator.h"
+#include "NetPacketProcessor.h"
+#include "example.hpp"
+#include "INetSerializable.h"
 
 //#include "Struct/NPStruct.h"
 
@@ -28,6 +31,9 @@ void printUsage() {
 }
 
 int main(int argc, char* argv[]) {
+	//NetPacket::NetPacketProcessor processor;
+	//processor.Register<NetPacket::Test>(NetPacket::Test::GetTypeHash(), [](int16_t id, const NetPacket::INetSerializable& obj) {});
+	//processor.Unregister(42411);
 	// 使用 EXE 所在目录作为默认路径
 	std::string exeDir = getExecutableDirectory();
 	std::string inputDir = exeDir + "/Input"; // 默认输入目录

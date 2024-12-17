@@ -10,7 +10,7 @@
 
 namespace NetPacket
 {
-	class NP_API template : public INetSerializable
+	class template : public INetSerializable
 	{
 	public:
 		// 非数组数据
@@ -71,21 +71,21 @@ namespace NetPacket
 			writer.Put(bt);
 
 			// 数组数据
-		writer.PutArray(ui8a, 5);
-		writer.PutArray(i8a, 5);
-		writer.PutArray(ba, 5);
-		writer.PutArray(i16a, 5);
-		writer.PutArray(ui16a, 5);
-		writer.PutArray(i32a, 5);
-		writer.PutArray(ui32a, 5);
-		writer.PutArray(i64a, 5);
-		writer.PutArray(ui64a, 5);
-		writer.PutArray(fa, 5);
-		writer.PutArray(da, 5);
-		writer.PutArray(stra, 5);
-		writer.PutArray(testa, 5);
-		writer.PutArray(cha, 5);
-		writer.PutArray(bta, 5);
+			writer.PutArray(ui8a, 5);
+			writer.PutArray(i8a, 5);
+			writer.PutArray(ba, 5);
+			writer.PutArray(i16a, 5);
+			writer.PutArray(ui16a, 5);
+			writer.PutArray(i32a, 5);
+			writer.PutArray(ui32a, 5);
+			writer.PutArray(i64a, 5);
+			writer.PutArray(ui64a, 5);
+			writer.PutArray(fa, 5);
+			writer.PutArray(da, 5);
+			writer.PutArray(stra, 5);
+			writer.PutArray(testa, 5);
+			writer.PutArray(cha, 5);
+			writer.PutArray(bta, 5);
 
 
 		}
@@ -94,43 +94,43 @@ namespace NetPacket
 		{
 			reader.PeekUShort();
 			// 非数组数据
-		reader.Get(ui8);
-		reader.Get(i8);
-		reader.Get(b);
-		reader.Get(i16);
-		reader.Get(ui16);
-		reader.Get(i32);
-		reader.Get(ui32);
-		reader.Get(i64);
-		reader.Get(ui64);
-		reader.Get(f);
-		reader.Get(d);
-		reader.Get(str);
-		reader.Get(test);
-		reader.Get(ch);
-		reader.Get(bt);
+			reader.Get(ui8);
+			reader.Get(i8);
+			reader.Get(b);
+			reader.Get(i16);
+			reader.Get(ui16);
+			reader.Get(i32);
+			reader.Get(ui32);
+			reader.Get(i64);
+			reader.Get(ui64);
+			reader.Get(f);
+			reader.Get(d);
+			reader.Get(str);
+			reader.Get(test);
+			reader.Get(ch);
+			reader.Get(bt);
 
 			// 数组数据
-		reader.GetArray(ui8a);
-		reader.GetArray(i8a);
-		reader.GetArray(ba);
-		reader.GetArray(i16a);
-		reader.GetArray(ui16a);
-		reader.GetArray(i32a);
-		reader.GetArray(ui32a);
-		reader.GetArray(i64a);
-		reader.GetArray(ui64a);
-		reader.GetArray(fa);
-		reader.GetArray(da);
-		reader.GetArray(stra);
-		reader.GetArray(testa);
-		reader.GetArray(cha);
-		reader.GetArray(bta);
+			reader.GetArray(ui8a);
+			reader.GetArray(i8a);
+			reader.GetArray(ba);
+			reader.GetArray(i16a);
+			reader.GetArray(ui16a);
+			reader.GetArray(i32a);
+			reader.GetArray(ui32a);
+			reader.GetArray(i64a);
+			reader.GetArray(ui64a);
+			reader.GetArray(fa);
+			reader.GetArray(da);
+			reader.GetArray(stra);
+			reader.GetArray(testa);
+			reader.GetArray(cha);
+			reader.GetArray(bta);
 
 
 		}
 
-		virtual uint16_t GetTypeHash() const override
+		static uint16_t GetTypeHash()
 		{
 			return MurmurHash16("template");
 		}

@@ -5,7 +5,7 @@ namespace NetPacket
 {
 	class NetPackage;
 
-	class NetPacketPool
+	class NP_API NetPacketPool
 	{
 	public:
 		static const int32_t PacketPoolSize = 1000;

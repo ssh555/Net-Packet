@@ -4,7 +4,7 @@
 
 
 #include "DummyStruct.generated.h"
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDummyStruct
 {
 	GENERATED_BODY()

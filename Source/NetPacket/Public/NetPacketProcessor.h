@@ -16,24 +16,28 @@ namespace NetPacket
 	class NetPackage;
 	class NetPacketPool;
 
-	class NetPacketProcessor
+	class NP_API NetPacketProcessor
 	{
 	public:
 		// 接收数据包放入等待队列
-		bool Receive(NetPackage* package);
+		void Receive(NetPackage* package);
 		// 原生数据: packet size + client id + type hash + data
-		bool Receive(uint8_t* data, int32_t size);
+		void Receive(uint8_t* data, int32_t size);
 
 		// 处理所有队列中的数据包
-		bool Process();
+		void Process();
 
 		// 获取序列化的数据包
 		NetPackage* Serialize(INetSerializable* obj);
 
 		// 注册对应类型的接收包回调(覆盖)
-		bool Register(uint16_t hashid, std::function<void(int16_t, NetDataReader*)> callback);
+		// 数据类型
+		// (clientID, 数据)
+		template<typename T>
+		typename std::enable_if<std::is_base_of<INetSerializable, T>::value, void>::type
+		Register(uint16_t hashid, std::function<void(int16_t, const INetSerializable&)> callback);
 
-		bool Unregister(uint16_t hashid);
+		void Unregister(uint16_t hashid);
 
 	private:
 		NetDataWriter m_writer;
@@ -49,4 +53,20 @@ namespace NetPacket
 
 		bool IsRegister(uint16_t hashid);
 	};
+
+	template<typename T>
+	typename std::enable_if<std::is_base_of<INetSerializable, T>::value, void>::type
+	NetPacket::NetPacketProcessor::Register(uint16_t hashid, std::function<void(int16_t, const INetSerializable&)> callback)
+	{
+		std::lock_guard<std::mutex> lock(m_mapLock);
+		m_packetCallbackMap[hashid] = [callback](int16_t clienID, NetDataReader* reader)
+		{
+			// 生成对应的栈对象
+			T obj;
+			obj.Deserialize(*reader);
+			// 传入
+			callback(clienID, obj);
+		};
+	}
+
 }

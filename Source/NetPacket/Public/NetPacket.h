@@ -22,7 +22,7 @@ namespace NetPacket
 	class NetDataReader;
 	class NetDataWriter;
 
-	class NetPackage {
+	class NP_API NetPackage {
 		// 添加对象池的友元
 		friend class NetPacketPool;
 	public:

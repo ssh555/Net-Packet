@@ -95,6 +95,8 @@ namespace NetPacket
 		std::string output = outputDir + "/NPStruct.h";
 		std::ofstream outputFile(output);
 
+		outputFile << "#include \"NPBPFunctionLibrary.h\"\n";
+
 		bool bIsUE = false;
 		// 遍历 inputDir 下的所有 .np 文件
 		for (const auto& entry : std::filesystem::directory_iterator(inputDir)) {
@@ -127,6 +129,12 @@ namespace NetPacket
 			output = outputDir + "/DummyStruct.h";
 			outputFile.open(output);
 			outputFile << NetStructConfig::UEDummyStruct;
+			outputFile.close();
+			// 生成蓝图函数库
+			output = outputDir + "/NPBPFunctionLibrary.h";
+			outputFile.open(output);
+			outputFile << NetStructConfig::UEBPAPI;
+			outputFile.close();
 		}
 	}
 
@@ -173,7 +181,7 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\\ttwriter.PutArray(" << name << ", " << length << ");\n";
+			sst << "\t\t\twriter.PutArray(" << name << ", " << length << ");\n";
 		}
 		else if (mode == 1)
 		{
@@ -229,7 +237,7 @@ namespace NetPacket
 
 namespace NetPacket
 {
-	class NP_API {CLASSNAME} : public INetSerializable
+	class {CLASSNAME} : public INetSerializable
 	{
 	public:
 {DECLATEDATA}
@@ -247,7 +255,7 @@ namespace NetPacket
 {READRDATA}
 		}
 
-		virtual uint16_t GetTypeHash() const override
+		static uint16_t GetTypeHash()
 		{
 			return MurmurHash16("{CLASSNAME}");
 		}
@@ -268,7 +276,7 @@ namespace NetPacket
 
 #include "{CLASSNAME}.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct NP_API F{CLASSNAME} : public FDummyStruct, public NetPacket::INetSerializable
+struct F{CLASSNAME} : public FDummyStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 
@@ -289,7 +297,7 @@ public:
 {READRDATA}
 	}
 
-	virtual uint16_t GetTypeHash() const override
+	static uint16_t GetTypeHash()
 	{
 		return MurmurHash16("{CLASSNAME}");
 	}
@@ -303,13 +311,56 @@ public:
 
 
 #include "DummyStruct.generated.h"
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDummyStruct
 {
 	GENERATED_BODY()
 public:
 	virtual ~FDummyStruct() = default; // 添加虚析构函数
 };
+
+
+)";
+
+	const std::string NetStructConfig::UEBPAPI = R"(#pragma once
+#include "CoreMinimal.h"
+#include "DummyStruct.h"
+#include <functional>
+#include "../NetDataReader.h"
+#include <Kismet/BlueprintFunctionLibrary.h>
+
+#include "NPBPFunctionLibrary.generated.h"
+
+
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, const FDummyStruct&, data);
+
+UCLASS()
+class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+};
+
+
+namespace NetPacket
+{
+	class NP_API NPFunctionLibrary
+	{
+	public:
+
+		// 包裹蓝图委托事件，用于C++调用，然后在Processor中注册。若在蓝图中使用，需要自行再封装一层
+		// UFUNCTION(BlueprintCallable, Category = "NPBPFunction")
+		static std::function<void(int16_t, const INetSerializable&)> WrapDelegate(FRegisterProcessDelegate Delegate)
+		{
+			// 用 Lambda 函数包装蓝图委托
+			return [Delegate](int16_t clienID, const INetSerializable& obj)
+			{
+				// 调用蓝图委托
+				Delegate.ExecuteIfBound(clienID, reinterpret_cast<const FDummyStruct&>(obj));
+			};
+		}
+	};
+}
+
 
 
 )";
