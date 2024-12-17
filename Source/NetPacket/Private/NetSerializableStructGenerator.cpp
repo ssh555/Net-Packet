@@ -173,7 +173,7 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\twriter.PutArray(" << name << ", " << length << ");\n";
+			sst << "\t\\ttwriter.PutArray(" << name << ", " << length << ");\n";
 		}
 		else if (mode == 1)
 		{
@@ -185,7 +185,7 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\treader.Get(" << name << ");\n";
+			sst << "\t\t\treader.Get(" << name << ");\n";
 		}
 		else if (mode == 1)
 		{
@@ -197,7 +197,7 @@ namespace NetPacket
 	{
 		if (mode == 0)
 		{
-			sst << "\t\treader.GetArray(" << name << ");\n";
+			sst << "\t\t\treader.GetArray(" << name << ");\n";
 		}
 		else if (mode == 1)
 		{
