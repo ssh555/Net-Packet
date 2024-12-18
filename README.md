@@ -59,3 +59,111 @@ StructFileGenerator项目为可执行的EXE项目，用于生成数据类型结�
 	-i 输入目录 -o 输出目录
 	不提供则默认为当前目录的./Generate
 
+# 使用案例
+### NetPakcetProcessor 网络数据包入口
+- 接收数据包
+- 处理数据包
+- 注册数据类型自动处理的回调委托
+- 不支持UE类型，不是UClass，不能蓝图调用
+- 建议有一个全局唯一可访问 NetPakcetProcessor 的方法
+```C++
+// 数据包处理器
+NetPacket::NetPacketProcessor processor;
+// 序列化
+NetPacket::NetDataWriter writer;
+// 反序列化
+NetPacket::NetDataReader reader;
+
+// 注册回调事件
+// Ftemplate_ue 替换为自己的数据类型
+// Delegate为FRegisterProcessDelegate
+// 可直接使用std::function<void(int16_t, INetSerializable*)> <客户端ID，实际数据指针>
+processor.Register<Ftemplate_ue>(Ftemplate_ue::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
+
+// 序列化数据
+t.Serialize(writer);
+reader.SetSource(writer.CopyData(), writer.Length());
+// 反序列化数据
+r.Deserialize(reader);
+delete[] reader.GetRawData();
+
+// 接收网络数据-不处理，避免阻塞接收线程
+// 若data不包含packetsize和clientid，使用最后一个参数false，若包含，使用true(默认参数)
+processor.Receive(const_cast<uint8_t*>(writer.Data()), writer.Length(), false);
+
+// 统一处理之前所有接收到的数据包
+processor.Process();
+```
+
+### FRegisterProcessDelegate
+-  UE包装的委托回调
+```C++
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, UNPStructRef*, data);
+```
+
+### NetPacket::NPFunctionLibrary::WrapDelegate
+- 用于包装UE的委托，返回可直接用于NetPakcetProcessor.Register的委托回调
+- 可自行封装用于蓝图调用的Wrap
+```C++
+// 可像下面一样包装一个用于蓝图调用
+UFUNCTION(BlueprintCallable, Category = "Gameplay")
+static void TestNPDelegate(UStruct* stype, FRegisterProcessDelegate Delegate);
+
+void USGameplayFunctionLibrary::TestNPDelegate(UStruct* stype, FRegisterProcessDelegate Delegate)
+{
+	// 蓝图中调用
+	// 1. 使用UNPBPFunctionLibrary::GetUStructPtr得到结构体的类型对象
+	// 2. 将类型对象和委托传入你自己封装的函数(类似于这个函数)进行注册
+
+
+	// 需要获取你自己的processor(不支持蓝图类型)
+	UNPBPFunctionLibrary::Register(processor, stype, Delegate);
+}
+```
+
+### UNPBPFunctionLibrary 
+- 代码自动生成，会包含你自定义的数据类型对应的函数
+- 用于UE蓝图或者C++调用
+- 在FRegisterProcessDelegate中调用，用于将*UNPStructRef*的实际数据结构体对象解析出来
+```C++
+UCLASS()
+class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
+	{
+		return obj.StaticStruct();
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static void ConvertTotemplate_ue(const UNPStructRef* Parent, Ftemplate_ue& data)
+	{
+		data = *static_cast<Ftemplate_ue*>(Parent->obj);
+	}
+
+
+
+	static void Register(NetPacket::NetPacketProcessor& processor, UStruct* structType, FRegisterProcessDelegate Delegate)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return;
+		}
+		else if (structType == Ftemplate_ue::StaticStruct())
+		{
+			processor.Register<Ftemplate_ue>(Ftemplate_ue::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+	}
+};
+```
+
+### 数据类型配置及使用
+[配置文件代码生成](./配置文件代码生成.md ':include')

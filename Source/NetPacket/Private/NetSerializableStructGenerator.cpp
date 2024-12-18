@@ -93,6 +93,14 @@ namespace NetPacket
 			std::string tmp = NetStructConfig::UEBPCONVERT;
 			replaceAll(tmp, "{TYPE}", CLASSNAME);
 			uebpfunctions << tmp;
+
+			tmp = NetStructConfig::UEBPTYPEFuntion;
+			replaceAll(tmp, "{TYPE}", CLASSNAME);
+			uebptypefunctions << tmp;
+
+			tmp = NetStructConfig::UENPGetUStruct;
+			replaceAll(tmp, "{TYPE}", CLASSNAME);
+			uebpustructfunctions << tmp;
 		}
 		return mode;
 	}
@@ -100,6 +108,8 @@ namespace NetPacket
 	void NetSerializableStructGenerator::GenerateAll(const std::string& inputDir, const std::string& outputDir)
 	{
 		uebpfunctions.clear();
+		uebptypefunctions.clear();
+		uebpustructfunctions.clear();
 
 		// 在生成目录下生成NPStruct.h，包含所有的头文件
 		std::string output = outputDir + "/NPStruct.h";
@@ -147,6 +157,9 @@ namespace NetPacket
 			std::string o = NetStructConfig::UEBPAPI;
 			std::string tmp = uebpfunctions.str();
 			replaceAll(o, "{FUNCTION}", tmp);
+			replaceAll(o, "{TYPEFUNCTION}", uebptypefunctions.str());
+			replaceAll(o, "{GETUSTRUCT}", uebpustructfunctions.str());
+			
 			outputFile << o;
 			outputFile.close();
 
@@ -353,20 +366,12 @@ public:
 #include <Kismet/BlueprintFunctionLibrary.h>
 #include "NPStruct.h"
 #include "NPStructRef.h"
+#include "NetPacketProcessor.h"
 
 #include "NPBPFunctionLibrary.generated.h"
 
 
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, UNPStructRef*, data);
-
-UCLASS()
-class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
-{
-	GENERATED_BODY()
-public:
-{FUNCTION}
-};
-
 
 namespace NetPacket
 {
@@ -392,7 +397,29 @@ namespace NetPacket
 }
 
 
+UCLASS()
+class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+public:
+{GETUSTRUCT}
 
+{FUNCTION}
+
+	static void Register(NetPacket::NetPacketProcessor& processor, UStruct* structType, FRegisterProcessDelegate Delegate)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return;
+		}
+{TYPEFUNCTION}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+	}
+};
 )";
 
 	const std::string NetStructConfig::UEBPCONVERT = R"(
@@ -402,6 +429,21 @@ namespace NetPacket
 		data = *static_cast<F{TYPE}*>(Parent->obj);
 	}
 )";
+
+	const std::string NetStructConfig::UEBPTYPEFuntion = 
+R"(		else if (structType == F{TYPE}::StaticStruct())
+		{
+			processor.Register<F{TYPE}>(F{TYPE}::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
+		})";
+
+	const std::string NetStructConfig::UENPGetUStruct =
+R"(	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UStruct* GetUStructPtr(const F{TYPE}& obj)
+	{
+		return obj.StaticStruct();
+	}
+)";
+
 
 	const std::string NetStructConfig::UENPSTRUCTREF = R"(#pragma once
 #include "CoreMinimal.h"
@@ -421,6 +463,12 @@ public:
 	FDummyStruct& Get()
 	{
 		return *obj;
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPStructRef")
+	void Set(const FDummyStruct& data)
+	{
+		obj = &const_cast<FDummyStruct&>(data);
 	}
 };
 

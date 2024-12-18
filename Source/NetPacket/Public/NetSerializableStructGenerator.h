@@ -34,6 +34,8 @@ namespace NetPacket
 		std::string GetConfigTemplate(int32_t mode);
 
 		std::stringstream uebpfunctions;
+		std::stringstream uebptypefunctions;
+		std::stringstream uebpustructfunctions;
 	};
 
 	// 代码生成模板
@@ -45,7 +47,9 @@ namespace NetPacket
 		static const std::string UEDummyStruct;
 		static const std::string UEBPAPI;
 		static const std::string UEBPCONVERT;
+		static const std::string UEBPTYPEFuntion;
 		static const std::string UENPSTRUCTREF;
+		static const std::string UENPGetUStruct;
 
 	};
 }

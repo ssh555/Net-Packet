@@ -17,5 +17,11 @@ public:
 	{
 		return *obj;
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPStructRef")
+	void Set(const FDummyStruct& data)
+	{
+		obj = &const_cast<FDummyStruct&>(data);
+	}
 };
 

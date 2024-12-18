@@ -6,26 +6,12 @@
 #include <Kismet/BlueprintFunctionLibrary.h>
 #include "NPStruct.h"
 #include "NPStructRef.h"
+#include "NetPacketProcessor.h"
 
 #include "NPBPFunctionLibrary.generated.h"
 
 
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, UNPStructRef*, data);
-
-UCLASS()
-class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
-{
-	GENERATED_BODY()
-public:
-
-	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static void ConvertTotemplate_ue(const UNPStructRef* Parent, Ftemplate_ue& data)
-	{
-		data = *static_cast<Ftemplate_ue*>(Parent->obj);
-	}
-
-};
-
 
 namespace NetPacket
 {
@@ -51,4 +37,40 @@ namespace NetPacket
 }
 
 
+UCLASS()
+class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+public:
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
+	{
+		return obj.StaticStruct();
+	}
 
+
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static void ConvertTotemplate_ue(const UNPStructRef* Parent, Ftemplate_ue& data)
+	{
+		data = *static_cast<Ftemplate_ue*>(Parent->obj);
+	}
+
+
+	static void Register(NetPacket::NetPacketProcessor& processor, UStruct* structType, FRegisterProcessDelegate Delegate)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return;
+		}
+		else if (structType == Ftemplate_ue::StaticStruct())
+		{
+			processor.Register<Ftemplate_ue>(Ftemplate_ue::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+	}
+};
