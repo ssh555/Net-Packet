@@ -112,7 +112,7 @@ static void TestNPDelegate(UStruct* stype, FRegisterProcessDelegate Delegate);
 void USGameplayFunctionLibrary::TestNPDelegate(UStruct* stype, FRegisterProcessDelegate Delegate)
 {
 	// 蓝图中调用
-	// 1. 使用UNPBPFunctionLibrary::GetUStructPtr得到结构体的类型对象
+	// 1. 使用UNPBPFunctionLibrary::GetUStructPtr得到结构体的类型对象 或者 使用使用UNPBPFunctionLibrary::GetUStructPtr_template_ue直接获取，不需要有对应对象(后面的template_ue为你的自定义数据类型)
 	// 2. 将类型对象和委托传入你自己封装的函数(类似于这个函数)进行注册
 
 
@@ -136,6 +136,12 @@ public:
 	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
 	{
 		return obj.StaticStruct();
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UStruct* GetUStructPtr_template_ue()
+	{
+		return Ftemplate_ue::StaticStruct();
 	}
 
 	// 代码自动生成对应类型的ConvertTotemplate_ue

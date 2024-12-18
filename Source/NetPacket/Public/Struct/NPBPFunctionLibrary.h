@@ -48,6 +48,12 @@ public:
 		return obj.StaticStruct();
 	}
 
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UStruct* GetUStructPtr_template_ue()
+	{
+		return Ftemplate_ue::StaticStruct();
+	}
+
 
 
 	UFUNCTION(BlueprintCallable, Category = "NPCast")

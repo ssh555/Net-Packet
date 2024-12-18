@@ -259,6 +259,9 @@ namespace NetPacket
 		throw new std::exception("mode error: 不是有效mode");
 	}
 
+#pragma region 常规C++配置生成模板
+
+
 	const std::string NetStructConfig::DefaultConfig = R"(#pragma once
 #include "../nppch.h"
 // 如果报错，修改include为你自己的正确路径
@@ -296,7 +299,11 @@ namespace NetPacket
 	};
 }
 )";
+#pragma endregion
 
+#pragma region UEC++配置生成模板
+
+	// UE C++配置生成模板
 	const std::string NetStructConfig::UEConfig = R"(#pragma once
 #include "CoreMinimal.h"
 // 如果报错，修改include为你自己的正确路径
@@ -341,6 +348,7 @@ public:
 
 )";
 
+	// UE的结构体类型的基类，用于UE支持自定义数据类型的结构体
 	const std::string NetStructConfig::UEDummyStruct = R"(#pragma once
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
@@ -358,6 +366,7 @@ public:
 
 )";
 
+	// UE蓝图 函数库模板，蓝图和C++的便捷函数工具
 	const std::string NetStructConfig::UEBPAPI = R"(#pragma once
 #include "CoreMinimal.h"
 #include "DummyStruct.h"
@@ -422,6 +431,7 @@ public:
 };
 )";
 
+	// 用于包装的UE委托回调的输入参数转换为对应的实际类型
 	const std::string NetStructConfig::UEBPCONVERT = R"(
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static void ConvertTo{TYPE}(const UNPStructRef* Parent, F{TYPE}& data)
@@ -430,21 +440,29 @@ public:
 	}
 )";
 
+	// 用于注册对应类型的委托回调
 	const std::string NetStructConfig::UEBPTYPEFuntion = 
 R"(		else if (structType == F{TYPE}::StaticStruct())
 		{
 			processor.Register<F{TYPE}>(F{TYPE}::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
 		})";
 
+	// 用于UE蓝图获取对应结构体对象的UStruct*，即类型对象
 	const std::string NetStructConfig::UENPGetUStruct =
 R"(	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr(const F{TYPE}& obj)
 	{
 		return obj.StaticStruct();
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UStruct* GetUStructPtr_{TYPE}()
+	{
+		return F{TYPE}::StaticStruct();
+	}
 )";
 
-
+	// UE结构体对象的类引用包装，用于UE的委托回调获取数据
 	const std::string NetStructConfig::UENPSTRUCTREF = R"(#pragma once
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
@@ -473,5 +491,6 @@ public:
 };
 
 )";
+#pragma endregion
 
 }
