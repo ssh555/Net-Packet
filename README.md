@@ -66,6 +66,8 @@ StructFileGenerator项目为可执行的EXE项目，用于生成数据类型结�
 - 注册数据类型自动处理的回调委托
 - 不支持UE类型，不是UClass，不能蓝图调用
 - 建议有一个全局唯一可访问 NetPakcetProcessor 的方法
+- [接收数据包协议](#packet协议)
+
 ```C++
 // 数据包处理器
 NetPacket::NetPacketProcessor processor;
@@ -89,6 +91,7 @@ delete[] reader.GetRawData();
 
 // 接收网络数据-不处理，避免阻塞接收线程
 // 若data不包含packetsize和clientid，使用最后一个参数false，若包含，使用true(默认参数)
+// 见 packet协议部分
 processor.Receive(const_cast<uint8_t*>(writer.Data()), writer.Length(), false);
 
 // 统一处理之前所有接收到的数据包
