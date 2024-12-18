@@ -1,6 +1,7 @@
 #include "nppch.h"
 #include "NetDataReader.h"
 #include "NetDataWriter.h"
+#include "FastBitConverter.h"
 
 NetPacket::NetDataReader::NetDataReader() : _position(0), _dataSize(0), _data(nullptr)
 {
@@ -99,7 +100,7 @@ void NetPacket::NetDataReader::Get(bool& value)
 void NetPacket::NetDataReader::Get(int16_t& value)
 {
 	if (_position + 2 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 2;
 	}
 	else
@@ -109,7 +110,7 @@ void NetPacket::NetDataReader::Get(int16_t& value)
 void NetPacket::NetDataReader::Get(uint16_t& value)
 {
 	if (_position + 2 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 2;
 	}
 	else
@@ -119,7 +120,7 @@ void NetPacket::NetDataReader::Get(uint16_t& value)
 void NetPacket::NetDataReader::Get(int32_t& value)
 {
 	if (_position + 4 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 4;
 	}
 	else
@@ -129,7 +130,7 @@ void NetPacket::NetDataReader::Get(int32_t& value)
 void NetPacket::NetDataReader::Get(uint32_t& value)
 {
 	if (_position + 4 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 4;
 	}
 	else
@@ -139,7 +140,7 @@ void NetPacket::NetDataReader::Get(uint32_t& value)
 void NetPacket::NetDataReader::Get(int64_t& value)
 {
 	if (_position + 8 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 8;
 	}
 	else
@@ -149,7 +150,7 @@ void NetPacket::NetDataReader::Get(int64_t& value)
 void NetPacket::NetDataReader::Get(uint64_t& value)
 {
 	if (_position + 8 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 8;
 	}
 	else
@@ -159,7 +160,7 @@ void NetPacket::NetDataReader::Get(uint64_t& value)
 void NetPacket::NetDataReader::Get(float& value)
 {
 	if (_position + 4 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 4;
 	}
 	else
@@ -169,7 +170,7 @@ void NetPacket::NetDataReader::Get(float& value)
 void NetPacket::NetDataReader::Get(double& value)
 {
 	if (_position + 8 <= _dataSize) {
-		std::memcpy(&value, &_data[_position], sizeof(value));
+		FastBitConverter::Get(_data, _position, value);
 		_position += 8;
 	}
 	else
@@ -191,10 +192,6 @@ uint16_t NetPacket::NetDataReader::GetArray(uint8_t* data)
 {
 	return GetArray<uint8_t>(data);
 }
-
-
-
-
 
 uint16_t NetPacket::NetDataReader::GetArray(std::byte* data)
 {
@@ -265,7 +262,7 @@ uint16_t NetPacket::NetDataReader::GetArray(INetSerializable* value)
 		value[i].Deserialize(*this);
 	}
 	return length;
-	throw std::out_of_range("No enough data to get array");
+	//throw std::out_of_range("No enough data to get array");
 }
 
 uint16_t NetPacket::NetDataReader::GetArray(std::string* data)

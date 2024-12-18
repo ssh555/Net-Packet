@@ -80,13 +80,13 @@ void NetPacket::NetPackage::GetData(NetDataReader* reader)
 int16_t NetPacket::NetPackage::GetClientID() const
 {
 	int16_t id;
-	memcpy(&id, RawData + 4, sizeof(int16_t));
+	FastBitConverter::Get(RawData, 4, id);
 	return id;
 }
 
 void NetPacket::NetPackage::SetClientID(int16_t cid)
 {
-	memcpy(&RawData + 4, &cid, sizeof(int16_t));
+	FastBitConverter::Put(RawData, 4, (int16_t)0);
 }
 
 const uint8_t* NetPacket::NetPackage::getRawData() const
@@ -118,8 +118,8 @@ void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size, 
 	memcpy(RawData + HeaderSize, data, size);
 	this->m_size = size;
 	// 设置数据包长度和ClientID
-	FastBitConverter::GetBytes(RawData, 0, this->m_size);
-	FastBitConverter::GetBytes(RawData, 4, (int16_t)0);
+	FastBitConverter::Put(RawData, 0, this->m_size);
+	FastBitConverter::Put(RawData, 4, (int16_t)0);
 
 }
 

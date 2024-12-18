@@ -262,7 +262,7 @@ namespace NetPacket
 {DECLATEDATA}
 
 	public:
-		~{CLASSNAME}() = default;
+		virtual ~{CLASSNAME}() = default;
 
 		virtual void Serialize(NetDataWriter& writer) const override
 		{

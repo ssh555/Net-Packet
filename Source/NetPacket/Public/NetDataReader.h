@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include "INetSerializable.h"
 
@@ -136,8 +135,12 @@ namespace NetPacket
 		int32_t size = sizeof(T);
 		uint16_t length = PeekUShort();
 		if (_position + (int32_t)length * size <= _dataSize) {
-			memcpy(value, _data + _position, length * size);
-			_position += length * size;
+			for (int i = 0; i < length; ++i)
+			{
+				Get(value[i]);
+			}
+			//memcpy(value, _data + _position, length * size);
+			//_position += length * size;
 			return length;
 		}
 		throw std::out_of_range("No enough data to get array");
@@ -151,10 +154,13 @@ namespace NetPacket
 		uint16_t length = PeekUShort();
 		if (_position + length * size <= _dataSize) {
 			value.SetNumUninitialized(length);
+			for (int i = 0; i < length; ++i)
+			{
+				Get(value[i]);
+			}
+			//FMemory::Memcpy(value.GetData(), _data + _position, length * size);
 
-			FMemory::Memcpy(value.GetData(), _data + _position, length * size);
-
-			_position += length * size;
+			//_position += length * size;
 			return length;
 		}
 

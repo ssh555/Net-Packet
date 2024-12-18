@@ -145,8 +145,11 @@ namespace NetPacket {
 		Put(length);
 		if (_autoResize)
 			ResizeIfNeed(_position + size);
-		memcpy((void*)value, _data + _position, size);
-		_position += size;
+		for (int i = 0; i < length; i++) {
+			Put(value[i]);
+		}
+		//memcpy((void*)value, _data + _position, size);
+		//_position += size;
 	}
 #ifdef NP_UE_SUPPORT
 
@@ -161,11 +164,14 @@ namespace NetPacket {
 
 		if (_autoResize)
 			ResizeIfNeed(_position + size);
+		for (int i = 0; i < length; i++) {
+			Put(value[i]);
+		}
 		// 使用FMemory::Memcpy进行内存拷贝
-		FMemory::Memcpy(_data + _position, value.GetData(), size);
+		//FMemory::Memcpy(_data + _position, value.GetData(), size);
 
 		// 更新当前写入位置
-		_position += size;
+		//_position += size;
 	}
 #endif
 }

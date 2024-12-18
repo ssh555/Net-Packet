@@ -1,5 +1,6 @@
 #include "nppch.h"
 #include "NetDataWriter.h"
+#include "FastBitConverter.h"
 
 constexpr size_t NetPacket::NetDataWriter::InitialSize;
 
@@ -65,7 +66,7 @@ int32_t NetPacket::NetDataWriter::SetPosition(int32_t position)
 void NetPacket::NetDataWriter::Put(float value)
 {
 	ResizeIfNeed(_position + sizeof(float));
-	std::memcpy(_data + _position, &value, sizeof(float));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(float);
 }
 
@@ -91,9 +92,8 @@ void NetPacket::NetDataWriter::Put(const uint8_t* data, int32_t offset, int32_t 
 void NetPacket::NetDataWriter::Put(const std::string& value)
 {
 	uint16_t size = static_cast<uint16_t>(value.size());
-	ResizeIfNeed(_position + size + sizeof(uint16_t));
-	std::memcpy(_data + _position, &size, sizeof(uint16_t));
-	_position += sizeof(uint16_t);
+	Put(size);
+	ResizeIfNeed(_position + size);
 	std::memcpy(_data + _position, value.c_str(), size);
 	_position += size;
 }
@@ -115,49 +115,49 @@ void NetPacket::NetDataWriter::Put(int8_t value)
 void NetPacket::NetDataWriter::Put(uint16_t value)
 {
 	ResizeIfNeed(_position + sizeof(uint16_t));
-	std::memcpy(_data + _position, &value, sizeof(uint16_t));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(uint16_t);
 }
 
 void NetPacket::NetDataWriter::Put(int16_t value)
 {
 	ResizeIfNeed(_position + sizeof(int16_t));
-	std::memcpy(_data + _position, &value, sizeof(int16_t));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(int16_t);
 }
 
 void NetPacket::NetDataWriter::Put(uint32_t value)
 {
 	ResizeIfNeed(_position + sizeof(uint32_t));
-	std::memcpy(_data + _position, &value, sizeof(uint32_t));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(uint32_t);
 }
 
 void NetPacket::NetDataWriter::Put(int32_t value)
 {
 	ResizeIfNeed(_position + sizeof(int32_t));
-	std::memcpy(_data + _position, &value, sizeof(int32_t));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(int32_t);
 }
 
 void NetPacket::NetDataWriter::Put(uint64_t value)
 {
 	ResizeIfNeed(_position + sizeof(uint64_t));
-	std::memcpy(_data + _position, &value, sizeof(uint64_t));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(uint64_t);
 }
 
 void NetPacket::NetDataWriter::Put(int64_t value)
 {
 	ResizeIfNeed(_position + sizeof(int64_t));
-	std::memcpy(_data + _position, &value, sizeof(int64_t));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(int64_t);
 }
 
 void NetPacket::NetDataWriter::Put(double value)
 {
 	ResizeIfNeed(_position + sizeof(double));
-	std::memcpy(_data + _position, &value, sizeof(double));
+	FastBitConverter::Put(_data, _position, value);
 	_position += sizeof(double);
 }
 
@@ -315,8 +315,9 @@ void NetPacket::NetDataWriter::Put(const FString& value)
 
 	ResizeIfNeed(_position + sizeof(int16_t) + value.Len());
 
-	FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
-	_position += sizeof(int16_t);
+	//FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
+	//_position += sizeof(int16_t);
+	Put(strLength);
 
 	FMemory::Memcpy(_data + _position, value.GetCharArray().GetData(), strLength);
 	_position += strLength;
@@ -333,8 +334,9 @@ void NetPacket::NetDataWriter::Put(const FName& value)
 	int16_t strLength = value.ToString().Len() * sizeof(TCHAR);
 	ResizeIfNeed(_position + sizeof(int16_t) + strLength);
 
-	FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
-	_position += sizeof(int16_t);
+	//FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
+	//_position += sizeof(int16_t);
+	Put(strLength);
 
 	FMemory::Memcpy(_data + _position, value.ToString().GetCharArray().GetData(), strLength);
 	_position += strLength;
@@ -353,8 +355,9 @@ void NetPacket::NetDataWriter::Put(const FText& value)
 	int16_t strLength = tempStr.Len() * sizeof(TCHAR);
 	ResizeIfNeed(_position + sizeof(int16_t) + strLength);
 
-	FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
-	_position += sizeof(int16_t);
+	//FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
+	//_position += sizeof(int16_t);
+	Put(strLength);
 
 	FMemory::Memcpy(_data + _position, tempStr.GetCharArray().GetData(), strLength);
 	_position += strLength;
