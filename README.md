@@ -131,13 +131,14 @@ class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
-
+	// 代码自动生成对应类型的GetUStructPtr
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
 	{
 		return obj.StaticStruct();
 	}
 
+	// 代码自动生成对应类型的ConvertTotemplate_ue
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static void ConvertTotemplate_ue(const UNPStructRef* Parent, Ftemplate_ue& data)
 	{
@@ -153,6 +154,7 @@ public:
 			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
 			return;
 		}
+		// 代码自动生成对应类型的注册
 		else if (structType == Ftemplate_ue::StaticStruct())
 		{
 			processor.Register<Ftemplate_ue>(Ftemplate_ue::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
