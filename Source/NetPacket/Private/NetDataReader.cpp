@@ -358,173 +358,154 @@ uint8_t* NetPacket::NetDataReader::GetRemainingBytes()
 #if NP_UE_SUPPORT
 void NetPacket::NetDataReader::Get(FLinearColor& value)
 {
-	if (_position + sizeof(FLinearColor) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FLinearColor));
-		_position += sizeof(FLinearColor);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FLinearColor");
-	}
+	Get(value.R);
+	Get(value.G);
+	Get(value.B);
+	Get(value.A);
 }
 
 void NetPacket::NetDataReader::Get(FTransform& value)
 {
-	if (_position + sizeof(FTransform) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FTransform));
-		_position += sizeof(FTransform);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FTransform");
-	}
+	FVector pos;
+	FQuat rot;
+	FVector scale;
+	Get(pos);
+	Get(rot);
+	Get(scale);
+	value.SetLocation(pos);
+	value.SetRotation(rot);
+	value.SetScale3D(scale);
 }
 
 void NetPacket::NetDataReader::Get(FMatrix& value)
 {
-	if (_position + sizeof(FMatrix) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FMatrix));
-		_position += sizeof(FMatrix);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FMatrix");
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			Get(value.M[i][j]);
+		}
 	}
 }
 
 void NetPacket::NetDataReader::Get(FBox& value)
 {
-	if (_position + sizeof(FBox) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FBox));
-		_position += sizeof(FBox);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FBox");
-	}
+	Get(value.Min);
+	Get(value.Max);
 }
 
 void NetPacket::NetDataReader::Get(FTimespan& value)
 {
-	if (_position + sizeof(FTimespan) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FTimespan));
-		_position += sizeof(FTimespan);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FTimespan");
-	}
+	int64 ticks;
+	Get(ticks);
+	value = ticks;
 }
 
 void NetPacket::NetDataReader::Get(FDateTime& value)
 {
-	if (_position + sizeof(FDateTime) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FDateTime));
-		_position += sizeof(FDateTime);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FDateTime");
-	}
+	int64 ticks;
+	Get(ticks);
+	value = ticks;
 }
 
 void NetPacket::NetDataReader::Get(FRotator& value)
 {
-	if (_position + sizeof(FRotator) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FRotator));
-		_position += sizeof(FRotator);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FRotator");
-	}
+	Get(value.Pitch);
+	Get(value.Yaw);
+	Get(value.Roll);
 }
 
 void NetPacket::NetDataReader::Get(FVector2D& value)
 {
-	if (_position + sizeof(FVector2D) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FVector2D));
-		_position += sizeof(FVector2D);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FVector2D");
-	}
+	Get(value.X);
+	Get(value.Y);
 }
 
 void NetPacket::NetDataReader::Get(FIntPoint& value)
 {
-	if (_position + sizeof(FIntPoint) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FIntPoint));
-		_position += sizeof(FIntPoint);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FIntPoint");
-	}
+	Get(value.X);
+	Get(value.Y);
 }
 
 void NetPacket::NetDataReader::Get(FColor& value)
 {
-	if (_position + sizeof(FColor) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FColor));
-		_position += sizeof(FColor);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FColor");
-	}
+	Get(value.R);
+	Get(value.G);
+	Get(value.B);
+	Get(value.A);
 }
 
 void NetPacket::NetDataReader::Get(FQuat& value)
 {
-	if (_position + sizeof(FQuat) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FQuat));
-		_position += sizeof(FQuat);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FQuat");
-	}
+	Get(value.W);
+	Get(value.X);
+	Get(value.Y);
+	Get(value.Z);
 }
 
 void NetPacket::NetDataReader::Get(FVector& value)
 {
-	if (_position + sizeof(FVector) <= _dataSize) {
-		FMemory::Memcpy(&value, &_data[_position], sizeof(FVector));
-		_position += sizeof(FVector);
-	}
-	else {
-		throw std::out_of_range("No enough data to get FVector");
-	}
+	Get(value.X);
+	Get(value.Y);
+	Get(value.Z);
 }
 
 void NetPacket::NetDataReader::Get(FString& value)
 {
+	//int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
+	//if (_position + length <= _dataSize) {
+	//	value = FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
+	//	_position += length;  // 更新读取位置
+	//}
+	//else {
+	//	throw std::out_of_range("No enough data to get FString");
+	//}
+
 	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
+
 	if (_position + length <= _dataSize) {
-		value = FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
+		// 将 UTF-8 字符串转换为 FString
+		FString result = FString(UTF8_TO_TCHAR(&_data[_position]));
+
+		value = result;
 		_position += length;  // 更新读取位置
 	}
 	else {
-		throw std::out_of_range("No enough data to get FString");
+		throw std::out_of_range("Not enough data to get FString");
 	}
 }
 
 void NetPacket::NetDataReader::Get(FText& value)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
-	if (_position + length <= _dataSize) {
-		// 从数据流中读取字符串并将其转换为 FText
-		FString tempStr(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
-		value.FromString(tempStr);
-		_position += length;  // 更新读取位置
-	}
-	else {
-		throw std::out_of_range("No enough data to get FText");
-	}
+	//int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
+	//if (_position + length <= _dataSize) {
+	//	// 从数据流中读取字符串并将其转换为 FText
+	//	FString tempStr(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
+	//	value.FromString(tempStr);
+	//	_position += length;  // 更新读取位置
+	//}
+	//else {
+	//	throw std::out_of_range("No enough data to get FText");
+	//}
+	FString str;
+	Get(str);
+	value.FromString(str);
 }
 
 void NetPacket::NetDataReader::Get(FName& value)
 {
-	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
-	if (_position + length <= _dataSize) {
-		// 从数据流中读取字符串，并通过 FName 构造
-		value = FName(FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position])));
-		_position += length;  // 更新读取位置
-	}
-	else {
-		throw std::out_of_range("No enough data to get FName");
-	}
+	//int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
+	//if (_position + length <= _dataSize) {
+	//	// 从数据流中读取字符串，并通过 FName 构造
+	//	value = FName(FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position])));
+	//	_position += length;  // 更新读取位置
+	//}
+	//else {
+	//	throw std::out_of_range("No enough data to get FName");
+	//}
+	FString str;
+	Get(str);
+	value = FName(str);
 }
 
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FLinearColor>& value)
@@ -628,6 +609,7 @@ uint16_t NetPacket::NetDataReader::GetArray(TArray<FName>& value)
 
 	return length;
 }
+
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FText>& value)
 {
 	uint16_t length = PeekUShort();  // 获取数组的长度

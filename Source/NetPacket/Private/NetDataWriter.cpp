@@ -309,18 +309,16 @@ void NetPacket::NetDataWriter::Put(const FString& value)
 	if (value.IsEmpty()) // 检查空字符串
 	{
 		UE_LOG(LogTemp, Error, TEXT("Attempted to write an empty FString value"));
-		return; // 或者抛出异常
+		return;
 	}
-	int16_t strLength = value.Len() * sizeof(TCHAR);
+	FTCHARToUTF8 utf8Str(*value);
+	int16_t strLength = utf8Str.Length();
+	Put((int16_t)(strLength + 1));
 
-	ResizeIfNeed(_position + sizeof(int16_t) + value.Len());
-
-	//FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
-	//_position += sizeof(int16_t);
-	Put(strLength);
-
-	FMemory::Memcpy(_data + _position, value.GetCharArray().GetData(), strLength);
+	ResizeIfNeed(_position + strLength);
+	FMemory::Memcpy(_data + _position, utf8Str.Get(), strLength);
 	_position += strLength;
+	Put('\0');
 }
 
 void NetPacket::NetDataWriter::Put(const FName& value)
@@ -330,16 +328,8 @@ void NetPacket::NetDataWriter::Put(const FName& value)
 		UE_LOG(LogTemp, Error, TEXT("Attempted to write an invalid FName value"));
 		return; // 或者抛出异常
 	}
-	// 处理 FName 类型的写入
-	int16_t strLength = value.ToString().Len() * sizeof(TCHAR);
-	ResizeIfNeed(_position + sizeof(int16_t) + strLength);
-
-	//FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
-	//_position += sizeof(int16_t);
-	Put(strLength);
-
-	FMemory::Memcpy(_data + _position, value.ToString().GetCharArray().GetData(), strLength);
-	_position += strLength;
+	FString str = value.ToString();
+	Put(str);
 }
 
 void NetPacket::NetDataWriter::Put(const FText& value)
@@ -352,99 +342,92 @@ void NetPacket::NetDataWriter::Put(const FText& value)
 
 	// 处理 FText 类型的写入
 	FString tempStr = value.ToString();  // 获取基础字符串
-	int16_t strLength = tempStr.Len() * sizeof(TCHAR);
-	ResizeIfNeed(_position + sizeof(int16_t) + strLength);
-
-	//FMemory::Memcpy(_data + _position, &strLength, sizeof(int16_t));
-	//_position += sizeof(int16_t);
-	Put(strLength);
-
-	FMemory::Memcpy(_data + _position, tempStr.GetCharArray().GetData(), strLength);
-	_position += strLength;
+	Put(tempStr);
 }
 
 void NetPacket::NetDataWriter::Put(const FVector& value)
 {
-	ResizeIfNeed(_position + sizeof(FVector));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FVector));
-	_position += sizeof(FVector);
+	Put(value.X);
+	Put(value.Y);
+	Put(value.Z);
 }
 
 void NetPacket::NetDataWriter::Put(const FLinearColor& value)
 {
-	ResizeIfNeed(_position + sizeof(FLinearColor));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FLinearColor));
-	_position += sizeof(FLinearColor);
+	Put(value.R);
+	Put(value.G);
+	Put(value.B);
+	Put(value.A);
 }
 
 void NetPacket::NetDataWriter::Put(const FTransform& value)
 {
-	ResizeIfNeed(_position + sizeof(FTransform));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FTransform));
-	_position += sizeof(FTransform);
+	Put(value.GetLocation());
+	Put(value.GetRotation());
+	Put(value.GetScale3D());
 }
 
 void NetPacket::NetDataWriter::Put(const FMatrix& value)
 {
-	ResizeIfNeed(_position + sizeof(FMatrix));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FMatrix));
-	_position += sizeof(FMatrix);
+	auto data = value.M;
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			Put(data[i][j]);
+		}
+	}
 }
 
 void NetPacket::NetDataWriter::Put(const FBox& value)
 {
-	ResizeIfNeed(_position + sizeof(FBox));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FBox));
-	_position += sizeof(FBox);
+	Put(value.Min);
+	Put(value.Max);
 }
 
 void NetPacket::NetDataWriter::Put(const FTimespan& value)
 {
-	ResizeIfNeed(_position + sizeof(FTimespan));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FTimespan));
-	_position += sizeof(FTimespan);
+	Put(value.GetTicks());
 }
 
 void NetPacket::NetDataWriter::Put(const FDateTime& value)
 {
-	ResizeIfNeed(_position + sizeof(FDateTime));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FDateTime));
-	_position += sizeof(FDateTime);
+	Put(value.GetTicks());
 }
 
 void NetPacket::NetDataWriter::Put(const FRotator& value)
 {
-	ResizeIfNeed(_position + sizeof(FRotator));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FRotator));
-	_position += sizeof(FRotator);
+	Put(value.Pitch);
+	Put(value.Yaw);
+	Put(value.Roll);
 }
 
 void NetPacket::NetDataWriter::Put(const FVector2D& value)
 {
-	ResizeIfNeed(_position + sizeof(FVector2D));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FVector2D));
-	_position += sizeof(FVector2D);
+	Put(value.X);
+	Put(value.Y);
 }
 
 void NetPacket::NetDataWriter::Put(const FIntPoint& value)
 {
-	ResizeIfNeed(_position + sizeof(FIntPoint));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FIntPoint));
-	_position += sizeof(FIntPoint);
+	Put(value.X);
+	Put(value.Y);
 }
 
 void NetPacket::NetDataWriter::Put(const FColor& value)
 {
-	ResizeIfNeed(_position + sizeof(FColor));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FColor));
-	_position += sizeof(FColor);
+	Put(value.R);
+	Put(value.G);
+	Put(value.B);
+	Put(value.A);
 }
 
 void NetPacket::NetDataWriter::Put(const FQuat& value)
 {
-	ResizeIfNeed(_position + sizeof(FQuat));
-	FMemory::Memcpy(_data + _position, &value, sizeof(FQuat));
-	_position += sizeof(FQuat);
+	Put(value.W);
+	Put(value.X);
+	Put(value.Y);
+	Put(value.Z);
 }
 
 void NetPacket::NetDataWriter::PutArray(const TArray<FLinearColor>& value)
