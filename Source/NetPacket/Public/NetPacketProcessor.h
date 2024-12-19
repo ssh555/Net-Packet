@@ -1,4 +1,7 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable:4251)
+
 #include "NetDataReader.h"
 #include "NetDataWriter.h"
 #include <queue>
@@ -70,3 +73,4 @@ namespace NetPacket
 	}
 
 }
+#pragma warning(pop)

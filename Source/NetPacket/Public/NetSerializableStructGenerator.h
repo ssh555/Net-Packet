@@ -1,4 +1,7 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable:4251)
+
 #include <string>
 
 namespace NetPacket
@@ -39,7 +42,7 @@ namespace NetPacket
 	};
 
 	// 代码生成模板
-	struct NetStructConfig
+	struct NP_API NetStructConfig
 	{
 		static const std::string DefaultConfig;
 		static const std::string UEConfig;
@@ -53,3 +56,4 @@ namespace NetPacket
 
 	};
 }
+#pragma warning(pop)
