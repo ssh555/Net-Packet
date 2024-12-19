@@ -8,6 +8,10 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <unordered_map>
+#include <queue>
+#include <mutex>
+#include <functional>
 
 //#include "Struct/NPStruct.h"
 
