@@ -452,15 +452,6 @@ void NetPacket::NetDataReader::Get(FVector& value)
 
 void NetPacket::NetDataReader::Get(FString& value)
 {
-	//int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
-	//if (_position + length <= _dataSize) {
-	//	value = FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
-	//	_position += length;  // 更新读取位置
-	//}
-	//else {
-	//	throw std::out_of_range("No enough data to get FString");
-	//}
-
 	int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
 
 	if (_position + length <= _dataSize) {
@@ -477,16 +468,6 @@ void NetPacket::NetDataReader::Get(FString& value)
 
 void NetPacket::NetDataReader::Get(FText& value)
 {
-	//int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
-	//if (_position + length <= _dataSize) {
-	//	// 从数据流中读取字符串并将其转换为 FText
-	//	FString tempStr(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position]));
-	//	value.FromString(tempStr);
-	//	_position += length;  // 更新读取位置
-	//}
-	//else {
-	//	throw std::out_of_range("No enough data to get FText");
-	//}
 	FString str;
 	Get(str);
 	value.FromString(str);
@@ -494,15 +475,6 @@ void NetPacket::NetDataReader::Get(FText& value)
 
 void NetPacket::NetDataReader::Get(FName& value)
 {
-	//int32_t length = static_cast<int32_t>(PeekUShort());  // 获取字符串的长度
-	//if (_position + length <= _dataSize) {
-	//	// 从数据流中读取字符串，并通过 FName 构造
-	//	value = FName(FString(length / sizeof(TCHAR), reinterpret_cast<const TCHAR*>(&_data[_position])));
-	//	_position += length;  // 更新读取位置
-	//}
-	//else {
-	//	throw std::out_of_range("No enough data to get FName");
-	//}
 	FString str;
 	Get(str);
 	value = FName(str);
@@ -587,11 +559,13 @@ uint16_t NetPacket::NetDataReader::GetArray(TArray<uint8>& value)
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FString>& value)
 {
 	uint16_t length = PeekUShort();  // 获取数组的长度
-	value.SetNumUninitialized(length);  // 为数组分配空间
+	//value.SetNumUninitialized(length);  // 为数组分配空间
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		Get(value[i]);  // 读取每个 FString 到数组中
+		FString tmp;
+		Get(tmp);  // 读取每个 FString 到数组中
+		value.Add(tmp);
 	}
 
 	return length;
@@ -613,11 +587,13 @@ uint16_t NetPacket::NetDataReader::GetArray(TArray<FName>& value)
 uint16_t NetPacket::NetDataReader::GetArray(TArray<FText>& value)
 {
 	uint16_t length = PeekUShort();  // 获取数组的长度
-	value.SetNumUninitialized(length);  // 为数组分配空间
+	//value.SetNumUninitialized(length);  // 为数组分配空间
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		Get(value[i]);
+		FText tmp;
+		Get(tmp);
+		value.Add(tmp);
 	}
 
 	return length;
