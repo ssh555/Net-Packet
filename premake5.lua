@@ -74,8 +74,12 @@ project "NetPacket"
 
 		postbuildcommands
 		{
+			-- 创建目标文件夹（如果不存在）
+			("{MKDIR} ../bin/" .. outputdir .. "/StructFileGenerator"),
+			-- 复制目标文件到目标文件夹
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/StructFileGenerator")
 		}
+		
 
 	filter "configurations:Debug"
 		defines "NP_DEBUG"
