@@ -36,6 +36,13 @@ project "NetPacket"
 		"Source/**.hpp"
 	}
 
+	-- 排除特定模式的文件
+	removefiles
+	{
+		"Source/**/Struct/**.h",
+		"Source/**/Config/**.np"
+	}
+
 	includedirs
 	{
 		"Source/%{prj.name}/Public",
