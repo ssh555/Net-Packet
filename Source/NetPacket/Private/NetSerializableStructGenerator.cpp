@@ -259,8 +259,6 @@ namespace NetPacket
 		throw new std::exception("mode error: 不是有效mode");
 	}
 
-#pragma region 常规C++配置生成模板
-
 
 	const std::string NetStructConfig::DefaultConfig = R"(#pragma once
 #include "../nppch.h"
@@ -299,9 +297,6 @@ namespace NetPacket
 	};
 }
 )";
-#pragma endregion
-
-#pragma region UEC++配置生成模板
 
 	// UE C++配置生成模板
 	const std::string NetStructConfig::UEConfig = R"(#pragma once
@@ -438,6 +433,12 @@ public:
 	{
 		data = *static_cast<F{TYPE}*>(Parent->obj);
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static const FDummyStruct& ConvertToDummyStruct(const F{TYPE}& data)
+	{
+		return static_cast<const FDummyStruct&>(data);
+	}
 )";
 
 	// 用于注册对应类型的委托回调
@@ -491,6 +492,5 @@ public:
 };
 
 )";
-#pragma endregion
 
 }

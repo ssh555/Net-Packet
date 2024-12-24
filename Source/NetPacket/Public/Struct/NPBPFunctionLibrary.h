@@ -62,6 +62,12 @@ public:
 		data = *static_cast<Ftemplate_ue*>(Parent->obj);
 	}
 
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static const FDummyStruct& ConvertToDummyStruct(const Ftemplate_ue& data)
+	{
+		return static_cast<const FDummyStruct&>(data);
+	}
+
 
 	static void Register(NetPacket::NetPacketProcessor& processor, UStruct* structType, FRegisterProcessDelegate Delegate)
 	{
