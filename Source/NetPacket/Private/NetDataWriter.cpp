@@ -306,11 +306,6 @@ void NetPacket::NetDataWriter::PutArray(INetSerializable* value, unsigned short 
 #if NP_UE_SUPPORT
 void NetPacket::NetDataWriter::Put(const FString& value)
 {
-	if (value.IsEmpty()) // 检查空字符串
-	{
-		UE_LOG(LogTemp, Error, TEXT("Attempted to write an empty FString value"));
-		return;
-	}
 	FTCHARToUTF8 utf8Str(*value);
 	int16_t strLength = utf8Str.Length();
 	Put((int16_t)(strLength + 1));
@@ -323,23 +318,12 @@ void NetPacket::NetDataWriter::Put(const FString& value)
 
 void NetPacket::NetDataWriter::Put(const FName& value)
 {
-	if (value.IsNone()) // FName的有效性检查
-	{
-		UE_LOG(LogTemp, Error, TEXT("Attempted to write an invalid FName value"));
-		return; // 或者抛出异常
-	}
 	FString str = value.ToString();
 	Put(str);
 }
 
 void NetPacket::NetDataWriter::Put(const FText& value)
 {
-	if (value.IsEmpty()) // 检查 FText 是否有效
-	{
-		UE_LOG(LogTemp, Error, TEXT("Attempted to write an invalid FText value"));
-		return; // 或者抛出异常
-	}
-
 	// 处理 FText 类型的写入
 	FString tempStr = value.ToString();  // 获取基础字符串
 	Put(tempStr);
