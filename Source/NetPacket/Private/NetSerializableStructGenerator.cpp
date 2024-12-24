@@ -146,6 +146,11 @@ namespace NetPacket
 		// 在目标文件夹下生成 DummyStruct
 		if (bIsUE)
 		{
+			output = outputDir + "/BaseStruct.h";
+			outputFile.open(output);
+			outputFile << NetStructConfig::UEBaseStruct;
+			outputFile.close();
+
 			output = outputDir + "/DummyStruct.h";
 			outputFile.open(output);
 			outputFile << NetStructConfig::UEDummyStruct;
@@ -312,7 +317,7 @@ namespace NetPacket
 
 #include "{CLASSNAME}.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct F{CLASSNAME} : public FDummyStruct, public NetPacket::INetSerializable
+struct F{CLASSNAME} : public FDummyStruct,
 {
 	GENERATED_BODY()
 
@@ -343,19 +348,46 @@ public:
 
 )";
 
-	// UE的结构体类型的基类，用于UE支持自定义数据类型的结构体
-	const std::string NetStructConfig::UEDummyStruct = R"(#pragma once
+	const std::string NetStructConfig::UEBaseStruct = R"(#pragma once
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 
 
+#include "BaseStruct.generated.h"
+USTRUCT()
+struct FBaseStruct
+{
+	GENERATED_BODY()
+public:
+	virtual ~FBaseStruct() = default; // 添加虚析构函数
+};
+
+
+)";
+
+	// UE的结构体类型的基类，用于UE支持自定义数据类型的结构体
+	const std::string NetStructConfig::UEDummyStruct = R"(#pragma once
+#include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
+#include "BaseStruct.h"
+#include <INetSerializable.h>
+
 #include "DummyStruct.generated.h"
 USTRUCT(BlueprintType)
-struct FDummyStruct
+struct FDummyStruct : public FBaseStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 public:
 	virtual ~FDummyStruct() = default; // 添加虚析构函数
+	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
+	{
+
+	}
+
+	virtual void Deserialize(NetPacket::NetDataReader& reader) override
+	{
+
+	}
 };
 
 
@@ -392,7 +424,7 @@ namespace NetPacket
 			{
 				// 调用蓝图委托
 				UNPStructRef* data = NewObject<UNPStructRef>();
-				data->obj = static_cast<FDummyStruct*>(static_cast<Ftemplate_ue*>(obj));
+				data->obj = static_cast<FDummyStruct*>(obj);
 
 				Delegate.ExecuteIfBound(clienID, data);
 			};
@@ -406,6 +438,12 @@ class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UNPStructRef* CreateRef()
+	{
+		return NewObject<UNPStructRef>();
+	}
+
 {GETUSTRUCT}
 
 {FUNCTION}
@@ -435,9 +473,11 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static const FDummyStruct& ConvertToDummyStruct(const F{TYPE}& data)
+	static UNPStructRef* ConvertToDummyStruct(const F{TYPE}& data)
 	{
-		return static_cast<const FDummyStruct&>(data);
+		UNPStructRef* ref = CreateRef();
+		ref->Set(static_cast<const FDummyStruct&>(data));
+		return ref;
 	}
 )";
 

@@ -28,7 +28,7 @@ namespace NetPacket
 			{
 				// µ÷ÓÃÀ¶Í¼Î¯ÍÐ
 				UNPStructRef* data = NewObject<UNPStructRef>();
-				data->obj = static_cast<FDummyStruct*>(static_cast<Ftemplate_ue*>(obj));
+				data->obj = static_cast<FDummyStruct*>(obj);
 
 				Delegate.ExecuteIfBound(clienID, data);
 			};
@@ -42,12 +42,6 @@ class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
-	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static UNPStructRef* CreateRef()
-	{
-		return NewObject<UNPStructRef>();
-	}
-
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
 	{
@@ -69,9 +63,11 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static const FDummyStruct& ConvertToDummyStruct(const Ftemplate_ue& data)
+	static UNPStructRef* ConvertToDummyStruct(const Ftemplate_ue& data)
 	{
-		return static_cast<const FDummyStruct&>(data);
+		UNPStructRef* ref = CreateRef();
+		ref->Set(static_cast<const FDummyStruct&>(data));
+		return ref;
 	}
 
 

@@ -47,6 +47,7 @@ namespace NetPacket
 		static const std::string DefaultConfig;
 		static const std::string UEConfig;
 
+		static const std::string UEBaseStruct;
 		static const std::string UEDummyStruct;
 		static const std::string UEBPAPI;
 		static const std::string UEBPCONVERT;
