@@ -317,7 +317,7 @@ namespace NetPacket
 
 #include "{CLASSNAME}.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct F{CLASSNAME} : public FDummyStruct,
+struct F{CLASSNAME} : public FDummyStruct
 {
 	GENERATED_BODY()
 
