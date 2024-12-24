@@ -134,6 +134,13 @@ class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+	// 创建一个Ref，可配合ConvertToDummyStruct使用，将数据存入Ref
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UNPStructRef* CreateRef()
+	{
+		return NewObject<UNPStructRef>();
+	}
+
 	// 代码自动生成对应类型的GetUStructPtr
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
@@ -153,6 +160,14 @@ public:
 	{
 		data = *static_cast<Ftemplate_ue*>(Parent->obj);
 	}
+
+	// 代码自动生成对应类型转换为基类结构体类型
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static const FDummyStruct& ConvertToDummyStruct(const Ftemplate_ue& data)
+	{
+		return static_cast<const FDummyStruct&>(data);
+	}
+
 
 
 

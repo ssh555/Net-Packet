@@ -43,6 +43,12 @@ class NP_API UNPBPFunctionLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
+	static UNPStructRef* CreateRef()
+	{
+		return NewObject<UNPStructRef>();
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
 	{
 		return obj.StaticStruct();
