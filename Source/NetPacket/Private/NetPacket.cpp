@@ -1,10 +1,13 @@
 #include "nppch.h"
 #include "NetPacket.h"
 
+#include "NetDataWriter.h"
+#include "NetDataReader.h"
+#include "FastBitConverter.h"
+
 #if NP_UE_SUPPORT
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "NetPacket.h"
 
 #define LOCTEXT_NAMESPACE "FNetPacketModule"
 
@@ -24,9 +27,6 @@ void FNetPacketModule::ShutdownModule()
 IMPLEMENT_MODULE(FNetPacketModule, NetPacket)
 #endif
 
-#include "NetDataWriter.h"
-#include "NetDataReader.h"
-#include "FastBitConverter.h"
 
 const int32_t NetPacket::NetPackage::MaxPacketSize = 2048;
 
