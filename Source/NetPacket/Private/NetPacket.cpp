@@ -27,11 +27,11 @@ void FNetPacketModule::ShutdownModule()
 IMPLEMENT_MODULE(FNetPacketModule, NetPacket)
 #endif
 
-
-const int32_t NetPacket::NetPackage::MaxPacketSize = 2048;
-
-// 预留6字节数据: PacketSize(4字节) + ClientID(2字节)
-const int32_t NetPacket::NetPackage::HeaderSize = 6;
+//
+//const int32_t NetPacket::NetPackage::MaxPacketSize = 2048;
+//
+//// 预留6字节数据: PacketSize(4字节) + ClientID(2字节)
+//const int32_t NetPacket::NetPackage::HeaderSize = 6;
 
 NetPacket::NetPackage::NetPackage(uint32_t maxSize) : MaxSize(maxSize), RawData(new uint8_t[maxSize]), m_size(0), Next(nullptr)
 {

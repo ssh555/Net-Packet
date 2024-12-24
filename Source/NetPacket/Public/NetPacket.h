@@ -26,8 +26,8 @@ namespace NetPacket
 		// 添加对象池的友元
 		friend class NetPacketPool;
 	public:
-		static const int32_t MaxPacketSize;
-		static const int32_t HeaderSize;
+		constexpr static int32_t MaxPacketSize = 2048;
+		constexpr static int32_t HeaderSize = 6;
 
 	private:
 		// 设置数据包大小

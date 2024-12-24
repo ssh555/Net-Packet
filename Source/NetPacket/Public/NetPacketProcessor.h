@@ -41,6 +41,7 @@ namespace NetPacket
 		Register(uint16_t hashid, std::function<void(int16_t, INetSerializable*)> callback);
 
 		void Unregister(uint16_t hashid);
+		void Recycle(NetPackage* p);
 
 	private:
 		NetDataWriter m_writer;

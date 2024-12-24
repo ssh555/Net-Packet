@@ -58,6 +58,11 @@ namespace NetPacket
 		m_packetCallbackMap.erase(hashid);
 	}
 
+	void NetPacketProcessor::Recycle(NetPackage* p)
+	{
+		m_pool.Recycle(p);
+	}
+
 	bool NetPacketProcessor::IsRegister(uint16_t hashid)
 	{
 		auto it = m_packetCallbackMap.find(hashid);
