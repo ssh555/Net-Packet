@@ -106,6 +106,7 @@ void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size, 
 		}
 		memset(RawData, 0, MaxSize);
 		memcpy(RawData, data, size);
+		this->m_size = size;
 		return;
 	}
 	if (size + HeaderSize > MaxSize)
