@@ -9,15 +9,13 @@
 #include "NetPacketProcessor.h"
 
 #include "NPBPFunctionLibrary.generated.h"
-
-
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, UNPStructRef*, data);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clientID, UNPStructRef*, ref);
 
 namespace NetPacket
 {
 	class NP_API NPFunctionLibrary
 	{
-	public:
+		public:
 
 		// 包裹蓝图委托事件，用于C++调用，然后在Processor中注册。若在蓝图中使用，需要自行再封装一层
 		// UFUNCTION(BlueprintCallable, Category = "NPBPFunction")
@@ -48,11 +46,6 @@ public:
 		return NewObject<UNPStructRef>();
 	}
 
-	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static UStruct* GetUStructPtr(const Ftemplate_ue& obj)
-	{
-		return obj.StaticStruct();
-	}
 
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr_template_ue()
@@ -69,7 +62,7 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static UNPStructRef* ConvertToDummyStruct(const Ftemplate_ue& data)
+	static UNPStructRef* Converttemplate_ueToDummyStruct(const Ftemplate_ue& data)
 	{
 		UNPStructRef* ref = CreateRef();
 		ref->Set(static_cast<const FDummyStruct&>(data));
@@ -88,9 +81,48 @@ public:
 		{
 			processor.Register<Ftemplate_ue>(Ftemplate_ue::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
 		}
+
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
 		}
 	}
+
+	static void Register(NetPacket::NetPacketProcessor& processor, UStruct* structType, std::function<void(int16_t, NetPacket::INetSerializable*)> Delegate)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return;
+		}
+		else if (structType == Ftemplate_ue::StaticStruct())
+		{
+			processor.Register<Ftemplate_ue>(Ftemplate_ue::GetTypeHash(), Delegate);
+		}
+
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+	}
+
+	static uint16_t GetTypeHash(UStruct* structType)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return 0;
+		}
+		else if (structType == Ftemplate_ue::StaticStruct())
+		{
+			return Ftemplate_ue::GetTypeHash();
+		}
+
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+		return 0;
+	}
+
 };

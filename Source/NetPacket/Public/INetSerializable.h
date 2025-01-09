@@ -23,8 +23,8 @@ namespace NetPacket
 		// 先调用reader.PeekUShort()弹出hash
 		virtual void Deserialize(NetDataReader& reader) = 0;
 
-		//// 2字节 type hash -> 在Serialize最前面应该序列化2字节的类型hash，在自动生成代码时自动加入
-		//virtual uint16_t GetTypeHash() const = 0;
+		// 2字节 type hash -> 在Serialize最前面应该序列化2字节的类型hash，在自动生成代码时自动加入
+		virtual uint16_t GetTypeHashID() const = 0;
 	};
 };
 

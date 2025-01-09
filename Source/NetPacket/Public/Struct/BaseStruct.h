@@ -4,6 +4,7 @@
 
 
 #include "BaseStruct.generated.h"
+
 USTRUCT()
 struct FBaseStruct
 {

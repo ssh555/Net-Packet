@@ -98,6 +98,15 @@ namespace NetPacket
 			replaceAll(tmp, "{TYPE}", CLASSNAME);
 			uebptypefunctions << tmp;
 
+			tmp = NetStructConfig::UEBPSTD_TYPEFuntion;
+			replaceAll(tmp, "{TYPE}", CLASSNAME);
+			uebpstd_typefunctions << tmp;
+
+
+			tmp = NetStructConfig::UEBPTYPEHASH;
+			replaceAll(tmp, "{TYPE}", CLASSNAME);
+			uebptypehash << tmp;
+
 			tmp = NetStructConfig::UENPGetUStruct;
 			replaceAll(tmp, "{TYPE}", CLASSNAME);
 			uebpustructfunctions << tmp;
@@ -110,6 +119,8 @@ namespace NetPacket
 		uebpfunctions.clear();
 		uebptypefunctions.clear();
 		uebpustructfunctions.clear();
+		uebpstd_typefunctions.clear();
+		uebptypehash.clear();
 
 		// 在生成目录下生成NPStruct.h，包含所有的头文件
 		std::string output = outputDir + "/NPStruct.h";
@@ -163,8 +174,10 @@ namespace NetPacket
 			std::string tmp = uebpfunctions.str();
 			replaceAll(o, "{FUNCTION}", tmp);
 			replaceAll(o, "{TYPEFUNCTION}", uebptypefunctions.str());
+			replaceAll(o, "{STD_TYPEFUNCTION}", uebpstd_typefunctions.str());
 			replaceAll(o, "{GETUSTRUCT}", uebpustructfunctions.str());
-			
+			replaceAll(o, "{TYPEHASH}", uebptypehash.str());
+
 			outputFile << o;
 			outputFile.close();
 
@@ -331,14 +344,24 @@ public:
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{
 		writer.Put(GetTypeHash());
+		writer.Put(GUID);
+
 {WRITERDATA}
 	}
 
 	virtual void Deserialize(NetPacket::NetDataReader& reader) override
 	{
 		reader.PeekUShort();
+		reader.Get(GUID);
+
 {READRDATA}
 	}
+
+	virtual uint16_t GetTypeHashID() const override
+	{
+		return MurmurHash16("{CLASSNAME}");
+	}
+
 
 	static uint16_t GetTypeHash()
 	{
@@ -354,6 +377,7 @@ public:
 
 
 #include "BaseStruct.generated.h"
+
 USTRUCT()
 struct FBaseStruct
 {
@@ -370,7 +394,7 @@ public:
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "BaseStruct.h"
-#include <INetSerializable.h>
+#include "INetSerializable.h"
 
 #include "DummyStruct.generated.h"
 USTRUCT(BlueprintType)
@@ -378,15 +402,29 @@ struct FDummyStruct : public FBaseStruct, public NetPacket::INetSerializable
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString GUID;
+
 	virtual ~FDummyStruct() = default; // 添加虚析构函数
+
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{
-
+		throw new std::exception("抽象基类，不能使用");
 	}
 
 	virtual void Deserialize(NetPacket::NetDataReader& reader) override
 	{
+		throw new std::exception("抽象基类，不能使用");
+	}
 
+	virtual uint16_t GetTypeHashID() const override
+	{
+		throw new std::exception("抽象基类，不能使用");
+	}
+
+	static uint16_t GetTypeHash()
+	{
+		throw new std::exception("抽象基类，不能使用");
 	}
 };
 
@@ -405,15 +443,13 @@ public:
 #include "NetPacketProcessor.h"
 
 #include "NPBPFunctionLibrary.generated.h"
-
-
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clienID, UNPStructRef*, data);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FRegisterProcessDelegate, int32, clientID, UNPStructRef*, ref);
 
 namespace NetPacket
 {
 	class NP_API NPFunctionLibrary
 	{
-	public:
+		public:
 
 		// 包裹蓝图委托事件，用于C++调用，然后在Processor中注册。若在蓝图中使用，需要自行再封装一层
 		// UFUNCTION(BlueprintCallable, Category = "NPBPFunction")
@@ -461,6 +497,36 @@ public:
 			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
 		}
 	}
+
+	static void Register(NetPacket::NetPacketProcessor& processor, UStruct* structType, std::function<void(int16_t, NetPacket::INetSerializable*)> Delegate)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return;
+		}
+{STD_TYPEFUNCTION}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+	}
+
+	static uint16_t GetTypeHash(UStruct* structType)
+	{
+		if (structType == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UStruct cannot be nullptr!"));
+			return 0;
+		}
+{TYPEHASH}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Unknown struct type!"));
+		}
+		return 0;
+	}
+
 };
 )";
 
@@ -473,7 +539,7 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static UNPStructRef* ConvertToDummyStruct(const F{TYPE}& data)
+	static UNPStructRef* Convert{TYPE}ToDummyStruct(const F{TYPE}& data)
 	{
 		UNPStructRef* ref = CreateRef();
 		ref->Set(static_cast<const FDummyStruct&>(data));
@@ -482,20 +548,30 @@ public:
 )";
 
 	// 用于注册对应类型的委托回调
-	const std::string NetStructConfig::UEBPTYPEFuntion = 
+	const std::string NetStructConfig::UEBPTYPEFuntion =
 R"(		else if (structType == F{TYPE}::StaticStruct())
 		{
 			processor.Register<F{TYPE}>(F{TYPE}::GetTypeHash(), NetPacket::NPFunctionLibrary::WrapDelegate(Delegate));
-		})";
+		}
+)";
+
+	const std::string NetStructConfig::UEBPSTD_TYPEFuntion =
+R"(		else if (structType == F{TYPE}::StaticStruct())
+		{
+			processor.Register<F{TYPE}>(F{TYPE}::GetTypeHash(), Delegate);
+		}
+)";
+
+	const std::string NetStructConfig::UEBPTYPEHASH =
+R"(		else if (structType == F{TYPE}::StaticStruct())
+		{
+			return F{TYPE}::GetTypeHash();
+		}
+)";
 
 	// 用于UE蓝图获取对应结构体对象的UStruct*，即类型对象
 	const std::string NetStructConfig::UENPGetUStruct =
-R"(	UFUNCTION(BlueprintCallable, Category = "NPCast")
-	static UStruct* GetUStructPtr(const F{TYPE}& obj)
-	{
-		return obj.StaticStruct();
-	}
-
+		R"(
 	UFUNCTION(BlueprintCallable, Category = "NPCast")
 	static UStruct* GetUStructPtr_{TYPE}()
 	{

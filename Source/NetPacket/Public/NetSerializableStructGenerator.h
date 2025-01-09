@@ -10,9 +10,6 @@ namespace NetPacket
 	// 输入文件格式为json -> 模板文件见 Config/template.np
 	class NP_API NetSerializableStructGenerator
 	{
-	private:
-
-
 	public:
 		// 都需要带后缀
 		// 返回mode
@@ -38,6 +35,8 @@ namespace NetPacket
 
 		std::stringstream uebpfunctions;
 		std::stringstream uebptypefunctions;
+		std::stringstream uebpstd_typefunctions;
+		std::stringstream uebptypehash;
 		std::stringstream uebpustructfunctions;
 	};
 
@@ -52,6 +51,8 @@ namespace NetPacket
 		static const std::string UEBPAPI;
 		static const std::string UEBPCONVERT;
 		static const std::string UEBPTYPEFuntion;
+		static const std::string UEBPSTD_TYPEFuntion;
+		static const std::string UEBPTYPEHASH;
 		static const std::string UENPSTRUCTREF;
 		static const std::string UENPGetUStruct;
 

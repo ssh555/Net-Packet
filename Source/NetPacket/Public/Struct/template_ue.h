@@ -12,7 +12,7 @@
 
 #include "template_ue.generated.h"
 USTRUCT(BlueprintType, Blueprintable)
-struct Ftemplate_ue : public FDummyStruct,
+struct Ftemplate_ue : public FDummyStruct
 {
 	GENERATED_BODY()
 
@@ -98,6 +98,8 @@ public:
 	virtual void Serialize(NetPacket::NetDataWriter& writer) const override
 	{
 		writer.Put(GetTypeHash());
+		writer.Put(GUID);
+
 			// 非数组数据
 		writer.Put(str);
 		writer.Put(strN);
@@ -142,6 +144,8 @@ public:
 	virtual void Deserialize(NetPacket::NetDataReader& reader) override
 	{
 		reader.PeekUShort();
+		reader.Get(GUID);
+
 			// 非数组数据
 		reader.Get(str);
 		reader.Get(strN);
@@ -182,6 +186,12 @@ public:
 
 
 	}
+
+	virtual uint16_t GetTypeHashID() const override
+	{
+		return MurmurHash16("template_ue");
+	}
+
 
 	static uint16_t GetTypeHash()
 	{
