@@ -19,7 +19,7 @@
 #include "Json/include/single_include/nlohmann/json_fwd.hpp"
 using json = nlohmann::json;
 #ifdef NP_UE_SUPPORT
-#define NP_API DLLEXPORT
+#define NP_API __declspec(dllexport)
 #else
 #ifdef NP_BUILD_DLL
 #define NP_API __declspec(dllexport)

@@ -584,7 +584,7 @@ R"(		else if (structType == F{TYPE}::StaticStruct())
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include <UObject/Object.h>
-#include "NPStruct.h"
+#include "DummyStruct.h"
 
 #include "NPStructRef.generated.h"
 UCLASS(Blueprintable, BlueprintType)
