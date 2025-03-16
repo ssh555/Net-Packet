@@ -1,3 +1,6 @@
+# English ReadMe Version
+[English ReadMe](./ReadMeEnglish.md ':include')
+
 # 构建项目
 执行GenerateProjects_VS2019.bat构建，可修改bat内的参数构建指定IDE的项目
 ## 非UE版本
