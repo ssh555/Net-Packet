@@ -1,3 +1,8 @@
+# NetPacket
+- 数据包协议库：用于网络中字节流数据的读写、接收处理，可自定义数据包类型
+- 代码生成：自动生成配置的数据包对应结构体代码
+- 支持C++和UE C++&蓝图
+
 # English ReadMe Version
 [English ReadMe](./ReadMeEnglish.md ':include')
 

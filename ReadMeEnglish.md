@@ -1,3 +1,8 @@
+# NetPacket
+- Packet Protocol Library: Used for reading, writing, and processing byte stream data in networks, with support for custom packet types.
+- Code Generation: Automatically generates corresponding struct code for configured packets.
+- Supports C++ and UE C++ & Blueprints.
+
 # Building the Project
 Execute `GenerateProjects_VS2019.bat` to build the project. You can modify the parameters inside the `.bat` file to build the project for a specific IDE.
 
