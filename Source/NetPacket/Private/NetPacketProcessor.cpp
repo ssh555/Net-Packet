@@ -47,7 +47,7 @@ namespace NetPacket
 	{
 		m_writer.Reset();
 		obj->Serialize(m_writer);
-		NetPackage* p = m_pool.GetPacket(m_writer.Length());
+		NetPackage* p = m_pool.GetPacket(m_writer.Length() + NetPackage::HeaderSize);
 		p->setData(&m_writer);
 		return p;
 	}

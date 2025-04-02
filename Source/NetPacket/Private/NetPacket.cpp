@@ -111,7 +111,7 @@ void NetPacket::NetPackage::setRawData(const uint8_t* data, const int32_t size, 
 	}
 	if (size + HeaderSize > MaxSize)
 	{
-		MaxSize = size;
+		MaxSize = size + HeaderSize;
 		delete[] RawData;
 		RawData = new uint8_t[MaxSize];
 	}
